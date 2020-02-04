@@ -1,6 +1,7 @@
 dependencies:
   concurrently: 5.1.0
   express: 4.17.1
+  http-proxy-middleware: 0.20.0
   react: 16.12.0
   react-dom: 16.12.0
   react-scripts: 3.3.1
@@ -5148,6 +5149,17 @@ packages:
       node: '>=4.0.0'
     resolution:
       integrity: sha512-yHYTgWMQO8VvwNS22eLLloAkvungsKdKTLO8AJlftYIKNfJr3GK3zK0ZCfzDDGUBttdGc8xFy1mCitvNKQtC3Q==
+  /http-proxy-middleware/0.20.0:
+    dependencies:
+      http-proxy: 1.18.0
+      is-glob: 4.0.1
+      lodash: 4.17.15
+      micromatch: 4.0.2
+    dev: false
+    engines:
+      node: '>=8.0.0'
+    resolution:
+      integrity: sha512-dNJAk71nEJhPiAczQH9hGvE/MT9kEs+zn2Dh+Hi94PGZe1GluQirC7mw5rdREUtWx6qGS1Gu0bZd4qEAg+REgw==
   /http-proxy/1.18.0:
     dependencies:
       eventemitter3: 4.0.0
@@ -6743,6 +6755,15 @@ packages:
       node: '>=0.10.0'
     resolution:
       integrity: sha512-MWikgl9n9M3w+bpsY3He8L+w9eF9338xRl8IAO5viDizwSzziFEyUzo2xrrloB64ADbTf8uA8vRqqttDTOmccg==
+  /micromatch/4.0.2:
+    dependencies:
+      braces: 3.0.2
+      picomatch: 2.2.1
+    dev: false
+    engines:
+      node: '>=8'
+    resolution:
+      integrity: sha512-y7FpHSbMUMoyPbYUSzO6PaZ6FyRnQOpHuKwbo1G+Knck95XVU4QAiKdGEnj5wwoS7PlOgthX/09u5iFJ+aYf5Q==
   /miller-rabin/4.0.1:
     dependencies:
       bn.js: 4.11.8
@@ -11051,6 +11072,7 @@ shrinkwrapVersion: 3
 specifiers:
   concurrently: ^5.0.2
   express: ^4.17.1
+  http-proxy-middleware: ^0.20.0
   react: ^16.12.0
   react-dom: ^16.12.0
   react-scripts: ^3.3.1
