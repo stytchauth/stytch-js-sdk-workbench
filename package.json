@@ -1,14 +1,21 @@
 {
-  "name": "my-app",
+  "name": "brainy-cost",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "react": "^16.9.0",
-    "react-dom": "^16.9.0",
-    "react-scripts": "3.1.1"
+    "react": "^16.12.0",
+    "react-dom": "^16.12.0",
+    "react-scripts": "^3.3.1",
+    "express": "^4.17.1",
+    "concurrently": "^5.0.2",
+    "http-proxy-middleware": "^0.20.0"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "npm run development",
+    "development": "NODE_ENV=development concurrently --kill-others \"npm run client\" \"npm run server\"",
+    "production": "npm run build && NODE_ENV=production npm run server",
+    "server": "node server/server.js",
+    "client": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
