@@ -1,7 +1,7 @@
 dependencies:
   concurrently: 5.1.0
   express: 4.17.1
-  http-proxy-middleware: 0.20.0
+  http-proxy-middleware: 1.0.0
   react: 16.12.0
   react-dom: 16.12.0
   react-scripts: 3.3.1
@@ -1461,6 +1461,12 @@ packages:
     dev: false
     resolution:
       integrity: sha512-1Bh06cbWJUHMC97acuD6UMG29nMt0Aqz1vF3guLfG+kHHJhy3AyohZFFxYk2f7Q1SQIrNwvncxAE0N/9s70F2w==
+  /@types/http-proxy/1.17.3:
+    dependencies:
+      '@types/node': 13.7.4
+    dev: false
+    resolution:
+      integrity: sha512-wIPqXANye5BbORbuh74exbwNzj+UWCwWyeEFJzUQ7Fq3W2NSAy+7x7nX1fgbEypr2/TdKqpeuxLnXWgzN533/Q==
   /@types/istanbul-lib-coverage/2.0.1:
     dev: false
     resolution:
@@ -1490,6 +1496,10 @@ packages:
     dev: false
     resolution:
       integrity: sha512-GnZbirvmqZUzMgkFn70c74OQpTTUcCzlhQliTzYjQMqg+hVKcDnxdL19Ne3UdYzdMA/+W3eb646FWn/ZaT1NfQ==
+  /@types/node/13.7.4:
+    dev: false
+    resolution:
+      integrity: sha512-oVeL12C6gQS/GAExndigSaLxTrKpQPxewx9bOcwfvJiJge4rr7wNaph4J+ns5hrmIV2as5qxqN8YKthn9qh0jw==
   /@types/parse-json/4.0.0:
     dev: false
     resolution:
@@ -5149,8 +5159,9 @@ packages:
       node: '>=4.0.0'
     resolution:
       integrity: sha512-yHYTgWMQO8VvwNS22eLLloAkvungsKdKTLO8AJlftYIKNfJr3GK3zK0ZCfzDDGUBttdGc8xFy1mCitvNKQtC3Q==
-  /http-proxy-middleware/0.20.0:
+  /http-proxy-middleware/1.0.0:
     dependencies:
+      '@types/http-proxy': 1.17.3
       http-proxy: 1.18.0
       is-glob: 4.0.1
       lodash: 4.17.15
@@ -5159,7 +5170,7 @@ packages:
     engines:
       node: '>=8.0.0'
     resolution:
-      integrity: sha512-dNJAk71nEJhPiAczQH9hGvE/MT9kEs+zn2Dh+Hi94PGZe1GluQirC7mw5rdREUtWx6qGS1Gu0bZd4qEAg+REgw==
+      integrity: sha512-1yM4gD7R/U9R5AwA6STkoj8JfjnMeZIUrd8e23Yc14A7xVVLUWlAikgvidklwq1UOroJ07sc6NWNULeOJMYOeQ==
   /http-proxy/1.18.0:
     dependencies:
       eventemitter3: 4.0.0
@@ -11072,7 +11083,7 @@ shrinkwrapVersion: 3
 specifiers:
   concurrently: ^5.0.2
   express: ^4.17.1
-  http-proxy-middleware: ^0.20.0
+  http-proxy-middleware: ^1.0.0
   react: ^16.12.0
   react-dom: ^16.12.0
   react-scripts: ^3.3.1
