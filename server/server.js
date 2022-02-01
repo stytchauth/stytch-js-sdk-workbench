@@ -28,6 +28,13 @@ app.get("/api/ping", (request, response) => {
   console.log("❇️ Received GET request to /api/ping");
   response.send("pong!");
 });
+// A test route to make sure the server is up.
+app.get("/api/stytch", (request, response) => {
+  console.log("❇️ Received GET request to /api/ping");
+  stytchClient.users.search()
+  .then(data => response.json(data))
+  .catch(data => response.json(data));
+});
 
 // A test route to make sure the server is up.
 app.get("/stytch/users", (request, response, next) => {
