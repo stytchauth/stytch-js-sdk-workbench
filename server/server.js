@@ -1,5 +1,13 @@
 const express = require("express");
 const path = require("path");
+const stytch = require("stytch")
+
+const stytchClient = new stytch.Client({
+    project_id: "project-test-27c9b831-3414-44b4-a1ca-cb507478ffe3",
+    secret: "secret-test-Par1bqBIsbahp_HTEVBkkfaEfHle8B4cS60=",
+    env: stytch.envs.test,
+  }
+);
 
 const app = express();
 
@@ -19,6 +27,13 @@ app.all("*", checkHttps);
 app.get("/api/ping", (request, response) => {
   console.log("❇️ Received GET request to /api/ping");
   response.send("pong!");
+});
+
+// A test route to make sure the server is up.
+app.get("/stytch/users", (request, response, next) => {
+  stytchClient.users.search()
+  .then(data => response.json(data))
+  .catch(next);
 });
 
 // Express port-switching logic

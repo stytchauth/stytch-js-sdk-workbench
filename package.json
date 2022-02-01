@@ -3,12 +3,14 @@
   "version": "1.0.0",
   "private": true,
   "dependencies": {
+    "@stytch/stytch-js": "^2.0.7",
+    "concurrently": "^5.0.2",
+    "express": "^4.17.1",
+    "http-proxy-middleware": "^1.0.0",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
     "react-scripts": "^3.4.0",
-    "express": "^4.17.1",
-    "concurrently": "^5.0.2",
-    "http-proxy-middleware": "^1.0.0"
+    "stytch": "^3.10.1"
   },
   "scripts": {
     "start": "npm run development",

@@ -1,10 +1,12 @@
 dependencies:
+  '@stytch/stytch-js': 2.0.7
   concurrently: 5.1.0
   express: 4.17.1
   http-proxy-middleware: 1.0.0
   react: 16.12.0
   react-dom: 16.12.0
   react-scripts: 3.4.0
+  stytch: 3.10.1
 packages:
   /@babel/code-frame/7.8.3:
     dependencies:
@@ -1288,6 +1290,10 @@ packages:
       node: '>= 6'
     resolution:
       integrity: sha512-shAmDyaQC4H92APFoIaVDHCx5bStIocgvbwQyxPRrbUY20V1EYTbSDchWbuwlMG3V17cprZhA6+78JfB+3DTPw==
+  /@stytch/stytch-js/2.0.7:
+    dev: false
+    resolution:
+      integrity: sha512-5QlCLY6JBU0JSc0QGAYn6Rmi3J4oEdlg8qsyRNEnbGrikL5RZHXrNG9GBBJpvoNGf+ZUutl9+bHu1Kxcls3SYw==
   /@svgr/babel-plugin-add-jsx-attribute/4.2.0:
     dev: false
     engines:
@@ -2094,6 +2100,12 @@ packages:
     dev: false
     resolution:
       integrity: sha512-wMHVg2EOHaMRxbzgFJ9gtjOOCrI80OHLG14rxi28XwOW8ux6IiEbRCGGGqCtdAIg4FQCbW20k9RsT4y3gJlFug==
+  /axios/0.21.4:
+    dependencies:
+      follow-redirects: 1.14.7
+    dev: false
+    resolution:
+      integrity: sha512-ut5vewkiu8jjGBdqpM44XxjuCjq9LAKeHVmoVfHVzy8eHgxxq8SbAVQNovDA8mVi05kP0Ea/n/UzcSHcTJQfNg==
   /axobject-query/2.1.2:
     dev: false
     resolution:
@@ -4562,6 +4574,12 @@ packages:
       node: '>=4.0'
     resolution:
       integrity: sha512-4eyLK6s6lH32nOvLLwlIOnr9zrL8Sm+OvW4pVTJNoXeGzYIkHVf+pADQi+OJ0E67hiuSLezPVPyBcIZO50TmmQ==
+  /follow-redirects/1.14.7:
+    dev: false
+    engines:
+      node: '>=4.0'
+    resolution:
+      integrity: sha512-+hbxoLbFMbRKDwohX8GkTataGqO6Jb7jGwpAlwgy2bIz25XtRm7KEzJM76R1WiNT5SwZkX4Y75SwBolkpmE7iQ==
   /for-in/0.1.8:
     dev: false
     engines:
@@ -10028,6 +10046,12 @@ packages:
       node: '>=6.9.0'
     resolution:
       integrity: sha512-7GlLk9JwlElY4Y6a/rmbH2MhVlTyVmiJd1PfTCqFaIBEGMYNsrO/v3SeGTdhBThLg4Z+NbOk/qFMwCa+J+3p/g==
+  /stytch/3.10.1:
+    dependencies:
+      axios: 0.21.4
+    dev: false
+    resolution:
+      integrity: sha512-GE1sA8/SdvE17ojSqqcNVllseDeBQAomdzDQQL8N+3UDFcbAGatCHYXDzwQC1o5ypx4Aj7ng1uXZPO48t3SWBw==
   /supports-color/2.0.0:
     dev: false
     engines:
@@ -11085,9 +11109,11 @@ registry: 'https://registry.npmjs.org/'
 shrinkwrapMinorVersion: 9
 shrinkwrapVersion: 3
 specifiers:
+  '@stytch/stytch-js': ^2.0.7
   concurrently: ^5.0.2
   express: ^4.17.1
   http-proxy-middleware: ^1.0.0
   react: ^16.12.0
   react-dom: ^16.12.0
   react-scripts: ^3.4.0
+  stytch: ^3.10.1
