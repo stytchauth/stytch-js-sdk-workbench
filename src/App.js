@@ -16,6 +16,14 @@ function App() {
   const stytch = useStytch();
   console.log(stytch);
   
+  const sendEmail = React.useCallback(() => {
+     stytch.client.magicLinks.email.send({
+        email: "max@stytch.com",
+        signup_magic_link_url: "https://sdk-app.max.dev.stytch.com/workbench",
+        login_magic_link_url: "https://sdk-app.max.dev.stytch.com/workbench",
+      });
+  }, [stytch])
+  
   return (
     <div className="App">
       <header className="App-header">
@@ -23,7 +31,7 @@ function App() {
         <p>
           Edit <code>src/App.js</code> and your changes will live-update automatically.
         </p>
-        <button onClick={() => stytch.client.magicLinks.email.send("max@stytch.com")}> email </button>
+        <button onClick={sendEmail}> email </button>
       </header>
     </div>
   );
