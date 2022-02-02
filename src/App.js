@@ -1,15 +1,11 @@
 import React,  {useState, useEffect} from 'react';
 import logo from './logo.svg';
 import './App.css';
-import {loadStytch} from '@stytch/stytch-js'
 
-const StytchPromise = loadStytch().then(Stytch => Stytch('public-token-live-5691c5a7-863e-4241-be93-056ee0756672'));
 
-const useStytch = () => {
-  const [s, setS] = useState()
-  useEffect(() => { StytchPromise.then(s => setS(s)) })
-  return s
-}
+const stytch = Stytch('public-token-live-5691c5a7-863e-4241-be93-056ee0756672')
+
+
 
 function App() {
   
