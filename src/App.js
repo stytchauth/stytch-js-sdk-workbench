@@ -37,7 +37,13 @@ function App() {
   }, []);
   
   useEffect(() => {
-    new URL(window.location.href).query
+    const token = new URLSearchParams(window.location.search).get("token")
+    if (token) {
+      console.log('authing...')
+      stytch.client.magicLinks.authenticate(token, {
+        session_duration_minutes: 1000,
+      })
+    }
   }, [])
 
   const content = loggedIn ? (
