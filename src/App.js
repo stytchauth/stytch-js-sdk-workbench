@@ -11,7 +11,7 @@ function EmailLogin() {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    stytch.client.magicLinks.email.send({
+    stytch.magicLinks.email.send({
       email: emailRef.current.value,
       signup_magic_link_url: "https://kindhearted-longing-woodpecker.glitch.me",
       login_magic_link_url: "https://kindhearted-longing-woodpecker.glitch.me",
@@ -30,7 +30,7 @@ function App() {
   const [loggedIn, setLoggedIn] = useState(false);
 
   useEffect(() => {
-    stytch.client.sessions
+    stytch.sessions
       .authenticate()
       .then((data) => setLoggedIn(true))
       .catch(() => setLoggedIn(false));
@@ -40,7 +40,7 @@ function App() {
     const token = new URLSearchParams(window.location.search).get("token")
     if (token) {
       console.log('authing...')
-      stytch.client.magicLinks.authenticate(token, {
+      stytch.magicLinks.authenticate(token, {
         session_duration_minutes: 1000,
       })
     }
