@@ -6,6 +6,7 @@ dependencies:
   http-proxy-middleware: 1.0.0
   react: 16.12.0
   react-dom: 16.12.0
+  react-router-dom: 6.2.1
   react-scripts: 3.4.0
   stytch: 3.10.1
 packages:
@@ -1035,6 +1036,14 @@ packages:
       '@babel/core': ^7.0.0-0
     resolution:
       integrity: sha512-qee5LgPGui9zQ0jR1TeU5/fP9L+ovoArklEqY12ek8P/wV5ZeM/VYSQYwICeoT6FfpJTekG9Ilay5PhwsOpMHA==
+  /@babel/runtime/7.17.2:
+    dependencies:
+      regenerator-runtime: 0.13.9
+    dev: false
+    engines:
+      node: '>=6.9.0'
+    resolution:
+      integrity: sha512-hzeyJyMA1YGdJTuWU0e/j4wKXrU4OMFvY2MSlaI9B7VQb0r5cxTE3EAIS2Q7Tn2RIcDkRvTA/v2JsAEhxe99uw==
   /@babel/runtime/7.8.4:
     dependencies:
       regenerator-runtime: 0.13.3
@@ -5013,6 +5022,12 @@ packages:
     dev: false
     resolution:
       integrity: sha512-l9sfDFsuqtOqKDsQdqrMRk0U85RZc0RtOR9yPI7mRVOa4FsR/BVnZ0shmQRM96Ji99kYZP/7hn1cedc1+ApsTQ==
+  /history/5.2.0:
+    dependencies:
+      '@babel/runtime': 7.17.2
+    dev: false
+    resolution:
+      integrity: sha512-uPSF6lAJb3nSePJ43hN3eKj1dTWpN9gMod0ZssbFTIsen+WehTmEadgL+kg78xLJFdRfrrC//SavDzmRVdE+Ig==
   /hmac-drbg/1.0.1:
     dependencies:
       hash.js: 1.1.7
@@ -8816,6 +8831,24 @@ packages:
     dev: false
     resolution:
       integrity: sha512-rPCkf/mWBtKc97aLL9/txD8DZdemK0vkA3JMLShjlJB3Pj3s+lpf1KaBzMfQrAmhMQB0n1cU/SUGgKKBCe837Q==
+  /react-router-dom/6.2.1:
+    dependencies:
+      history: 5.2.0
+      react-router: 6.2.1
+    dev: false
+    peerDependencies:
+      react: '>=16.8'
+      react-dom: '>=16.8'
+    resolution:
+      integrity: sha512-I6Zax+/TH/cZMDpj3/4Fl2eaNdcvoxxHoH1tYOREsQ22OKDYofGebrNm6CTPUcvLvZm63NL/vzCYdjf9CUhqmA==
+  /react-router/6.2.1:
+    dependencies:
+      history: 5.2.0
+    dev: false
+    peerDependencies:
+      react: '>=16.8'
+    resolution:
+      integrity: sha512-2fG0udBtxou9lXtK97eJeET2ki5//UWfQSl1rlJ7quwe6jrktK9FCCc8dQb5QY6jAv3jua8bBQRhhDOM/kVRsg==
   /react-scripts/3.4.0:
     dependencies:
       '@babel/core': 7.8.4
@@ -9014,6 +9047,10 @@ packages:
     dev: false
     resolution:
       integrity: sha512-naKIZz2GQ8JWh///G7L3X6LaQUAMp2lvb1rvwwsURe/VXwD6VMfr+/1NuNw3ag8v2kY1aQ/go5SNn79O9JU7yw==
+  /regenerator-runtime/0.13.9:
+    dev: false
+    resolution:
+      integrity: sha512-p3VT+cOEgxFsRRA9X4lkI1E+k2/CtnKtU4gcxyaCUreilL/vqI6CdZ3wxVUx3UOUg+gnUOQQcRI7BmSI656MYA==
   /regenerator-transform/0.14.1:
     dependencies:
       private: 0.1.8
@@ -11129,5 +11166,6 @@ specifiers:
   http-proxy-middleware: ^1.0.0
   react: ^16.12.0
   react-dom: ^16.12.0
+  react-router-dom: ^6.2.1
   react-scripts: ^3.4.0
   stytch: ^3.10.1
