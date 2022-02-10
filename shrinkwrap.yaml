@@ -1,5 +1,6 @@
 dependencies:
   '@stytch/stytch-js': 2.0.7
+  '@stytch/stytch-react': 3.0.7
   concurrently: 5.1.0
   express: 4.17.1
   http-proxy-middleware: 1.0.0
@@ -1294,6 +1295,18 @@ packages:
     dev: false
     resolution:
       integrity: sha512-5QlCLY6JBU0JSc0QGAYn6Rmi3J4oEdlg8qsyRNEnbGrikL5RZHXrNG9GBBJpvoNGf+ZUutl9+bHu1Kxcls3SYw==
+  /@stytch/stytch-js/2.0.8:
+    dev: false
+    resolution:
+      integrity: sha512-1LZoVKAPg2evqRY6nSoVFiUqFxpJlYviGbzhMs+MQs9L9MBLNyvZ2qpcSgjcHXt10cyJtwbPEw+vm7xAeUo//g==
+  /@stytch/stytch-react/3.0.7:
+    dependencies:
+      '@stytch/stytch-js': 2.0.8
+    dev: false
+    peerDependencies:
+      react: '>= 16.x.x'
+    resolution:
+      integrity: sha512-Fppx5tgaHBUyBd+uOlWl9WHNMcF6SyII6YRGZtlqB0b88Aa0cTtUESShW+7R2EQ6RLxoAMPFM4CEl+pITZAZnA==
   /@svgr/babel-plugin-add-jsx-attribute/4.2.0:
     dev: false
     engines:
@@ -11110,6 +11123,7 @@ shrinkwrapMinorVersion: 9
 shrinkwrapVersion: 3
 specifiers:
   '@stytch/stytch-js': ^2.0.7
+  '@stytch/stytch-react': ^3.0.6
   concurrently: ^5.0.2
   express: ^4.17.1
   http-proxy-middleware: ^1.0.0

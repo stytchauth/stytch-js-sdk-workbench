@@ -1,64 +1,31 @@
-import React, { useRef, useState, useEffect } from "react";
-import logo from "./logo.svg";
+import React from "react";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import "./App.css";
-
-const stytch = window.Stytch(
-  "public-token-live-5691c5a7-863e-4241-be93-056ee0756672"
-);
-
-function EmailLogin() {
-  const emailRef = useRef();
-
-  const onSubmit = (e) => {
-    e.preventDefault();
-    stytch.magicLinks.email.send({
-      email: emailRef.current.value,
-      signup_magic_link_url: "https://kindhearted-longing-woodpecker.glitch.me",
-      login_magic_link_url: "https://kindhearted-longing-woodpecker.glitch.me",
-    });
-  };
-
-  return (
-    <form onSubmit={onSubmit}>
-      <input type="email" name="email" ref={emailRef} required />
-      <input type="submit" value="Submit" />
-    </form>
-  );
-}
+import Authenticate from "./Authenticate";
+import Home from "./Home";
+import Login from "./Login";
 
 function App() {
-  const [loggedIn, setLoggedIn] = useState(false);
-
-  useEffect(() => {
-    stytch.sessions
-      .authenticate()
-      .then((data) => setLoggedIn(true))
-      .catch(() => setLoggedIn(false));
-  }, []);
-  
-  useEffect(() => {
-    const token = new URLSearchParams(window.location.search).get("token")
-    if (token) {
-      console.log('authing...')
-      stytch.magicLinks.authenticate(token, {
-        session_duration_minutes: 1000,
-      })
-    }
-  }, [])
-
-  const content = loggedIn ? (
-    "You are logged in. Good for you, pal."
-  ) : (
-    <EmailLogin />
-  );
-
+  const [authenticated, setAuthenticated] = React.useState(false);
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>{content}</p>
-      </header>
-    </div>
+    <Router>
+      <div className="App">
+        <header className="App-header"/>
+        <div className="App-content">
+          <Switch>
+            <Route path="/authenticate">
+              <Authenticate setAuthenticated={setAuthenticated} />
+            </Route>
+            <Route path="/login">
+              <Login />
+            </Route>
+            <Route path="/">
+              <Home authenticated={authenticated} />
+            </Route>
+          </Switch>
+        </div>
+      </div>
+    </Router>
   );
 }
 
