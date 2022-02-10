@@ -10,7 +10,7 @@ const stytchClient = new stytch.Client({
 });
 
 const app = express();
-app.use(cookieParser);
+app.use(cookieParser());
 
 // PWAs want HTTPS!
 function checkHttps(request, response, next) {
@@ -24,21 +24,43 @@ function checkHttps(request, response, next) {
 
 app.all("*", checkHttps);
 
-function AuthenticationMiddleware(req, res, next) {
-  const session_token = req.cookies["stytch_session_cookie"];
-  if (!session_token) {
-    return next(new Error("No session"));
-  }
-  stytchClient.sessions
-    .authenticate({ session_token })
-    .then(({ session }) => {
-      req.user = session;
-      return next();
-    })
-    .catch((err) => {
-      console.error("Could not authenticate session", err);
+function isMFA(session) {
+  const hasEmailMagicLink = session.authentication_factors.some(
+    (factor) => factor.type === "email"
+  );
+  const hasOAuth = session.authentication_factors.some(
+    (factor) => factor.type === "oauth"
+  );
+  const hasWebauthn = session.authentication_factors.some(
+    (factor) => factor.type === "webauthn_registration"
+  );
+
+  return (hasEmailMagicLink || hasOAuth) && hasWebauthn;
+}
+
+function AuthenticationMiddleware({ mfa_required }) {
+  return function (req, res, next) {
+    const session_token = req.cookies["stytch_session_cookie"];
+    if (!session_token) {
       return next(new Error("No session"));
-    });
+    }
+    stytchClient.sessions
+      .authenticate({ session_token })
+      .then(({ session }) => {
+        req.session = session;
+        if (!mfa_required) {
+          return next();
+        }
+        if (isMFA(session)) {
+          return next();
+        }
+        return next(new Error("Session does not have MFA"));
+      })
+      .catch((err) => {
+        console.error("Could not authenticate session", err);
+        return next(new Error("No session"));
+      });
+  };
 }
 
 app.get("/api/public", (request, response) => {
@@ -51,14 +73,13 @@ app.get(
   AuthenticationMiddleware,
   (request, response) => {
     console.log("❇️ Received GET request to /api/logged_in_route");
-    response.send("OK!");
+    response.json({ logged_in: true, session: request.session });
   }
 );
-
+ 
 app.get("/api/mfa_route", (request, response) => {
   console.log("❇️ Received GET request to /api/mfa_route");
-  console.log("❇️ Received GET request to /api/logged_in_route");
-  response.send("OK!");
+  response.json({ mfa: true });
 });
 
 // Express port-switching logic
