@@ -1,13 +1,20 @@
+import React, {useEffect} from "react";
 import { Stytch } from "@stytch/stytch-react";
-import React from "react";
+import { useNavigate } from "react-router-dom";
+import { useStytchUser } from './Stytch';
 
 const STYTCH_PUBLIC_TOKEN = process.env.REACT_APP_STYTCH_PUBLIC_TOKEN;
 
 const Login = () => {
   
+  const navigate = useNavigate();
+  const stytchUser = useStytchUser();
+  
   useEffect(() => {
-    
-  }, [])
+    if(stytchUser) {
+      navigate('/home')
+    }
+  }, [stytchUser])
   
   const stytchProps = {
     loginOrSignupView: {
