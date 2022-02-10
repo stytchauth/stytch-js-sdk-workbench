@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import stytch from './Stytch';
+import { stytch } from './Stytch';
 
 const LoggedOut = () => {
   return (

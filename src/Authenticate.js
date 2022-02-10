@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import stytch from './Stytch';
+import { stytch } from './Stytch';
 
 const Authenticate = () => {
   const navigate = useNavigate();
