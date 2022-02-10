@@ -70,17 +70,21 @@ app.get("/api/public", (request, response) => {
 
 app.get(
   "/api/logged_in_route",
-  AuthenticationMiddleware,
+  AuthenticationMiddleware({ mfa_required: false }),
   (request, response) => {
     console.log("❇️ Received GET request to /api/logged_in_route");
     response.json({ logged_in: true, session: request.session });
   }
 );
- 
-app.get("/api/mfa_route", (request, response) => {
-  console.log("❇️ Received GET request to /api/mfa_route");
-  response.json({ mfa: true });
-});
+
+app.get(
+  "/api/mfa_route",
+  AuthenticationMiddleware({ mfa_required: true }),
+  (request, response) => {
+    console.log("❇️ Received GET request to /api/mfa_route");
+    response.json({ mfa: true });
+  }
+);
 
 // Express port-switching logic
 let port;
