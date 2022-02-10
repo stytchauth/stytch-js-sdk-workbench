@@ -6,11 +6,16 @@ const STYTCH_PUBLIC_TOKEN = process.env.REACT_APP_STYTCH_PUBLIC_TOKEN;
 const Login = () => {
   const stytchProps = {
     loginOrSignupView: {
-      products: ['emailMagicLinks'],
+      products: ['oauth', 'emailMagicLinks'],
+      oauthOptions:{
+        providers:[{type:"google"}],
+        loginRedirectURL: "https://kindhearted-longing-woodpecker.glitch.me/authenticate?type=oauth",
+        signupRedirectURL: "https://kindhearted-longing-woodpecker.glitch.me/authenticate?type=oauth",
+      },
       emailMagicLinksOptions: {
-        loginRedirectURL: "http://localhost:9000/authenticate",
+        loginRedirectURL: "https://kindhearted-longing-woodpecker.glitch.me/authenticate?type=eml",
         loginExpirationMinutes:30,
-        signupRedirectURL: "http://localhost:9000/authenticate",
+        signupRedirectURL: "https://kindhearted-longing-woodpecker.glitch.me/authenticate?type=eml",
         signupExpirationMinutes: 30,
       }
     },

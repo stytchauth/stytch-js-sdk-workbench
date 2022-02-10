@@ -6,7 +6,8 @@ const Authenticate = ({ setAuthenticated }) => {
   const navigate = useNavigate();
 
   React.useEffect(() => {
-  }, []);
+    console.log(search)
+  }, [search]);
 
   return <React.Fragment />;
 };

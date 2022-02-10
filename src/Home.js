@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 const LoggedOut = () => {
   return (
     <div>
-      <h2>See you next time! 👋 </h2>
+      <h2>Welcome to the Headless SDK Demo! </h2>
       <Link class="Button" to="/login">Login</Link>
     </div>
   );
