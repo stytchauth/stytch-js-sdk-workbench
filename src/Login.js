@@ -4,6 +4,11 @@ import React from "react";
 const STYTCH_PUBLIC_TOKEN = process.env.REACT_APP_STYTCH_PUBLIC_TOKEN;
 
 const Login = () => {
+  
+  useEffect(() => {
+    
+  }, [])
+  
   const stytchProps = {
     loginOrSignupView: {
       products: ['oauth', 'emailMagicLinks'],

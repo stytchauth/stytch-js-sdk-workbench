@@ -15,7 +15,7 @@ const Authenticate = () => {
       stytch.oauth.authenticate(token, {session_duration_minutes: 60});
     
     authPromise.then(() => {
-      navigate('/')
+      navigate('/home')
     })
     .catch(() => navigate('/login'))
   }, [navigate]);
