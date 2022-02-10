@@ -12,7 +12,8 @@
     "react-scripts": "^3.4.0",
     "stytch": "^3.10.1",
     "@stytch/stytch-react": "^3.0.6",
-    "react-router-dom": "^6.2.1"
+    "react-router-dom": "^6.2.1",
+    "cookie-parser": "^1.4.6"
   },
   "scripts": {
     "start": "npm run development",

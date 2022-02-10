@@ -2,6 +2,7 @@ dependencies:
   '@stytch/stytch-js': 2.0.7
   '@stytch/stytch-react': 3.0.7
   concurrently: 5.1.0
+  cookie-parser: 1.4.6
   express: 4.17.1
   http-proxy-middleware: 1.0.0
   react: 16.12.0
@@ -3055,6 +3056,15 @@ packages:
     dev: false
     resolution:
       integrity: sha512-4FJkXzKXEDB1snCFZlLP4gpC3JILicCpGbzG9f9G7tGqGCzETQ2hWPrcinA9oU4wtf2biUaEH5065UnMeR33oA==
+  /cookie-parser/1.4.6:
+    dependencies:
+      cookie: 0.4.1
+      cookie-signature: 1.0.6
+    dev: false
+    engines:
+      node: '>= 0.8.0'
+    resolution:
+      integrity: sha512-z3IzaNjdwUC2olLIB5/ITd0/setiaFMLYiZJle7xg5Fe9KWAceil7xszYfHHBtDFYLSgJduS2Ty0P1uJdPDJeA==
   /cookie-signature/1.0.6:
     dev: false
     resolution:
@@ -3065,6 +3075,12 @@ packages:
       node: '>= 0.6'
     resolution:
       integrity: sha512-+Hp8fLp57wnUSt0tY0tHEXh4voZRDnoIrZPqlo3DPiI4y9lwg/jqx+1Om94/W6ZaPDOUbnjOt/99w66zk+l1Xg==
+  /cookie/0.4.1:
+    dev: false
+    engines:
+      node: '>= 0.6'
+    resolution:
+      integrity: sha512-ZwrFkGJxUR3EIoXtO+yVE69Eb7KlixbaeAWfBQB9vVsNn/o+Yw69gBWSSDK825hQNdN+wF8zELf3dFNl/kxkUA==
   /copy-concurrently/1.0.5:
     dependencies:
       aproba: 1.2.0
@@ -11162,6 +11178,7 @@ specifiers:
   '@stytch/stytch-js': ^2.0.7
   '@stytch/stytch-react': ^3.0.6
   concurrently: ^5.0.2
+  cookie-parser: ^1.4.6
   express: ^4.17.1
   http-proxy-middleware: ^1.0.0
   react: ^16.12.0

@@ -1,15 +1,16 @@
 const express = require("express");
 const path = require("path");
-const stytch = require("stytch")
+const stytch = require("stytch");
+const cookieParser = require("cookie-parser");
 
 const stytchClient = new stytch.Client({
-    project_id: "project-test-27c9b831-3414-44b4-a1ca-cb507478ffe3",
-    secret: "secret-test-Par1bqBIsbahp_HTEVBkkfaEfHle8B4cS60=",
-    env: stytch.envs.test,
-  }
-);
+  project_id: process.env.STYTCH_PROJECT_ID,
+  secret: process.env.STYTCH_PROJECT_SECRET,
+  env: stytch.envs.test,
+});
 
 const app = express();
+app.use(cookieParser);
 
 // PWAs want HTTPS!
 function checkHttps(request, response, next) {
@@ -23,24 +24,41 @@ function checkHttps(request, response, next) {
 
 app.all("*", checkHttps);
 
-// A test route to make sure the server is up.
-app.get("/api/ping", (request, response) => {
-  console.log("❇️ Received GET request to /api/ping");
-  response.send("pong!");
-});
-// A test route to make sure the server is up.
-app.get("/api/stytch", (request, response) => {
-  console.log("❇️ Received GET request to /api/ping");
-  stytchClient.users.search()
-  .then(data => response.json(data))
-  .catch(data => response.json(data));
+function AuthenticationMiddleware(req, res, next) {
+  const session_token = req.cookies["stytch_session_cookie"];
+  if (!session_token) {
+    return next(new Error("No session"));
+  }
+  stytchClient.sessions
+    .authenticate({ session_token })
+    .then(({ session }) => {
+      req.user = session;
+      return next();
+    })
+    .catch((err) => {
+      console.error("Could not authenticate session", err);
+      return next(new Error("No session"));
+    });
+}
+
+app.get("/api/public", (request, response) => {
+  console.log("❇️ Received GET request to /api/public");
+  response.send("OK!");
 });
 
-// A test route to make sure the server is up.
-app.get("/stytch/users", (request, response, next) => {
-  stytchClient.users.search()
-  .then(data => response.json(data))
-  .catch(next);
+app.get(
+  "/api/logged_in_route",
+  AuthenticationMiddleware,
+  (request, response) => {
+    console.log("❇️ Received GET request to /api/logged_in_route");
+    response.send("OK!");
+  }
+);
+
+app.get("/api/mfa_route", (request, response) => {
+  console.log("❇️ Received GET request to /api/mfa_route");
+  console.log("❇️ Received GET request to /api/logged_in_route");
+  response.send("OK!");
 });
 
 // Express port-switching logic
