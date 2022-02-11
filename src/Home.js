@@ -5,7 +5,7 @@ import { stytch, useStytchUser } from "./Stytch";
 const LoggedOut = () => {
   return (
     <div>
-      <h2>Welcome to the Headless SDK Demo! </h2>
+      <h2>Welcome to the Headless SDK Demo!</h2>
       <Link class="Button" to="/login">
         Login
       </Link>
@@ -19,6 +19,7 @@ const LoggedIn = () => {
 
 const Home = () => {
   const user = useStytchUser();
+  console.log('home')
 
   if (
     user.webauthn_registrations.length > 0
