@@ -25,9 +25,12 @@ const Login = () => {
         "https://kindhearted-longing-woodpecker.glitch.me/authenticate?type=eml",
     });
   };
+  
+  const googleUrl = stytch.oauth.google.getUrl();
 
   return (
     <div className="Sign-in-container">
+      <a href={googleUrl}> OAuth </a>
       <form onSubmit={onSubmit}>
         <label>
           Email:

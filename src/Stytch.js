@@ -4,6 +4,7 @@ import {Navigate} from 'react-router-dom'
 const stytch = window.Stytch(process.env.REACT_APP_STYTCH_PUBLIC_TOKEN)
 
 const useStytchUser = () => {
+  console.log("user get is", stytch.user.getSync());
   const [user, setUser] = useState(stytch.user.getSync());
   
   useEffect(() => {
@@ -35,7 +36,7 @@ function RequireLogin({ children }) {
 }
 
 function RequireMFA({ children }) {
-  let session = useStytchSession();
+  const session = useStytchSession();
 
   if (!session) {
     return <Navigate to="/login" />;
