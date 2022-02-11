@@ -21,7 +21,7 @@ const Home = () => {
   const user = useStytchUser();
 
   if (
-    user.webauthn_registrations.some((registration) => registration.verified)
+    user.webauthn_registrations.length > 0
   ) {
     return (
       <button onClick={() => stytch.webauthn.authenticate()}>
