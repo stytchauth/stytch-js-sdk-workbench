@@ -19,15 +19,33 @@ const LoggedIn = () => {
 
 const Home = () => {
   const user = useStytchUser();
-  console.log('home')
+  console.log("home");
 
-  if (
-    user.webauthn_registrations.length > 0
-  ) {
+  if (user.webauthn_registrations.length > 0) {
+    const deleteRegistrationButtons = user.webauthn_registrations.map((r) => {
+      const onClick = () =>
+        stytch.user.deleteWebauthnRegistration(r.webauthn_registration_id);
+      return (
+        <li>
+          <button onClick={onClick}>
+            {" "}
+            Delete Registration {r.webauthn_registration_id}{" "}
+          </button>{" "}
+        </li>
+      );
+    });
+
     return (
-      <button onClick={() => stytch.webauthn.authenticate({session_duration_minutes: 60})}>
-        <code>stytch.webauthn.authenticate()</code>
-      </button>
+      <>
+        <ul>{deleteRegistrationButtons}</ul>
+        <button
+          onClick={() =>
+            stytch.webauthn.authenticate({ session_duration_minutes: 60 })
+          }
+        >
+          <code>stytch.webauthn.authenticate()</code>
+        </button>
+      </>
     );
   }
 
