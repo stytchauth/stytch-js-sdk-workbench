@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { stytch, useStytchUser } from './Stytch';
+import { stytch, useStytchUser } from "./Stytch";
 
 const LoggedOut = () => {
   return (
@@ -19,21 +19,22 @@ const LoggedIn = () => {
 
 const Home = () => {
   const user = useStytchUser();
-  
-  if (user.webauthn_registrations.length) {
+
+  if (
+    user.webauthn_registrations.some((registration) => registration.verified)
+  ) {
     return (
-            <button onClick ={() => stytch.webauthn.authenticate()}>
-          <code>stytch.webauthn.authenticate()</code>
-        </button>
-  )
+      <button onClick={() => stytch.webauthn.authenticate()}>
+        <code>stytch.webauthn.authenticate()</code>
+      </button>
+    );
   }
 
-return (
-  <button onClick ={() => stytch.user.registerWebauthn()}>
-          <code>stytch.user.registerWebauthn()</code>
-        </button>
-)
-  
+  return (
+    <button onClick={() => stytch.user.registerWebauthn()}>
+      <code>stytch.user.registerWebauthn()</code>
+    </button>
+  );
 };
 
 export default Home;
