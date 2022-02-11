@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { Stytch } from "@stytch/stytch-react";
 import { useNavigate } from "react-router-dom";
 import { stytch, useStytchUser } from "./Stytch";
@@ -8,6 +8,7 @@ const STYTCH_PUBLIC_TOKEN = process.env.REACT_APP_STYTCH_PUBLIC_TOKEN;
 const Login = () => {
   const navigate = useNavigate();
   const stytchUser = useStytchUser();
+  const emailRef = useRef();
 
   useEffect(() => {
     if (stytchUser) {
@@ -17,14 +18,11 @@ const Login = () => {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    console.log(e.target, e.target.value);
-    stytch.magicLinks.email.loginOrCreate(1, {
-      loginRedirectURL:
+    stytch.magicLinks.email.loginOrCreate(emailRef.current.value, {
+      login_magic_link_url:
         "https://kindhearted-longing-woodpecker.glitch.me/authenticate?type=eml",
-      loginExpirationMinutes: 30,
-      signupRedirectURL:
+      signup_magic_link_url:
         "https://kindhearted-longing-woodpecker.glitch.me/authenticate?type=eml",
-      signupExpirationMinutes: 30,
     });
   };
 
@@ -33,7 +31,7 @@ const Login = () => {
       <form onSubmit={onSubmit}>
         <label>
           Email:
-          <input name="email" type="email" />
+          <input ref={emailRef} name="email" type="email" />
         </label>
         <button type="submit"> Submit </button>
       </form>

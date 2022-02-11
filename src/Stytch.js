@@ -23,9 +23,11 @@ const useStytchSession = () => {
 }
 
 function RequireLogin({ children }) {
-  let user = useStytchUser();
+  const user = useStytchUser();
+  console.log(user);
 
   if (!user) {
+    
     return <Navigate to="/login" />;
   }
 
