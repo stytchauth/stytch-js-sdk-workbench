@@ -14,7 +14,7 @@ const LoggedOut = () => {
 };
 
 const LoggedIn = () => {
-  return <h2>Welcome back! 🎉</h2>;
+  return <h2>Welcome back!🎉</h2>;
 };
 
 const Home = () => {
@@ -25,7 +25,7 @@ const Home = () => {
     user.webauthn_registrations.length > 0
   ) {
     return (
-      <button onClick={() => stytch.webauthn.authenticate()}>
+      <button onClick={() => stytch.webauthn.authenticate({session_duration_minutes: 60})}>
         <code>stytch.webauthn.authenticate()</code>
       </button>
     );
