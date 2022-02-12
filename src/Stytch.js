@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react'
+import React from 'react'
 import {useStytchUser, useStytchSession} from '@stytch/stytch-react'
 import {Navigate} from 'react-router-dom'
 
@@ -16,7 +16,7 @@ function RequireLoggedOut({ children }) {
   const user = useStytchUser();
   const session = useStytchSession();
   if (session || user) {
-    return <Navigate to="/link" />;
+    return <Navigate to="/home" />;
   }
 
   return children;

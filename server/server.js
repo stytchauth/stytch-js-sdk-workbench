@@ -12,18 +12,6 @@ const stytchClient = new stytch.Client({
 const app = express();
 app.use(cookieParser());
 
-// PWAs want HTTPS!
-function checkHttps(request, response, next) {
-  // Check the protocol — if http, redirect to https.
-  if (request.get("X-Forwarded-Proto").indexOf("https") != -1) {
-    return next();
-  } else {
-    response.redirect("https://" + request.hostname + request.url);
-  }
-}
-
-app.all("*", checkHttps);
-
 function isMFA(session) {
   const hasEmailMagicLink = session.authentication_factors.some(
     (factor) => factor.type === "email"
@@ -54,7 +42,7 @@ function AuthenticationMiddleware({ mfa_required }) {
         if (isMFA(session)) {
           return next();
         }
-        return next(new Error("Session does not have MFA"));
+        return res.status(401).send('NO MFA');
       })
       .catch((err) => {
         console.error("Could not authenticate session", err);

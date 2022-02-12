@@ -1,16 +1,12 @@
-import React, {useEffect} from "react";
+import React from "react";
 import {BrowserRouter as Router, Route, Routes, Navigate} from "react-router-dom";
 import "./App.css";
 import line from './line.svg'
 import Authenticate from "./Authenticate";
-import {LinkOAuth, WebAuthn} from "./Home";
+import {Home, LinkOAuth, WebAuthn, SessionManagement} from "./Pages";
 import Login from "./Login";
 
 import {RequireLogin, RequireLoggedOut} from './Stytch';
-
-function Secret() {
-  return (<h1> You are MFA'd </h1>);
-}
 
 function App() {
   return (
@@ -24,9 +20,10 @@ function App() {
                 element={<Authenticate/>}
               />
               <Route path="/login" element={<RequireLoggedOut><Login/></RequireLoggedOut>}/>
-              <Route path="/link" element={<RequireLogin> <LinkOAuth/> </RequireLogin>}/>
+              <Route path="/home" element={<RequireLogin> <Home/> </RequireLogin>}/>
+              <Route path="/oauth" element={<RequireLogin> <LinkOAuth/> </RequireLogin>}/>
               <Route path="/webauthn" element={<RequireLogin> <WebAuthn /> </RequireLogin>} />
-              {/*<Route path="/secret" element={<RequireMFA> <Secret /> </RequireMFA>} />*/}
+              <Route path="/session" element={<RequireLogin> <SessionManagement /> </RequireLogin>} />
               <Route path="*" element={<Navigate to="/login" replace/>}/>
             </Routes>
           </div>
