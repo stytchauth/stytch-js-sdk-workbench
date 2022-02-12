@@ -1,44 +1,53 @@
-import React, { useEffect, useRef } from "react";
-import { Stytch } from "@stytch/stytch-react";
-import { useNavigate } from "react-router-dom";
-import { stytch, useStytchUser } from "./Stytch";
+import React, {useState, useRef} from "react";
+import {useStytch} from "@stytch/stytch-react";
+import {useNavigate} from "react-router-dom";
+import {useStytchUser} from "./Stytch";
 
-const STYTCH_PUBLIC_TOKEN = process.env.REACT_APP_STYTCH_PUBLIC_TOKEN;
+const buttonText = {
+  starting: 'Send',
+  in_progress: 'Sending...',
+  done: 'Sent!'
+}
 
 const Login = () => {
-  const navigate = useNavigate();
-  const stytchUser = useStytchUser();
   const emailRef = useRef();
+  const [state, setState] = useState('starting');
+  const [error, setError] = useState(null);
+  const stytch = useStytch();
 
-  useEffect(() => {
-    if (stytchUser) {
-      navigate("/home");
-    }
-  }, [stytchUser]);
-
-  const onSubmit = (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault();
-    stytch.magicLinks.email.loginOrCreate(emailRef.current.value, {
-      login_magic_link_url:
-        "https://kindhearted-longing-woodpecker.glitch.me/authenticate?type=eml",
-      signup_magic_link_url:
-        "https://kindhearted-longing-woodpecker.glitch.me/authenticate?type=eml",
-    });
-  };
-  
-  const googleUrl = stytch.oauth.google.getUrl();
 
-  return (
-    <div className="Sign-in-container">
-      <a href={googleUrl}> OAuth </a>
+    const prom = stytch.magicLinks.email.loginOrCreate(emailRef.current.value, {
+      login_magic_link_url:
+        `${window.location.origin}/authenticate?type=eml`,
+      signup_magic_link_url:
+        `${window.location.origin}/authenticate?type=eml`,
+    });
+    try {
+      setState('in_progress')
+      await prom;
+      setState('done');
+    } catch(e) {
+      setError(e)
+    }
+  };
+
+  return (<>
+      <h1>Welcome!</h1>
+      Thank you for taking the time to participate in the beta program.
+      This app will show you some of the features of the Stytch platform, and how they might be incorperated into a
+      login flow.
+      All of the source code for this app is available <a href={"example.com"}>here</a>.
+      <br/>
+      Why don't we start by logging in? What is your email?
       <form onSubmit={onSubmit}>
-        <label>
-          Email:
-          <input ref={emailRef} name="email" type="email" />
-        </label>
-        <button type="submit"> Submit </button>
+        <input disabled={state !== 'starting'} ref={emailRef} name="email" type="email" placeholder={"grace.hopper@stytch.com"}/>
+        <br/>
+        <button disabled={state !== 'starting'} type="submit">{buttonText[state]}</button>
       </form>
-    </div>
+      {error && <code>error</code>}
+    </>
   );
 };
 

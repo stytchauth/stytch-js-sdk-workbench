@@ -1,63 +1,105 @@
-.App {
-  align-items: center;
-  background-color: #E5E5E5;
-  display: flex;
-  font-family: "Helvetica New", Helvetica, sans-serif;
-  height: 100vh;
-  justify-content: center;
-  left: 0;
-  position: absolute;
-  text-align: center;
-  top: 0px;
-  width: 100%;}
-
-.Button {
-  background: #0577CA;
-  border-radius: 5px;
-  color: #FFFFFF;
+body {
+  position: fixed;
+  inset: 0;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  font-family: 'IBM Plex Sans', monospace;
+  line-height: 1.6;
   font-size: 18px;
-  font-weight: bold;
-  left: 0;
-  line-height: 49px;
-  margin-left: auto;
-  margin-right: auto;
-  position: absolute;
-  right: 0;
-  text-align: center;
-  width: 321px;
+  background: #ECFFF5;
+  color: #19303D;
 }
 
-.Button, a:link, a:visited {
-  text-decoration: none;
+pre {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: small;
+  background-color: #19303D;
+  color: white;
+  border: 1px solid black;
+  white-space: pre-wrap;
+  padding: 10px 20px;
+  border-radius: 4px;
 }
 
-.App-content {
+button {
+  font-family: 'IBM Plex Mono', monospace;
+  background-color: #287AB8;
+  border-radius: 4px;
+  border-style: none;
+  box-sizing: border-box;
+  color: #fff;
+  cursor: pointer;
+  display: inline-block;
+  font-size: small;
+  max-width: none;
+  outline: none;
+  padding: 4px 10px;
+}
+
+button:hover,
+button:focus {
+  opacity: .75;
+}
+
+a, a:visited, a:hover, a:active {
+  color: inherit;
+}
+
+input {
+  padding: 5px 10px;
+  width: 300px;
+  margin: 10px 0;
+}
+
+h1, h2, h3 {
+  line-height: 1.2;
+  padding-top: 16px;
+  padding-bottom: 3px;
+}
+
+.page {
+  width: 100%;
+  height: 100vh;
+  display: flex;
   align-items: center;
+  background-size: cover;
+  justify-content: center;
+  background-origin: content-box;
+  background-repeat: no-repeat;
+  background-position: center center;
+}
+
+.container {
+  max-width: 800px;
+  height: 100%;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.column {
+  height: calc(100% - 16px);
+  overflow: auto;
+  padding-bottom: 16px;
+}
+
+.resultcontainer {
   display: flex;
   flex-direction: column;
-  height: calc(100vh - 81px);
-  justify-content: center;
+  flex: 1 1 auto;
+  height: calc(100% - 32px);
+  padding: 16px 0 16px 20px;
 }
-
-.App-header {
-  align-items: center;
-  background: #0577CA;
-  display: flex;
-  height: 60px;
-  position: absolute;
-  top: 0px;
-  width: 100%;
+.results {
+  flex: 3 0 0;
+  overflow: auto;
+  min-height: 21px;
 }
-
-.Sign-in-container {
-  align-items: center;
-  background-color: #FFFFFF;
-  border: 1px solid #EBEBEB;
-  border-radius: 9px;
-  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.12);
-  box-sizing: border-box;
-  display: flex;
-  height: 375px;
-  justify-content: center;
-  width: 450px;
+.onchange {
+  flex: 2 0 0;
+  overflow: auto;
+  min-height: 21px;
 }

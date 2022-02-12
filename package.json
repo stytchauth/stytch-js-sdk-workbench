@@ -3,17 +3,17 @@
   "version": "1.0.0",
   "private": true,
   "dependencies": {
-    "@stytch/stytch-js": "^2.0.7",
+    "@stytch/stytch-js": "^2.0.9-headless.beta.1",
+    "@stytch/stytch-react": "^3.0.7",
     "concurrently": "^5.0.2",
+    "cookie-parser": "^1.4.6",
     "express": "^4.17.1",
     "http-proxy-middleware": "^1.0.0",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
-    "react-scripts": "^3.4.0",
-    "stytch": "^3.10.1",
-    "@stytch/stytch-react": "^3.0.6",
     "react-router-dom": "^6.2.1",
-    "cookie-parser": "^1.4.6"
+    "react-scripts": "^3.4.0",
+    "stytch": "^3.10.1"
   },
   "scripts": {
     "start": "npm run development",
@@ -43,5 +43,8 @@
       "last 1 safari version"
     ]
   },
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "nan": "^2.15.0"
+  }
 }
