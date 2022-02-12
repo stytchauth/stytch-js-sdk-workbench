@@ -62,7 +62,7 @@ export const LinkOAuth = () => {
 export const WebAuthn = () => {
   const stytch = useStytch();
   const user = useStytchUser();
-  const hasWebAuthnConfigured = user.webauthn_registrations.some(wr => wr.verified)
+  const hasWebAuthnConfigured = user.webauthn_registrations.length > 0;
   return (
     <div className="container">
       <div className="column">
@@ -155,14 +155,14 @@ export const SessionManagement = () => {
 
   const [loggedInRouteStatus, setLoggedInRouteStatus] = useState('...');
   useEffect(() => {
-    fetch('/api/logged_in_route').then(res => {
+    fetch('/api/logged_in_route', {credentials: "same-origin"}).then(res => {
       setLoggedInRouteStatus(`Returned ${res.status} - you are logged in!`);
     })
   }, []);
 
   const [mfaRouteStatus, setMFARouteStatus] = useState('...');
   useEffect(() => {
-    fetch('/api/mfa_route').then(res => {
+    fetch('/api/mfa_route', {credentials: "same-origin"}).then(res => {
       res.status === 200 ?
         setMFARouteStatus(`Returned ${res.status} - you have multiple factors!`) :
         setMFARouteStatus(`Returned ${res.status} - Try adding WebAuthn!`)
