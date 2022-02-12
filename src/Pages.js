@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from "react";
 import {Link} from "react-router-dom";
-import {useStytch, useStytchSession, useStytchUser} from "@stytch/stytch-react";
+import {useStytch, useStytchSession, useStytchUser} from "./stytch-react";
 
 export const LinkOAuth = () => {
   const stytch = useStytch();
@@ -140,7 +140,7 @@ function prettyPrint(obj) {
     if (pKey)
       r = r + key + pKey.replace(/[": ]/g, '') + '</span>: ';
     if (pVal)
-      r = r + (pVal[0] == '"' ? str : val) + pVal + '</span>';
+      r = r + (pVal[0] === '"' ? str : val) + pVal + '</span>';
     return r + (pEnd || '');
   };
 

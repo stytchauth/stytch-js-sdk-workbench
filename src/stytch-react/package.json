@@ -1,0 +1,88 @@
+{
+  "_from": "@stytch/stytch-react@latest",
+  "_id": "@stytch/stytch-react@3.0.7",
+  "_inBundle": false,
+  "_integrity": "sha512-Fppx5tgaHBUyBd+uOlWl9WHNMcF6SyII6YRGZtlqB0b88Aa0cTtUESShW+7R2EQ6RLxoAMPFM4CEl+pITZAZnA==",
+  "_location": "/@stytch/stytch-react",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "tag",
+    "registry": true,
+    "raw": "@stytch/stytch-react@latest",
+    "name": "@stytch/stytch-react",
+    "escapedName": "@stytch%2fstytch-react",
+    "scope": "@stytch",
+    "rawSpec": "latest",
+    "saveSpec": null,
+    "fetchSpec": "latest"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/@stytch/stytch-react/-/stytch-react-3.0.7.tgz",
+  "_shasum": "d45f3d9c7cec1af6b09e8bd6a485d1acbfdeedf5",
+  "_spec": "@stytch/stytch-react@latest",
+  "_where": "/Users/maxwellgerber/work/example_apps/stytch-sdk-beta",
+  "author": {
+    "name": "Stytch"
+  },
+  "bugs": {
+    "url": "https://github.com/stytchauth/stytch-react/issues"
+  },
+  "bundleDependencies": false,
+  "dependencies": {
+    "@stytch/stytch-js": "^2.0.8"
+  },
+  "deprecated": false,
+  "description": "Stytch's official React Library",
+  "devDependencies": {
+    "@babel/core": "^7.15.5",
+    "@babel/preset-env": "^7.15.6",
+    "@babel/preset-react": "^7.12.13",
+    "@babel/preset-typescript": "^7.15.0",
+    "@rollup/plugin-typescript": "^8.2.5",
+    "@types/enzyme": "^3.10.10",
+    "@types/enzyme-adapter-react-16": "^1.0.6",
+    "@types/jest": "^26.0.20",
+    "@types/react-dom": "^17.0.10",
+    "@wessberg/rollup-plugin-ts": "^1.3.8",
+    "babel-loader": "^8.2.2",
+    "enzyme": "^3.11.0",
+    "enzyme-adapter-react-16": "^1.15.6",
+    "jest": "^26.6.3",
+    "react": "^16.14.0",
+    "react-dom": "^16.14.0",
+    "rollup": "^2.56.3",
+    "rollup-plugin-babel": "^4.4.0",
+    "rollup-plugin-commonjs": "^10.1.0",
+    "rollup-plugin-node-resolve": "^5.2.0",
+    "typescript": "^4.4.4"
+  },
+  "files": [
+    "dist",
+    "src",
+    "LICENSE",
+    "README.md",
+    "package.json"
+  ],
+  "homepage": "https://github.com/stytchauth/stytch-react#readme",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "module": "dist/index.esm.js",
+  "name": "@stytch/stytch-react",
+  "peerDependencies": {
+    "react": ">= 16.x.x"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/stytchauth/stytch-react.git"
+  },
+  "scripts": {
+    "build": "rollup -c",
+    "patch-stytch-js": "./patch-stytch-js.sh",
+    "prepare": "rollup -c",
+    "test": "npx jest"
+  },
+  "version": "3.0.7"
+}

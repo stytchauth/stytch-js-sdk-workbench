@@ -1,5 +1,5 @@
 import React, {useState, useRef} from "react";
-import {useStytch} from "@stytch/stytch-react";
+import {useStytch} from "./stytch-react";
 
 const buttonText = {
   starting: 'Send',

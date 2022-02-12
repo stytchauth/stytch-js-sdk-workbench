@@ -1,5 +1,5 @@
 import React from 'react'
-import {useStytchUser, useStytchSession} from '@stytch/stytch-react'
+import {useStytchUser, useStytchSession} from './stytch-react'
 import {Navigate} from 'react-router-dom'
 
 function RequireLogin({ children }) {
