@@ -80,6 +80,10 @@ h1, h2, h3 {
   align-items: flex-start;
 }
 
+.xl {
+  max-width: 1200px;
+}
+
 .column {
   height: calc(100% - 16px);
   overflow: auto;
@@ -94,9 +98,9 @@ h1, h2, h3 {
   padding: 16px 0 16px 20px;
 }
 .results {
-  flex: 3 0 0;
   overflow: auto;
   min-height: 21px;
+  width: 550px;
 }
 .onchange {
   flex: 2 0 0;

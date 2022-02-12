@@ -1,12 +1,13 @@
-import React from "react";
-import { useNavigate } from "react-router-dom";
-import { useStytch } from '@stytch/stytch-react';
+import React, {useEffect, useState} from "react";
+import {useNavigate} from "react-router-dom";
+import {useStytch} from './stytch-react';
 
 const Authenticate = () => {
   const navigate = useNavigate();
   const stytch = useStytch();
+  const [error, setError] = useState(null)
 
-  React.useEffect(() => {
+  useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const token = params.get('token');
     const type = params.get('type');
@@ -18,17 +19,20 @@ const Authenticate = () => {
     authPromise.then(() => {
       navigate('/home');
     })
-    .catch((err) => {
-      console.log(err);
-      navigate('/login');
-    })
+      .catch((err) => {
+        setError(err);
+        setTimeout(() => navigate('/login'), 10000);
+      })
   }, [navigate, stytch]);
 
-  return (<>
-    <h1>Authenticating...</h1>
-    As part of an OAuth or Magic Link flow, the user will be given a token, seen in the URL.
-    Pass that token back to Stytch to complete the flow and authenticate the user. This should only take a moment...
-  </>);
+  return (
+    <div className="container">
+      <div className="column">
+        <h1>Authenticating...</h1>
+        {error ? <> An error has occurred: <br/><pre>{String(error)}</pre> </> : null}
+      </div>
+    </div>
+  );
 };
 
 export default Authenticate;
