@@ -63,6 +63,19 @@ export const WebAuthn = () => {
   const stytch = useStytch();
   const user = useStytchUser();
   const hasWebAuthnConfigured = user.webauthn_registrations.length > 0;
+  const [error, setError] = useState(null);
+  const [state, setState]  = useState('');
+  
+  const authenticateWebauthn = async () => {
+    try {
+      setState('Authenticating...');
+      await stytch.webauthn.authenticate({ session_duration_minutes: 60 })
+      setState('Authentication successful!');
+    } catch(e) {
+      setError(e);
+    }
+  }
+  
   return (
     <div className="container">
       <div className="column">
@@ -88,10 +101,13 @@ export const WebAuthn = () => {
               or
               Step-Up authentication.
               &nbsp;&nbsp;&nbsp;
-              <button onClick={() => stytch.webauthn.authenticate()}>
+              <button onClick={authenticateWebauthn}>
                 Authenticate.
               </button>
               <br/>
+              {state}
+              <br/>
+              {error && <><br/><pre>{String(error)}</pre></>}
               <br/>
             </> : null
         }

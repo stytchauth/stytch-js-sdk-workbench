@@ -14,10 +14,10 @@ app.use(cookieParser());
 
 function isMFA(session) {
   const hasEmailMagicLink = session.authentication_factors.some(
-    (factor) => factor.type === "email"
+    (factor) => factor.type === "magic_link"
   );
   const hasWebauthn = session.authentication_factors.some(
-    (factor) => factor.type === "webauthn_registration"
+    (factor) => factor.type === "webauthn"
   );
 
   return hasEmailMagicLink && hasWebauthn;
