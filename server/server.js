@@ -16,25 +16,22 @@ function isMFA(session) {
   const hasEmailMagicLink = session.authentication_factors.some(
     (factor) => factor.type === "email"
   );
-  const hasOAuth = session.authentication_factors.some(
-    (factor) => factor.type === "oauth"
-  );
   const hasWebauthn = session.authentication_factors.some(
     (factor) => factor.type === "webauthn_registration"
   );
 
-  return (hasEmailMagicLink || hasOAuth) && hasWebauthn;
+  return hasEmailMagicLink && hasWebauthn;
 }
 
-function AuthenticationMiddleware({ mfa_required }) {
+function AuthenticationMiddleware({mfa_required}) {
   return function (req, res, next) {
     const session_token = req.cookies["stytch_session_cookie"];
     if (!session_token) {
       return next(new Error("No session"));
     }
     stytchClient.sessions
-      .authenticate({ session_token })
-      .then(({ session }) => {
+      .authenticate({session_token})
+      .then(({session}) => {
         req.session = session;
         if (!mfa_required) {
           return next();
@@ -58,19 +55,19 @@ app.get("/api/public", (request, response) => {
 
 app.get(
   "/api/logged_in_route",
-  AuthenticationMiddleware({ mfa_required: false }),
+  AuthenticationMiddleware({mfa_required: false}),
   (request, response) => {
     console.log("❇️ Received GET request to /api/logged_in_route");
-    response.json({ logged_in: true, session: request.session });
+    response.json({logged_in: true, session: request.session});
   }
 );
 
 app.get(
   "/api/mfa_route",
-  AuthenticationMiddleware({ mfa_required: true }),
+  AuthenticationMiddleware({mfa_required: true}),
   (request, response) => {
     console.log("❇️ Received GET request to /api/mfa_route");
-    response.json({ mfa: true });
+    response.json({mfa: true});
   }
 );
 

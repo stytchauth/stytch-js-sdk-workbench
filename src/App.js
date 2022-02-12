@@ -12,22 +12,18 @@ function App() {
   return (
     <Router>
       <div className="page" style={{backgroundImage: `url(${line})`}}>
-        <div className="container">
-          <div className="column">
-            <Routes>
-              <Route
-                path="/authenticate"
-                element={<Authenticate/>}
-              />
-              <Route path="/login" element={<RequireLoggedOut><Login/></RequireLoggedOut>}/>
-              <Route path="/home" element={<RequireLogin> <Home/> </RequireLogin>}/>
-              <Route path="/oauth" element={<RequireLogin> <LinkOAuth/> </RequireLogin>}/>
-              <Route path="/webauthn" element={<RequireLogin> <WebAuthn /> </RequireLogin>} />
-              <Route path="/session" element={<RequireLogin> <SessionManagement /> </RequireLogin>} />
-              <Route path="*" element={<Navigate to="/login" replace/>}/>
-            </Routes>
-          </div>
-        </div>
+        <Routes>
+          <Route
+            path="/authenticate"
+            element={<Authenticate/>}
+          />
+          <Route path="/login" element={<RequireLoggedOut><Login/></RequireLoggedOut>}/>
+          <Route path="/home" element={<RequireLogin> <Home/> </RequireLogin>}/>
+          <Route path="/oauth" element={<RequireLogin> <LinkOAuth/> </RequireLogin>}/>
+          <Route path="/webauthn" element={<RequireLogin> <WebAuthn/> </RequireLogin>}/>
+          <Route path="/session" element={<RequireLogin> <SessionManagement/> </RequireLogin>}/>
+          <Route path="*" element={<Navigate to="/login" replace/>}/>
+        </Routes>
       </div>
     </Router>
   );
