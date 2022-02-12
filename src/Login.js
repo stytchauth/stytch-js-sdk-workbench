@@ -1,7 +1,5 @@
 import React, {useState, useRef} from "react";
 import {useStytch} from "@stytch/stytch-react";
-import {useNavigate} from "react-router-dom";
-import {useStytchUser} from "./Stytch";
 
 const buttonText = {
   starting: 'Send',
@@ -38,7 +36,7 @@ const Login = () => {
       Thank you for taking the time to participate in the beta program.
       This app will show you some of the features of the Stytch platform, and how they might be incorperated into a
       login flow.
-      All of the source code for this app is available <a href={"example.com"}>here</a>.
+      All of the source code for this app is available <a href={"https://glitch.com/edit/#!/stytch-sdk-beta"}>here</a>.
       <br/>
       Why don't we start by logging in? What is your email?
       <form onSubmit={onSubmit}>
