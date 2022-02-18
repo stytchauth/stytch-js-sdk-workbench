@@ -30,7 +30,7 @@ export const LinkOAuth = () => {
       console.log(provider);
       return (
         <>
-          {title} is linked. Your {title} ID is{" "}
+          You've previously linked {title}. Your {title} ID is{" "}
           <code>{provider.provider_subject}</code>.{" "}
           <a href={url}>Log in again?</a>
         </>

@@ -11,7 +11,7 @@ import {RequireLogin, RequireLoggedOut} from './Stytch';
 function App() {
   return (
     <Router>
-      <div className="page" style={{backgroundImage: `url(${line})`}}>
+      <div className="page" style={{backgroundImage: `url(${line})` }}>
         <Routes>
           <Route
             path="/authenticate"
