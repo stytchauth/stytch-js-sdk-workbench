@@ -12,7 +12,7 @@ export const LinkOAuth = () => {
   };
 
   const googleUrl = stytch.oauth.google.getUrl(oauthOpts);
-  const facebookUrl = stytch.oauth.github.getUrl(oauthOpts);
+  const facebookUrl = stytch.oauth.facebook.getUrl(oauthOpts);
   const githubUrl = stytch.oauth.github.getUrl(oauthOpts);
 
   const googleProvider = user.providers.find(
@@ -78,6 +78,16 @@ export const WebAuthn = () => {
   const hasWebAuthnConfigured = user.webauthn_registrations.length > 0;
   const [error, setError] = useState(null);
   const [state, setState] = useState("");
+  
+  const registerWebauthn = async () => {
+    try {
+      setState("Authenticating...");
+      await stytch.user.registerWebauthn();
+      setState("Authentication successful!");
+    } catch (e) {
+      setError(e);
+    }
+  }
 
   const authenticateWebauthn = async () => {
     try {
@@ -103,7 +113,7 @@ export const WebAuthn = () => {
         There are two steps during a WebAuthn authentication flow, registration
         and authentication. The first step handles registering a WebAuthn device
         to a user.&nbsp;&nbsp;&nbsp;
-        <button onClick={() => stytch.user.registerWebauthn()}>
+        <button onClick={registerWebauthn}>
           Register.
         </button>
         <br />
