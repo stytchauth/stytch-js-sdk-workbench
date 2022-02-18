@@ -15,6 +15,10 @@ const WorkBench = ({stytch, stytchUser}) => {
   const [isLink, setIsLink] = useState(false);
 
   const emlEmailRef = useRef();
+  const otpEmailRef = useRef();
+  const otpPhoneRef = useRef();
+  const otpMethodIDRef = useRef();
+  const otpCodeRef = useRef();
 
   const firstNameRef = useRef();
   const middleNameRef = useRef();
@@ -25,7 +29,11 @@ const WorkBench = ({stytch, stytchUser}) => {
   useEffect(() => {
     if (stytchUser) {
       if (stytchUser.emails.length) {
-        emlEmailRef.current.value = stytchUser.emails[0].email
+        emlEmailRef.current.value = stytchUser.emails[0].email;
+        otpEmailRef.current.value = stytchUser.emails[0].email;
+      }
+      if (stytchUser.phone_numbers.length) {
+        otpPhoneRef.current.value = stytchUser.phone_numbers[0].phone_number;
       }
       firstNameRef.current.value = stytchUser.name.first_name;
       middleNameRef.current.value = stytchUser.name.middle_name;
@@ -55,18 +63,20 @@ const WorkBench = ({stytch, stytchUser}) => {
 
   const dispatch = (prom) => {
     setIsLoading(true);
-    Promise.resolve(prom)
+    return Promise.resolve(prom)
       .then(res => {
         setIsLink(false);
         setIsError(false);
         setIsLoading(false);
         setResult(res);
+        return res;
       })
       .catch(err => {
         setIsLink(false);
         setIsError(true);
         setIsLoading(false);
         setResult(err);
+        throw err;
       })
   }
 
@@ -104,6 +114,36 @@ const WorkBench = ({stytch, stytchUser}) => {
         session_duration_minutes: 60,
       }),
     );
+  }
+
+  const otpEmailLoginOrCreate = async () => {
+    const email = otpEmailRef.current.value;
+    const result = await dispatch(stytch.otps.email.loginOrCreate(email, {
+      expiration_minutes: 10
+    }));
+    otpMethodIDRef.current.value = result.method_id;
+  }
+  const otpSMSLoginOrCreate = async () => {
+    const phoneNumber = otpPhoneRef.current.value;
+    const result = await dispatch(stytch.otps.sms.loginOrCreate(phoneNumber, {
+      expiration_minutes: 10
+    }));
+    otpMethodIDRef.current.value = result.method_id;
+  }
+  const otpWhatsappLoginOrCreate = async () => {
+    const phoneNumber = otpPhoneRef.current.value;
+    const result = await dispatch(stytch.otps.whatsapp.loginOrCreate(phoneNumber, {
+      expiration_minutes: 10
+    }));
+    otpMethodIDRef.current.value = result.method_id;
+  }
+  const otpAuthenticate = async (e) => {
+    e.preventDefault();
+    const method_id = otpMethodIDRef.current.value;
+    const code = otpCodeRef.current.value;
+    return dispatch(stytch.otps.authenticate(code, method_id, {
+      session_duration_minutes: 60
+    }));
   }
 
   const userGetSync = () => {
@@ -204,14 +244,29 @@ const WorkBench = ({stytch, stytchUser}) => {
           <Button name="stytch.magicLinks.email.loginOrCreate()" onClick={magicLinksLoginOrCreate}/> <br/>
           <Button name="stytch.magicLinks.authenticate()" onClick={magicLinksAuthenticate} glowing={hasEml}/> <br/>
 
-          <h3>TOTP</h3>
+          <h3>One Time Passcodes</h3>
           <div className="inputContainer">
             <label htmlFor='email'>Email:</label>
-            <input type='text' id='email' name='email' ref={emlEmailRef}/>
+            <input type='email' id='email' name='email' ref={otpEmailRef}/>
           </div>
-          <Button name="stytch.magicLinks.email.loginOrCreate()" onClick={magicLinksLoginOrCreate}/> <br/>
-          <Button name="stytch.magicLinks.authenticate()" onClick={magicLinksAuthenticate} glowing={hasEml}/> <br/>
-
+          <Button name="stytch.otps.email.loginOrCreate()" onClick={otpEmailLoginOrCreate}/> <br/>
+          <div className="inputContainer">
+            <label htmlFor='phone'>Phone:</label>
+            <input type='phone' id='phone' name='phone' ref={otpPhoneRef}/>
+          </div>
+          <Button name="stytch.otps.sms.loginOrCreate()" onClick={otpSMSLoginOrCreate}/> <br/>
+          <Button name="stytch.otps.whatsapp.loginOrCreate()" onClick={otpWhatsappLoginOrCreate}/> <br/>
+          <form onSubmit={otpAuthenticate}>
+            <div className="inputContainer">
+              <label htmlFor='methodID'>MethodID:</label>
+              <input required type='text' id='phone' name='phone' ref={otpMethodIDRef}/>
+            </div>
+            <div className="inputContainer">
+              <label htmlFor='code'>Code:</label>
+              <input required type='text' id='code' name='code' ref={otpCodeRef}/>
+            </div>
+            <button type="submit"><code>stytch.otps.authenticate()</code></button>
+          </form>
           <h3>WebAuthn</h3>
           <Button name="stytch.user.registerWebauthn()" onClick={registerWebauthn}/> <br/>
           <Button name="stytch.webauthn.authenticate()" onClick={authenticateWebauthn}/> <br/>
