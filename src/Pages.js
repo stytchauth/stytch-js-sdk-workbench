@@ -217,22 +217,18 @@ export const SessionManagement = () => {
         </a>
         .
         <br />
-        <br />
         <code>/api/logged_in_route</code>
         <br />
         {loggedInRouteStatus}
-        <br />
         <br />
         <code>/api/mfa_route</code>
         <br />
         {mfaRouteStatus}
         <br />
-        <br />
         Try using OAuth or WebAuthn to see how your session changes.
         <br />
         <Link to={"/home"}>{"<-Back"}</Link>
-      </div>
-      <div className="resultcontainer">
+        <br />
         <Results content={session}/>
       </div>
     </div>

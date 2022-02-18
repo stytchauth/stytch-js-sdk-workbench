@@ -66,11 +66,10 @@ h1, h2, h3 {
 }
 
 .page {
-  min-height: 600px;
+  min-height: 100vh;
   width: 100%;
-  margin: 5vh auto;
-
   display: flex;
+  flex-direction: column;
   align-items: center;
   background-size: cover;
   justify-content: center;
@@ -90,7 +89,8 @@ h1, h2, h3 {
 }
 
 .xl {
-  max-width: calc(100% - 200px)
+  max-width: calc(100% - 200px);
+    width: inherit;
 }
 
 .column {
