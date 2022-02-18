@@ -6,14 +6,10 @@ import App from './App';
 
 const STYTCH_PUBLIC_TOKEN = process.env.REACT_APP_STYTCH_PUBLIC_TOKEN;
 
-function WaitForStytch({children}) {
-  return useStytch() ? children : null;
-}
+const stytch = window.Stytch(STYTCH_PUBLIC_TOKEN);
 
 ReactDOM.render(
-  <StytchProvider publicToken={STYTCH_PUBLIC_TOKEN}>
-    <WaitForStytch>
+  <StytchProvider stytch={stytch}>
       <App />
-    </WaitForStytch>
   </StytchProvider>
   , document.getElementById('root'));
