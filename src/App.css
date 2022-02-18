@@ -66,12 +66,10 @@ h1, h2, h3 {
 }
 
 .page {
-  /*max-width: 1000px;*/
   min-height: 600px;
   width: 100%;
   margin: 5vh auto;
 
-  height: 100vh;
   display: flex;
   align-items: center;
   background-size: cover;
