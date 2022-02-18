@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useStytch, useStytchSession, useStytchUser } from "./stytch-react";
+import {Results} from "./Results";
 
 export const LinkOAuth = () => {
   const stytch = useStytch();
@@ -167,6 +168,7 @@ export const Home = () => {
         <br />
         <Link to={"/session"}>{"Session Management"}</Link>
         <br />
+        <Link to={"/workbench"}>{"All Products Workbench"}</Link>
         <br />
         <button onClick={() => stytch.session.revoke()}>Log out.</button>
       </div>
@@ -174,29 +176,6 @@ export const Home = () => {
   );
 };
 
-/**
- * Pretty Print JSON Objects.
- * Taken from https://codepen.io/decodigo/pen/amzrF
- */
-function prettyPrint(obj) {
-  const jsonLine = /^( *)("[\w]+": )?("[^"]*"|[\w.+-]*)?([,[{])?$/gm;
-  const replacer = function (match, pIndent, pKey, pVal, pEnd) {
-    let key = '<span class="json-key" style="color: #D4CEFF">',
-      val = '<span class="json-value" style="color: #21D7FF">',
-      str = '<span class="json-string" style="color: #13E5C0">',
-      r = pIndent || "";
-    if (pKey) r = r + key + pKey.replace(/[": ]/g, "") + "</span>: ";
-    if (pVal) r = r + (pVal[0] === '"' ? str : val) + pVal + "</span>";
-    return r + (pEnd || "");
-  };
-
-  return JSON.stringify(obj, null, 3)
-    .replace(/&/g, "&amp;")
-    .replace(/\\"/g, "&quot;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(jsonLine, replacer);
-}
 
 export const SessionManagement = () => {
   const session = useStytchSession();
@@ -254,10 +233,7 @@ export const SessionManagement = () => {
         <Link to={"/home"}>{"<-Back"}</Link>
       </div>
       <div className="resultcontainer">
-        <pre
-          className="results"
-          dangerouslySetInnerHTML={{ __html: prettyPrint(session) }}
-        />
+        <Results content={session}/>
       </div>
     </div>
   );

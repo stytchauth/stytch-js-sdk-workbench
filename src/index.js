@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {StytchProvider, useStytch} from './stytch-react'
+import {StytchProvider} from './stytch-react'
 import './index.css';
 import App from './App';
 

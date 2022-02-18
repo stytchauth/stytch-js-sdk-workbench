@@ -13,12 +13,12 @@ const Authenticate = () => {
     const type = params.get('type');
 
     const authPromise = type === "eml" ?
-      stytch.magicLinks.authenticate(token, {session_duration_minutes: 60}) :
-      stytch.oauth.authenticate(token, {session_duration_minutes: 60});
+      stytch.magicLinks.authenticate(token, {session_duration_minutes: 60})
+        .then(() => navigate('/home')) :
+      stytch.oauth.authenticate(token, {session_duration_minutes: 60})
+        .then(() => navigate('/oauth')) ;
 
-    authPromise.then(() => {
-      navigate('/home');
-    })
+    authPromise
       .catch((err) => {
         setError(err);
         setTimeout(() => navigate('/login'), 10000);
@@ -29,7 +29,9 @@ const Authenticate = () => {
     <div className="container">
       <div className="column">
         <h1>Authenticating...</h1>
-        {error ? <> An error has occurred: <br/><pre>{String(error)}</pre> </> : null}
+        {error ? <> An error has occurred: <br/>
+          <pre>{String(error)}</pre>
+        </> : null}
       </div>
     </div>
   );
