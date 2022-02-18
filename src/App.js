@@ -21,10 +21,9 @@ function App() {
       <div className="page" style={{ backgroundImage: `url(${line})` }}>
         <div className="column">
           <h1> Sorry! This demo does not work in iframes. </h1>
-          <br />
-          <a href={window.location.href} target="_blank">
-            Try here instead.
-          </a>
+          <span>
+          (Yet!)
+          </span>
         </div>
       </div>
     );
