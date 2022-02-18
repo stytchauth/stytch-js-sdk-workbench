@@ -32,7 +32,6 @@ export const LinkOAuth = () => {
 
   const renderProvider = (title, provider, url) => {
     if (provider) {
-      console.log(provider);
       return (
         <>
           You've previously linked {title}. Your {title} ID is{" "}
@@ -187,7 +186,7 @@ export const OneTimePasscodes = () => {
   const startOTPFlow = (
     <>
       Let's send a one-time passcode to{" "}
-      <strong>{phoneFactor.phone_number}</strong>.<br />
+      <strong>{phoneFactor && phoneFactor.phone_number}</strong>.<br />
       <button onClick={sendOneTimePasscode}>Send.</button>
     </>
   );
@@ -244,7 +243,7 @@ export const OneTimePasscodes = () => {
       First, let's link a phone number to your account.
       <br />
       <form onSubmit={addOneTimePasscodeToUser}>
-        <div className="inputContainer" style={{ "max-width": "50%" }}>
+        <div className="inputContainer" style={{ maxWidth: "50%" }}>
           <label htmlFor="phone">What is your phone number?</label>
           <input
             type="tel"
