@@ -25,7 +25,7 @@ function isMFA(session) {
 
 function AuthenticationMiddleware({mfa_required}) {
   return function (req, res, next) {
-    const session_token = req.cookies["stytch_session_cookie"];
+    const session_token = req.cookies["stytch_session"];
     if (!session_token) {
       return next(new Error("No session"));
     }
