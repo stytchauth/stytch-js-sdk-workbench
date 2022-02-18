@@ -1,15 +1,15 @@
-import { withStytch, withStytchSession, withStytchUser } from "./stytch-react";
-import React, { useState, useRef, useEffect } from "react";
-import { Link } from "react-router-dom";
-import { Results } from "./Results";
+import {withStytch, withStytchSession, withStytchUser} from "@stytch/stytch-react";
+import React, {useState, useRef, useEffect} from "react";
+import {Link} from "react-router-dom";
+import {Results} from "./Results";
 
-const Button = ({ name, onClick, glowing }) => (
+const Button = ({name, onClick, glowing}) => (
   <button className={glowing ? "glower" : ""} onClick={onClick}>
     <code>{name}</code>
   </button>
 );
 
-const WorkBench = ({ stytch, stytchUser }) => {
+const WorkBench = ({stytch, stytchUser}) => {
   const [result, setResult] = useState(
     "// Click some buttons and run some code!"
   );
@@ -105,7 +105,8 @@ const WorkBench = ({ stytch, stytchUser }) => {
     return dispatch(stytch.session.revoke());
   };
 
-  const magicLinksLoginOrCreate = () => {
+  const magicLinksLoginOrCreate = (e) => {
+    e.preventDefault();
     const email = emlEmailRef.current.value;
     return dispatch(
       stytch.magicLinks.email.loginOrCreate(email, {
@@ -126,7 +127,8 @@ const WorkBench = ({ stytch, stytchUser }) => {
     );
   };
 
-  const otpEmailLoginOrCreate = async () => {
+  const otpEmailLoginOrCreate = async (e) => {
+    e.preventDefault()
     const email = otpEmailRef.current.value;
     const result = await dispatch(
       stytch.otps.email.loginOrCreate(email, {
@@ -135,7 +137,8 @@ const WorkBench = ({ stytch, stytchUser }) => {
     );
     otpMethodIDRef.current.value = result.method_id;
   };
-  const otpSMSLoginOrCreate = async () => {
+  const otpSMSLoginOrCreate = async (e) => {
+    e.preventDefault();
     const phoneNumber = otpPhoneRef.current.value;
     const result = await dispatch(
       stytch.otps.sms.loginOrCreate(phoneNumber, {
@@ -181,12 +184,12 @@ const WorkBench = ({ stytch, stytchUser }) => {
 
     const phone_number = newPhoneRef.current.value;
     if (phone_number) {
-      diff.phone_numbers = [{ phone_number }];
+      diff.phone_numbers = [{phone_number}];
     }
 
     const email = newEmailRef.current.value;
     if (email) {
-      diff.emails = [{ email }];
+      diff.emails = [{email}];
     }
 
     return dispatch(stytch.user.update(diff));
@@ -223,7 +226,7 @@ const WorkBench = ({ stytch, stytchUser }) => {
     );
   };
 
-  const userFactorControls = [<br key="factor-brk" />];
+  const userFactorControls = [<br key="factor-brk"/>];
   if (stytchUser) {
     for (const emailFactor of stytchUser.emails) {
       const onClick = () => {
@@ -235,7 +238,7 @@ const WorkBench = ({ stytch, stytchUser }) => {
           name={`Delete email: ${emailFactor.email}`}
           onClick={onClick}
         />,
-        <br key={`brk-${emailFactor.email_id}`} />
+        <br key={`brk-${emailFactor.email_id}`}/>
       );
     }
 
@@ -249,7 +252,7 @@ const WorkBench = ({ stytch, stytchUser }) => {
           name={`Delete Webauthn: ${wr.webauthn_registration_id.slice(27, 35)}`}
           onClick={onClick}
         />,
-        <br key={`brk-${wr.webauthn_registration_id}`} />
+        <br key={`brk-${wr.webauthn_registration_id}`}/>
       );
     }
   }
@@ -260,58 +263,64 @@ const WorkBench = ({ stytch, stytchUser }) => {
         <div className="column">
           <h1>SDK Workbench</h1>
           <h3>Session</h3>
-          <Button name="stytch.session.getSync()" onClick={sessionGetSync} />
-          <br />
+          <Button name="stytch.session.getSync()" onClick={sessionGetSync}/>
+          <br/>
           <Button
             name="stytch.session.authenticate()"
             onClick={sessionAuthenticate}
           />
-          <br />
-          <Button name="stytch.session.revoke()" onClick={sessionRevoke} />
-          <br />
+          <br/>
+          <Button name="stytch.session.revoke()" onClick={sessionRevoke}/>
+          <br/>
           <h3>User</h3>
-          <Button name="stytch.user.getSync()" onClick={userGetSync} /> <br />
-          <Button name="stytch.user.get()" onClick={userGet} /> <br />
+          <Button name="stytch.user.getSync()" onClick={userGetSync}/> <br/>
+          <Button name="stytch.user.get()" onClick={userGet}/> <br/>
           <h3>Magic Links</h3>
-          <div className="inputContainer">
-            <label htmlFor="email">Email:</label>
-            <input type="text" id="email" name="email" ref={emlEmailRef} />
-          </div>
-          <Button
-            name="stytch.magicLinks.email.loginOrCreate()"
-            onClick={magicLinksLoginOrCreate}
-          />{" "}
-          <br />
+          <form onSubmit={magicLinksLoginOrCreate}>
+            <div className="inputContainer">
+              <label htmlFor="email">Email:</label>
+              <input type="text" id="email" name="email" ref={emlEmailRef} required/>
+            </div>
+            <Button
+              name="stytch.magicLinks.email.loginOrCreate()"
+              type="submit"
+            />{" "}
+            <br/>
+          </form>
           <Button
             name="stytch.magicLinks.authenticate()"
             onClick={magicLinksAuthenticate}
             glowing={hasEml}
           />{" "}
-          <br />
+          <br/>
           <h3>One Time Passcodes</h3>
-          <div className="inputContainer">
-            <label htmlFor="email">Email:</label>
-            <input type="email" id="email" name="email" ref={otpEmailRef} />
-          </div>
-          <Button
-            name="stytch.otps.email.loginOrCreate()"
-            onClick={otpEmailLoginOrCreate}
-          />{" "}
-          <br />
-          <div className="inputContainer">
-            <label htmlFor="phone">Phone:</label>
-            <input type="phone" id="phone" name="phone" ref={otpPhoneRef} />
-          </div>
-          <Button
-            name="stytch.otps.sms.loginOrCreate()"
-            onClick={otpSMSLoginOrCreate}
-          />{" "}
-          <br />
+          <form onSubmit={otpSMSLoginOrCreate}>
+            <div className="inputContainer">
+              <label htmlFor="phone">Phone:</label>
+              <input type="tel" id="phone" name="phone" ref={otpPhoneRef}/>
+            </div>
+            <Button
+              name="stytch.otps.sms.loginOrCreate()"
+              type="submit"
+            />{" "}
+            <br/>
+          </form>
+          <form onSubmit={otpEmailLoginOrCreate}>
+            <div className="inputContainer">
+              <label htmlFor="email">Email:</label>
+              <input type="email" id="email" name="email" ref={otpEmailRef}/>
+            </div>
+            <Button
+              name="stytch.otps.email.loginOrCreate()"
+              type="submit"
+            />{" "}
+            <br/>
+          </form>
           <Button
             name="stytch.otps.whatsapp.loginOrCreate()"
             onClick={otpWhatsappLoginOrCreate}
           />{" "}
-          <br />
+          <br/>
           <form onSubmit={otpAuthenticate}>
             <div className="inputContainer">
               <label htmlFor="methodID">MethodID:</label>
@@ -342,32 +351,32 @@ const WorkBench = ({ stytch, stytchUser }) => {
             name="stytch.user.registerWebauthn()"
             onClick={registerWebauthn}
           />{" "}
-          <br />
+          <br/>
           <Button
             name="stytch.webauthn.authenticate()"
             onClick={authenticateWebauthn}
           />{" "}
-          <br />
+          <br/>
           <h3>OAuth</h3>
           <Button
             name="stytch.oauth.google.getUrl()"
             onClick={getUrlForProvider("google")}
           />
-          <br />
+          <br/>
           {/*<Button name="stytch.oauth.microsoft.getUrl()" onClick={getUrlForProvider('microsoft')}/><br/>*/}
           {/*<Button name="stytch.oauth.facebook.getUrl()" onClick={getUrlForProvider('facebook')}/><br/>*/}
           <Button
             name="stytch.oauth.github.getUrl()"
             onClick={getUrlForProvider("github")}
           />
-          <br />
+          <br/>
           {/*<Button name="stytch.oauth.apple.getUrl()" onClick={getUrlForProvider('apple')}/><br/>*/}
           <Button
             name="stytch.oauth.authenticate()"
             onClick={oauthAuthenticate}
             glowing={hasOauth}
           />
-          <br />
+          <br/>
           <h3>User Management</h3>
           <div className="inputContainer">
             <label htmlFor="first_name">First Name:</label>
@@ -414,8 +423,8 @@ const WorkBench = ({ stytch, stytchUser }) => {
               ref={newPhoneRef}
             />
           </div>
-          <Button name="stytch.user.update()" onClick={userUpdate} />
-          <br />
+          <Button name="stytch.user.update()" onClick={userUpdate}/>
+          <br/>
           {userFactorControls.length > 1 ? (
             <strong>Attached Factors</strong>
           ) : null}

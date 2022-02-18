@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
-import { useStytch, useStytchSession, useStytchUser } from "./stytch-react";
+import React, {useState, useEffect, useRef} from "react";
+import {Link} from "react-router-dom";
+import {useStytch, useStytchSession, useStytchUser} from "@stytch/stytch-react";
 import {Results} from "./Results";
 
 export const LinkOAuth = () => {
@@ -58,15 +58,15 @@ export const LinkOAuth = () => {
         Here's a little demo showing how Stytch can be used to attach OAuth
         providers to existing users. See more in our{" "}
         <a href={"https://stytch.com/docs/api/oauth-overview"}>docs.</a>
-        <br />
-        <br />
+        <br/>
+        <br/>
         {renderProvider("Google", googleProvider, googleUrl)}
-        <br />
+        <br/>
         {renderProvider("Facebook", fbProvider, facebookUrl)}
-        <br />
+        <br/>
         {renderProvider("Github", githubProvider, githubUrl)}
-        <br />
-        <br />
+        <br/>
+        <br/>
         <Link to={"/home"}>{"<-Back"}</Link>
       </div>
     </div>
@@ -79,7 +79,7 @@ export const WebAuthn = () => {
   const hasWebAuthnConfigured = user.webauthn_registrations.length > 0;
   const [error, setError] = useState(null);
   const [state, setState] = useState("");
-  
+
   const registerWebauthn = async () => {
     try {
       setState("Authenticating...");
@@ -93,7 +93,7 @@ export const WebAuthn = () => {
   const authenticateWebauthn = async () => {
     try {
       setState("Authenticating...");
-      await stytch.webauthn.authenticate({ session_duration_minutes: 60 });
+      await stytch.webauthn.authenticate({session_duration_minutes: 60});
       setState("Authentication successful!");
     } catch (e) {
       setError(e);
@@ -109,34 +109,155 @@ export const WebAuthn = () => {
         authenticator types such as built-in device biometrics (e.g. facial
         recognition on mobile and fingerprint readers on desktop) or secure
         hardware keys (e.g. YubiKeys).
-        <br />
-        <br />
+        <br/>
+        <br/>
         There are two steps during a WebAuthn authentication flow, registration
         and authentication. The first step handles registering a WebAuthn device
         to a user.&nbsp;&nbsp;&nbsp;
         <button onClick={registerWebauthn}>
           Register.
         </button>
-        <br />
-        <br />
+        <br/>
+        <br/>
         {hasWebAuthnConfigured ? (
           <>
             After registration is complete, the WebAuthn device can be used to
             authenticate the active user, for MFA or Step-Up authentication.
             &nbsp;&nbsp;&nbsp;
             <button onClick={authenticateWebauthn}>Authenticate.</button>
-            <br />
+            <br/>
             {state}
-            <br />
+            <br/>
             {error && (
               <>
-                <br />
+                <br/>
                 <pre>{String(error)}</pre>
               </>
             )}
-            <br />
+            <br/>
           </>
         ) : null}
+        <Link to={"/home"}>{"<-Back"}</Link>
+      </div>
+    </div>
+  );
+};
+
+export const OneTimePasscodes = () => {
+  const stytch = useStytch();
+  const user = useStytchUser();
+  const otpPhoneRef = useRef();
+  const otpCodeRef = useRef();
+  const [error, setError] = useState(null);
+  const [state, setState] = useState('starting');
+
+  const phoneFactor = user.phone_numbers[0];
+
+  const sendOneTimePasscode = async () => {
+    try {
+      setError(null);
+      await stytch.otps.sms.loginOrCreate(phoneFactor.phone_number, {
+        expiration_minutes: 10,
+      });
+      setState('in_progress');
+    } catch (e) {
+      setError(e);
+    }
+  };
+
+  const authenticateOneTimePasscode = async (e) => {
+    e.preventDefault()
+    try {
+      setError(null);
+      await stytch.otps.authenticate(otpCodeRef.current.value, phoneFactor.phone_id, {
+        session_duration_minutes: 60,
+      });
+      setState('authenticated');
+    } catch (e) {
+      setError(e);
+    }
+  }
+
+  const startOTPFlow = (
+    <>
+      Let's send a one-time passcode to <strong>{phoneFactor.phone_number}</strong>.<br/>
+      <button onClick={sendOneTimePasscode}>Send.</button>
+    </>
+  );
+
+  const otpCollectionForm = (
+    <form onSubmit={authenticateOneTimePasscode}>
+      <div className="inputContainer" style={{'max-width': '50%'}}>
+        <label htmlFor="code">Please enter the code:</label>
+        <input type="tel" id="phone" name="code" placeholder="123456" ref={otpCodeRef}/>
+      </div>
+      <button type="submit">Send</button>
+      <br/>
+    </form>
+  )
+
+  const completeOTPFlow = (
+    <>
+      Authenticated!<br/>
+      <button onClick={() => setState('starting')}>Start over.</button>
+    </>
+  )
+
+  const hasPhoneNumberContent = (
+    <>
+      {state === 'starting' ? startOTPFlow : null}
+      {state === 'in_progress' ? otpCollectionForm : null}
+      {state === 'authenticated' ? completeOTPFlow : null}
+    </>
+  )
+
+  const addOneTimePasscodeToUser = async (e) => {
+    e.preventDefault();
+    const phone_number = otpPhoneRef.current.value;
+    try {
+      setError(null);
+      await stytch.user.update({
+        name: {},
+        phone_numbers: [{phone_number}]
+      })
+    } catch (e) {
+      setError(e);
+    }
+  }
+
+  const doesNotHaveLinkedPhoneNumberContent = (
+    <>
+      First, let's link a phone number to your account.<br/>
+      <form onSubmit={addOneTimePasscodeToUser}>
+        <div className="inputContainer" style={{'max-width': '50%'}}>
+          <label htmlFor="phone">What is your phone number?</label>
+          <input type="tel" id="phone" name="phone" placeholder="+1333333333" ref={otpPhoneRef}/>
+        </div>
+        <button
+          type="submit"
+        >Send
+        </button>
+        <br/>
+      </form>
+    </>
+  )
+
+  return (
+    <div className="container">
+      <div className="column">
+        <h1>SMS One Time Passcodes</h1>
+        SMS OTP sends a one-time passcode to the user's phone number. This endpoint allows for a quick and seamless
+        login experience on its own or it can also be layered on top of another login product, like Email magic links,
+        to provide extra security as a multi-factor authentication (MFA) method.
+        <br/>
+        <br/>
+        {phoneFactor ?
+          hasPhoneNumberContent :
+          doesNotHaveLinkedPhoneNumberContent}
+        {error && <><br/>
+          <pre>{String(error)}</pre>
+        </>}
+        <br/>
         <Link to={"/home"}>{"<-Back"}</Link>
       </div>
     </div>
@@ -161,15 +282,17 @@ export const Home = () => {
           Email Magic Link
         </a>
         . What part of the Stytch platform would you like to explore next?
-        <br />
+        <br/>
+        <Link to={"/otps"}>{"One Time Passcodes"}</Link>
+        <br/>
         <Link to={"/webauthn"}>{"WebAuthn"}</Link>
-        <br />
+        <br/>
         <Link to={"/oauth"}>{"OAuth"}</Link>
-        <br />
+        <br/>
         <Link to={"/session"}>{"Session Management"}</Link>
-        <br />
+        <br/>
         <Link to={"/workbench"}>{"All Products Workbench"}</Link>
-        <br />
+        <br/>
         <button onClick={() => stytch.session.revoke()}>Log out.</button>
       </div>
     </div>
@@ -182,7 +305,7 @@ export const SessionManagement = () => {
 
   const [loggedInRouteStatus, setLoggedInRouteStatus] = useState("...");
   useEffect(() => {
-    fetch("/api/logged_in_route", { credentials: "same-origin" }).then(
+    fetch("/api/logged_in_route", {credentials: "same-origin"}).then(
       (res) => {
         setLoggedInRouteStatus(`Returned ${res.status} - you are logged in!`);
       }
@@ -191,11 +314,11 @@ export const SessionManagement = () => {
 
   const [mfaRouteStatus, setMFARouteStatus] = useState("...");
   useEffect(() => {
-    fetch("/api/mfa_route", { credentials: "same-origin" }).then((res) => {
+    fetch("/api/mfa_route", {credentials: "same-origin"}).then((res) => {
       res.status === 200
         ? setMFARouteStatus(
-            `Returned ${res.status} - you have multiple factors!`
-          )
+          `Returned ${res.status} - you have multiple factors!`
+        )
         : setMFARouteStatus(`Returned ${res.status} - Try adding WebAuthn!`);
     });
   }, []);
@@ -216,20 +339,20 @@ export const SessionManagement = () => {
           here
         </a>
         .
-        <br />
-        <br />
+        <br/>
+        <br/>
         <code>/api/logged_in_route</code>
-        <br />
+        <br/>
         {loggedInRouteStatus}
-        <br />
-        <br />
+        <br/>
+        <br/>
         <code>/api/mfa_route</code>
-        <br />
+        <br/>
         {mfaRouteStatus}
-        <br />
-        <br />
+        <br/>
+        <br/>
         Try using OAuth or WebAuthn to see how your session changes.
-        <br />
+        <br/>
         <Link to={"/home"}>{"<-Back"}</Link>
       </div>
       <div className="resultcontainer">
