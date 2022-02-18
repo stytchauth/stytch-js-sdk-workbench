@@ -4,17 +4,17 @@ body {
   margin: 0;
   padding: 0;
   /*overflow: hidden;*/
-  font-family: 'IBM Plex Sans', monospace;
+  font-family: "IBM Plex Sans", monospace;
   line-height: 1.6;
   font-size: 18px;
-  background: #ECFFF5;
-  color: #19303D;
+  background: #ecfff5;
+  color: #19303d;
 }
 
 pre {
-  font-family: 'IBM Plex Mono', monospace;
+  font-family: "IBM Plex Mono", monospace;
   font-size: xx-small;
-  background-color: #19303D;
+  background-color: #19303d;
   color: white;
   border: 1px solid black;
   white-space: pre-wrap;
@@ -24,8 +24,8 @@ pre {
 }
 
 button {
-  font-family: 'IBM Plex Mono', monospace;
-  background-color: #287AB8;
+  font-family: "IBM Plex Mono", monospace;
+  background-color: #287ab8;
   border-radius: 4px;
   border-style: none;
   box-sizing: border-box;
@@ -38,7 +38,10 @@ button {
   padding: 4px 10px;
 }
 
-a, a:visited, a:hover, a:active {
+a,
+a:visited,
+a:hover,
+a:active {
   color: inherit;
 }
 
@@ -52,13 +55,14 @@ input {
   margin: 2px 0 2px 5px;
 }
 
-
 button:hover,
 button:focus {
-  opacity: .75;
+  opacity: 0.75;
 }
 
-h1, h2, h3 {
+h1,
+h2,
+h3 {
   margin: 0;
   line-height: 1.2;
   padding-top: 16px;
@@ -90,7 +94,7 @@ h1, h2, h3 {
 
 .xl {
   max-width: calc(100% - 200px);
-    width: inherit;
+  width: inherit;
 }
 
 .column {
@@ -124,10 +128,10 @@ h1, h2, h3 {
   from {
   }
   to {
-   background-color: #D4CEFF;
+    background-color: #d4ceff;
   }
 }
 
 .glower {
-  animation: glow .5s infinite alternate;
+  animation: glow 0.5s infinite alternate;
 }

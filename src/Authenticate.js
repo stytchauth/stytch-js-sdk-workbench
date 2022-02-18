@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
-import {useStytch} from './stytch-react';
+import {useStytch} from '@stytch/stytch-react';
 
 const Authenticate = () => {
   const navigate = useNavigate();

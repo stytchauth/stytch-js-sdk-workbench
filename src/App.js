@@ -8,7 +8,7 @@ import {
 import "./App.css";
 import line from "./line.svg";
 import Authenticate from "./Authenticate";
-import { Home, LinkOAuth, WebAuthn, SessionManagement } from "./Pages";
+import {Home, LinkOAuth, WebAuthn, SessionManagement, OneTimePasscodes} from "./Pages";
 import Workbench from "./Workbench";
 import Login from "./Login";
 
@@ -65,6 +65,15 @@ function App() {
               <RequireLogin>
                 {" "}
                 <WebAuthn />{" "}
+              </RequireLogin>
+            }
+          />
+          <Route
+            path="/otps"
+            element={
+              <RequireLogin>
+                {" "}
+                <OneTimePasscodes />{" "}
               </RequireLogin>
             }
           />
