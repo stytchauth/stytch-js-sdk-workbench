@@ -4,6 +4,7 @@ import "./App.css";
 import line from './line.svg'
 import Authenticate from "./Authenticate";
 import {Home, LinkOAuth, WebAuthn, SessionManagement} from "./Pages";
+import Workbench from "./Workbench";
 import Login from "./Login";
 
 import {RequireLogin, RequireLoggedOut} from './Stytch';
@@ -22,6 +23,7 @@ function App() {
           <Route path="/oauth" element={<RequireLogin> <LinkOAuth/> </RequireLogin>}/>
           <Route path="/webauthn" element={<RequireLogin> <WebAuthn/> </RequireLogin>}/>
           <Route path="/session" element={<RequireLogin> <SessionManagement/> </RequireLogin>}/>
+          <Route path="/workbench" element={<Workbench/>}/>
           <Route path="*" element={<Navigate to="/login" replace/>}/>
         </Routes>
       </div>
