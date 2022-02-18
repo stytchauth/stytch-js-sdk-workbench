@@ -110,6 +110,13 @@ exports.OneTapPositions = void 0;
     OneTapPositions["floating"] = "floating";
 })(exports.OneTapPositions || (exports.OneTapPositions = {}));
 
+var initStytch = function (publicToken) {
+    if (!window.Stytch) {
+        throw new Error('Stytch has not been loaded.');
+    }
+    return window.Stytch(publicToken);
+};
+
 function invariant(cond, message) {
     if (!cond)
         throw new Error(message);
@@ -141,33 +148,58 @@ var __assign = function() {
     return __assign.apply(this, arguments);
 };
 
-var StytchMountedContext = React.createContext(false);
+var noProviderError = function (hookOrHOC) { return "".concat(hookOrHOC, " can only be used inside <StytchProvider>."); };
+var lazyError = function (hookOrHOC) {
+    return "".concat(hookOrHOC, " can only be used if Stytch is preloaded. Add <script src=\"https://js.stytch.com/stytch.js\" /> in your document header to load the script synchronously, or use ").concat(hookOrHOC, "Lazy if you want to lazy load Stytch. If you are using SSR, you will need to use ").concat(hookOrHOC, "Lazy.");
+};
+
+var StytchMountedContext = React.createContext({
+    isLazy: false,
+    isMounted: false,
+});
 var StytchUserContext = React.createContext(null);
 var StytchSessionContext = React.createContext(null);
 var StytchContext = React.createContext(null);
-var useStytchMounted__INTERNAL = function () { return React.useContext(StytchMountedContext); };
+var useIsMounted__INTERNAL = function () { return React.useContext(StytchMountedContext).isMounted; };
+var useIsLazy__INTERNAL = function () { return React.useContext(StytchMountedContext).isLazy; };
 var useStytchRaw__INTERNAL = function () { return React.useContext(StytchContext); };
 var useStytchUser = function () {
-    invariant(useStytchMounted__INTERNAL(), 'useStytchUser/withStytchUser can only be used inside <StytchProvider>.');
+    invariant(useIsMounted__INTERNAL(), noProviderError('useStytchUser'));
     return React.useContext(StytchUserContext);
 };
 var useStytchSession = function () {
-    invariant(useStytchMounted__INTERNAL(), 'useStytchSession/withStytchSession can only be used inside <StytchProvider>.');
+    invariant(useIsMounted__INTERNAL(), noProviderError('useStytchSession'));
     return React.useContext(StytchSessionContext);
 };
 var useStytch = function () {
-    invariant(useStytchMounted__INTERNAL(), 'useStytch/withStytch can only be used inside <StytchProvider>.');
+    invariant(useIsMounted__INTERNAL(), noProviderError('useStytch'));
+    invariant(!useIsLazy__INTERNAL(), lazyError('useStytch'));
+    return React.useContext(StytchContext);
+};
+var useStytchLazy = function () {
+    invariant(useIsMounted__INTERNAL(), noProviderError('useStytchLazy'));
     return React.useContext(StytchContext);
 };
 var withStytch = function (Component) {
     var WithStytch = function (props) {
+        invariant(useIsMounted__INTERNAL(), noProviderError('withStytch'));
+        invariant(!useIsLazy__INTERNAL(), lazyError('withStytch'));
         return React__default["default"].createElement(Component, __assign({}, props, { stytch: useStytch() }));
     };
     WithStytch.displayName = "withStytch(".concat(Component.displayName || Component.name || 'Component', ")");
     return WithStytch;
 };
+var withStytchLazy = function (Component) {
+    var WithStytchLazy = function (props) {
+        invariant(useIsMounted__INTERNAL(), noProviderError('withStytchLazy'));
+        return React__default["default"].createElement(Component, __assign({}, props, { stytch: useStytchLazy() }));
+    };
+    WithStytchLazy.displayName = "withStytchLazy(".concat(Component.displayName || Component.name || 'Component', ")");
+    return WithStytchLazy;
+};
 var withStytchUser = function (Component) {
     var WithStytchUser = function (props) {
+        invariant(useIsMounted__INTERNAL(), noProviderError('withStytchUser'));
         return React__default["default"].createElement(Component, __assign({}, props, { stytchUser: useStytchUser() }));
     };
     WithStytchUser.displayName = "withStytchUser(".concat(Component.displayName || Component.name || 'Component', ")");
@@ -175,56 +207,45 @@ var withStytchUser = function (Component) {
 };
 var withStytchSession = function (Component) {
     var WithStytchSession = function (props) {
+        invariant(useIsMounted__INTERNAL(), noProviderError('withStytchSession'));
         return React__default["default"].createElement(Component, __assign({}, props, { stytchSession: useStytchSession() }));
     };
     WithStytchSession.displayName = "withStytchSession(".concat(Component.displayName || Component.name || 'Component', ")");
     return WithStytchSession;
 };
-var LOCAL_STORAGE_KEY_PREFIX = 'stytch_state_';
-var getLocalStorageKey = function (type, publicToken) {
-    return "".concat(LOCAL_STORAGE_KEY_PREFIX).concat(publicToken, "_").concat(type);
-};
-var getLocalStorageSession = function (publicToken) {
-    if (typeof localStorage === 'undefined')
-        return null;
-    var sessionString = localStorage.getItem(getLocalStorageKey('session', publicToken));
-    var session = JSON.parse(sessionString);
-    if (session && Date.parse(session.expires_at) > Date.now()) {
-        return session;
-    }
-    return null;
-};
-var getLocalStorageUser = function (publicToken) {
-    if (typeof localStorage === 'undefined')
-        return null;
-    if (getLocalStorageSession(publicToken)) {
-        var userString = localStorage.getItem(getLocalStorageKey('user', publicToken));
-        return userString ? JSON.parse(userString) : null;
-    }
-    return null;
-};
 var StytchProvider = function (_a) {
-    var publicToken = _a.publicToken, children = _a.children;
-    invariant(!useStytchMounted__INTERNAL(), 'You cannot render a <StytchProvider> inside another <StytchProvider>.');
-    invariant(publicToken, 'publicToken not provided to <StytchProvider>.');
-    var _b = React.useState(typeof window !== 'undefined' && window.Stytch ? window.Stytch(publicToken) : null), stytchClient = _b[0], setStytchClient = _b[1];
-    var _c = React.useState(stytchClient ? stytchClient.user.getSync() : getLocalStorageUser(publicToken)), user = _c[0], setUser = _c[1];
-    var _d = React.useState(stytchClient ? stytchClient.session.getSync() : getLocalStorageSession(publicToken)), session = _d[0], setSession = _d[1];
+    var stytch = _a.stytch, children = _a.children;
+    invariant(!useIsMounted__INTERNAL(), 'You cannot render a <StytchProvider> inside another <StytchProvider>.');
+    var mountedContext = React.useState({
+        isLazy: !stytch,
+        isMounted: true,
+    })[0];
+    var _b = React.useState(stytch ? stytch.user.getSync() : null), user = _b[0], setUser = _b[1];
+    var _c = React.useState(stytch ? stytch.session.getSync() : null), session = _c[0], setSession = _c[1];
     React.useEffect(function () {
-        if (!stytchClient) {
-            loadStytch().then(function (globalStytch) { return globalStytch && setStytchClient(globalStytch(publicToken)); });
+        if (stytch) {
+            if (mountedContext.isLazy) {
+                setUser(stytch.user.getSync());
+                setSession(stytch.session.getSync());
+            }
+            var unsubscribeUser_1 = stytch.user.onChange((user) => {
+                console.log('setting user in react context', user);
+                setUser(user);
+            });
+            var unsubscribeSession_1 = stytch.session.onChange((sess) => {
+                console.log('setting sess in react context', sess);
+                setSession(sess);
+            });
+            return function () {
+                unsubscribeUser_1();
+                unsubscribeSession_1();
+            };
         }
-    }, [stytchClient, publicToken]);
-    React.useEffect(function () {
-        if (stytchClient) {
-            stytchClient.user.onChange(setUser);
-            stytchClient.session.onChange(setSession);
-        }
-    }, [stytchClient]);
-    return (React__default["default"].createElement(StytchMountedContext.Provider, { value: true },
-        React__default["default"].createElement(StytchContext.Provider, { value: stytchClient },
-            React__default["default"].createElement(StytchUserContext.Provider, { value: user },
-                React__default["default"].createElement(StytchSessionContext.Provider, { value: session }, children)))));
+    }, [mountedContext, stytch]);
+    return (React__default["default"].createElement(StytchMountedContext.Provider, { value: mountedContext },
+        React__default["default"].createElement(StytchContext.Provider, { value: stytch },
+            React__default["default"].createElement(StytchUserContext.Provider, { value: session && user },
+                React__default["default"].createElement(StytchSessionContext.Provider, { value: user && session }, children)))));
 };
 
 /**
@@ -249,7 +270,7 @@ var useUniqueElementId = function () {
 var Stytch = function (_a) {
     var publicToken = _a.publicToken, style = _a.style, callbacks = _a.callbacks, loginOrSignupView = _a.loginOrSignupView;
     var stytchClientFromContext = useStytchRaw__INTERNAL();
-    var stytchMounted = useStytchMounted__INTERNAL();
+    var stytchMounted = useIsMounted__INTERNAL();
     var _b = React.useState(function () {
         // If StytchProvider has been mounted, use context value
         if (stytchMounted) {
@@ -285,17 +306,19 @@ var Stytch = function (_a) {
             loginOrSignupView: loginOrSignupView,
             style: style,
         });
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [elementId, stytchClient]);
     return elementId ? React__default["default"].createElement("div", { id: elementId }) : null;
 };
 
 exports.Stytch = Stytch;
 exports.StytchProvider = StytchProvider;
+exports.initStytch = initStytch;
 exports.useStytch = useStytch;
+exports.useStytchLazy = useStytchLazy;
 exports.useStytchSession = useStytchSession;
 exports.useStytchUser = useStytchUser;
 exports.withStytch = withStytch;
+exports.withStytchLazy = withStytchLazy;
 exports.withStytchSession = withStytchSession;
 exports.withStytchUser = withStytchUser;
 //# sourceMappingURL=index.js.map
