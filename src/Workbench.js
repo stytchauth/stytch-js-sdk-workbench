@@ -137,17 +137,22 @@ const WorkBench = ({stytch, stytchUser}) => {
     );
     otpMethodIDRef.current.value = result.method_id;
   };
+  const attachPhoneNumber = async (phone_number) => {
+        if (stytchUser && !stytchUser.phone_numbers.find(pn => pn.phone_number = phone_number)) {
+      if (window.confirm("That phone number is not attached to the logged-in user.\nAdd it?")) {
+    await dispatch(
+      stytch.user.update({
+        name: {},
+        phone_numbers: [{phone_number}],
+      })
+    );
+  } 
+    }
+  }
   const otpSMSLoginOrCreate = async (e) => {
     e.preventDefault();
     const phoneNumber = otpPhoneRef.current.value;
-    if (stytchUser && !stytchUser.phone_numbers.find(pn => pn.phone_number = phoneNumber)) {
-      if (confirm("That phone number is not attached to the logged-in user.\nWould you like to attach it? (yes)\nOr would you like to ") == true) {
-    text = "You pressed OK!";
-  } else {
-    text = "You canceled!";
-  }
-      await 
-    }
+await attachPhoneNumber(phoneNumber);
     const result = await dispatch(
       stytch.otps.sms.loginOrCreate(phoneNumber, {
         expiration_minutes: 10,
@@ -157,6 +162,7 @@ const WorkBench = ({stytch, stytchUser}) => {
   };
   const otpWhatsappLoginOrCreate = async () => {
     const phoneNumber = otpPhoneRef.current.value;
+await attachPhoneNumber(phoneNumber);
     const result = await dispatch(
       stytch.otps.whatsapp.loginOrCreate(phoneNumber, {
         expiration_minutes: 10,
@@ -299,20 +305,25 @@ const WorkBench = ({stytch, stytchUser}) => {
             name="stytch.magicLinks.authenticate()"
             onClick={magicLinksAuthenticate}
             glowing={hasEml}
-          />{" "}
+          />
           <br/>
           <h3>One Time Passcodes</h3>
           <form onSubmit={otpSMSLoginOrCreate}>
             <div className="inputContainer">
               <label htmlFor="phone">Phone:</label>
-              <input type="tel" id="phone" name="phone" ref={otpPhoneRef}/>
+              <input type="tel" id="phone" name="phone" pattern="\+?[1-9]\d{1,14}" ref={otpPhoneRef}/>
             </div>
             <Button
               name="stytch.otps.sms.loginOrCreate()"
               type="submit"
-            />{" "}
+            />
             <br/>
           </form>
+          <Button
+            name="stytch.otps.whatsapp.loginOrCreate()"
+            onClick={otpWhatsappLoginOrCreate}
+          />
+          <br/>
           <form onSubmit={otpEmailLoginOrCreate}>
             <div className="inputContainer">
               <label htmlFor="email">Email:</label>
@@ -321,14 +332,9 @@ const WorkBench = ({stytch, stytchUser}) => {
             <Button
               name="stytch.otps.email.loginOrCreate()"
               type="submit"
-            />{" "}
+            />
             <br/>
           </form>
-          <Button
-            name="stytch.otps.whatsapp.loginOrCreate()"
-            onClick={otpWhatsappLoginOrCreate}
-          />{" "}
-          <br/>
           <form onSubmit={otpAuthenticate}>
             <div className="inputContainer">
               <label htmlFor="methodID">MethodID:</label>
