@@ -13,7 +13,7 @@ export const LinkOAuth = () => {
 
   const oauthOpts = {
     login_redirect_url: `${window.location.origin}/authenticate?type=oauth`,
-    signup_redirect_url: `${window.location.origin}/authenticate?type=eml`,
+    signup_redirect_url: `${window.location.origin}/authenticate?type=oauth`,
   };
 
   const googleUrl = stytch.oauth.google.getUrl(oauthOpts);
