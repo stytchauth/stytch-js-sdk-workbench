@@ -42,7 +42,7 @@ const Login = () => {
         <br/>
         Let's start by logging in.
         <form onSubmit={onSubmit}>
-          <div className="inputContainer" style={{'max-width': '50%'}}>
+          <div className="inputContainer" style={{maxWidth: '50%'}}>
             <label htmlFor="email">What is your email?</label>
             <input disabled={state !== 'starting'} ref={emailRef} name="email" type="email"
                    placeholder={"grace.hopper@stytch.com"}/>

@@ -8,29 +8,35 @@ import {
 import "./App.css";
 import line from "./line.svg";
 import Authenticate from "./Authenticate";
-import {Home, LinkOAuth, WebAuthn, SessionManagement, OneTimePasscodes} from "./Pages";
+import {
+  Home,
+  LinkOAuth,
+  WebAuthn,
+  SessionManagement,
+  OneTimePasscodes,
+} from "./Pages";
 import Workbench from "./Workbench";
 import Login from "./Login";
 
 import { RequireLogin, RequireLoggedOut } from "./Stytch";
 
+const pageStyle = { backgroundImage: `url(${line})` };
+
 function App() {
   const isInIframe = document.location.ancestorOrigins.length > 0;
   if (isInIframe) {
     return (
-      <div className="page" style={{ backgroundImage: `url(${line})` }}>
+      <div className="page" style={pageStyle}>
         <div className="column">
           <h1> Sorry! This demo does not work in iframes. </h1>
-          <span>
-          (Yet!)
-          </span>
+          <span>(Yet!)</span>
         </div>
       </div>
     );
   }
   return (
     <Router>
-      <div className="page" style={{ backgroundImage: `url(${line})` }}>
+      <div className="page" style={pageStyle}>
         <Routes>
           <Route path="/authenticate" element={<Authenticate />} />
           <Route
@@ -45,8 +51,7 @@ function App() {
             path="/home"
             element={
               <RequireLogin>
-                {" "}
-                <Home />{" "}
+                <Home />
               </RequireLogin>
             }
           />
@@ -54,8 +59,7 @@ function App() {
             path="/oauth"
             element={
               <RequireLogin>
-                {" "}
-                <LinkOAuth />{" "}
+                <LinkOAuth />
               </RequireLogin>
             }
           />
@@ -63,8 +67,7 @@ function App() {
             path="/webauthn"
             element={
               <RequireLogin>
-                {" "}
-                <WebAuthn />{" "}
+                <WebAuthn />
               </RequireLogin>
             }
           />
@@ -72,8 +75,7 @@ function App() {
             path="/otps"
             element={
               <RequireLogin>
-                {" "}
-                <OneTimePasscodes />{" "}
+                <OneTimePasscodes />
               </RequireLogin>
             }
           />
@@ -81,8 +83,7 @@ function App() {
             path="/session"
             element={
               <RequireLogin>
-                {" "}
-                <SessionManagement />{" "}
+                <SessionManagement />
               </RequireLogin>
             }
           />

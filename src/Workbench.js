@@ -140,6 +140,14 @@ const WorkBench = ({stytch, stytchUser}) => {
   const otpSMSLoginOrCreate = async (e) => {
     e.preventDefault();
     const phoneNumber = otpPhoneRef.current.value;
+    if (stytchUser && !stytchUser.phone_numbers.find(pn => pn.phone_number = phoneNumber)) {
+      if (confirm("That phone number is not attached to the logged-in user.\nWould you like to attach it? (yes)\nOr would you like to ") == true) {
+    text = "You pressed OK!";
+  } else {
+    text = "You canceled!";
+  }
+      await 
+    }
     const result = await dispatch(
       stytch.otps.sms.loginOrCreate(phoneNumber, {
         expiration_minutes: 10,
