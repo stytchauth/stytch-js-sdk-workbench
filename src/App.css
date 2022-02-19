@@ -1,6 +1,6 @@
 body {
   inset: 0;
-  margin: 0;
+  margin: 0 15px;
   padding: 0;
   font-family: "IBM Plex Sans", monospace;
   line-height: 1.6;
@@ -64,7 +64,7 @@ h3 {
   margin: 0;
   line-height: 1.2;
   padding-top: 16px;
-  padding-bottom: 3px;
+  padding-bottom: 10px;
 }
 
 .page {

@@ -41,10 +41,12 @@ const Login = () => {
         All of the source code for this app is available <a href={"https://glitch.com/edit/#!/stytch-sdk-beta"}>here</a>.
         <br/>
         Let's start by logging in.
+        <br/>
         <form onSubmit={onSubmit}>
-          <div className="inputContainer" style={{maxWidth: '50%'}}>
+          <div className="inputContainer">
             <label htmlFor="email">What is your email?</label>
             <input disabled={state !== 'starting'} ref={emailRef} name="email" type="email"
+                   style={{maxWidth: 200}}
                    placeholder={"grace.hopper@stytch.com"}/>
           </div>
           <button disabled={state !== 'starting'} type="submit">{buttonText[state]}</button>

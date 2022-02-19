@@ -243,7 +243,7 @@ export const OneTimePasscodes = () => {
       First, let's link a phone number to your account.
       <br />
       <form onSubmit={addOneTimePasscodeToUser}>
-        <div className="inputContainer" style={{ maxWidth: "50%" }}>
+        <div className="inputContainer" style={{ maxWidth: 200 }}>
           <label htmlFor="phone">What is your phone number?</label>
           <input
             type="tel"
@@ -279,6 +279,7 @@ export const OneTimePasscodes = () => {
             <pre>{String(error)}</pre>
           </>
         )}
+        <br />
         <br />
         <Link to={"/home"}>{"<-Back"}</Link>
       </div>
