@@ -193,7 +193,7 @@ export const OneTimePasscodes = () => {
 
   const otpCollectionForm = (
     <form onSubmit={authenticateOneTimePasscode}>
-      <div className="inputContainer" style={{ "max-width": "50%" }}>
+      <div className="inputContainer">
         <label htmlFor="code">Please enter the code:</label>
         <input
           type="tel"
@@ -201,6 +201,7 @@ export const OneTimePasscodes = () => {
           name="code"
           placeholder="123456"
           ref={otpCodeRef}
+          style={{ maxWidth: 200 }}
         />
       </div>
       <button type="submit">Send</button>
@@ -243,7 +244,7 @@ export const OneTimePasscodes = () => {
       First, let's link a phone number to your account.
       <br />
       <form onSubmit={addOneTimePasscodeToUser}>
-        <div className="inputContainer" style={{ maxWidth: 200 }}>
+        <div className="inputContainer">
           <label htmlFor="phone">What is your phone number?</label>
           <input
             type="tel"
@@ -251,6 +252,7 @@ export const OneTimePasscodes = () => {
             name="phone"
             placeholder="+1333333333"
             ref={otpPhoneRef}
+            style={{ maxWidth: 200 }}
           />
         </div>
         <button type="submit">Send</button>
