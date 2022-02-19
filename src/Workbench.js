@@ -298,7 +298,7 @@ await attachPhoneNumber(phoneNumber);
             <Button
               name="stytch.magicLinks.email.loginOrCreate()"
               type="submit"
-            />{" "}
+            />
             <br/>
           </form>
           <Button
@@ -364,12 +364,12 @@ await attachPhoneNumber(phoneNumber);
           <Button
             name="stytch.user.registerWebauthn()"
             onClick={registerWebauthn}
-          />{" "}
+          />
           <br/>
           <Button
             name="stytch.webauthn.authenticate()"
             onClick={authenticateWebauthn}
-          />{" "}
+          />
           <br/>
           <h3>OAuth</h3>
           <Button
