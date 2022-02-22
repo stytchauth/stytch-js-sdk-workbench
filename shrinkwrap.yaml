@@ -1,6 +1,6 @@
 dependencies:
-  '@stytch/stytch-js': 2.0.9-headless.beta.1
-  '@stytch/stytch-react': 3.0.8-headless.beta.1
+  '@stytch/stytch-js': 2.0.9-headless.beta.4
+  '@stytch/stytch-react': 3.0.8-headless.beta.4
   concurrently: 5.3.0
   cookie-parser: 1.4.6
   express: 4.17.2
@@ -2622,22 +2622,18 @@ packages:
       node: '>= 6'
     resolution:
       integrity: sha512-shAmDyaQC4H92APFoIaVDHCx5bStIocgvbwQyxPRrbUY20V1EYTbSDchWbuwlMG3V17cprZhA6+78JfB+3DTPw==
-  /@stytch/stytch-js/2.0.9-headless.beta.1:
+  /@stytch/stytch-js/2.0.9-headless.beta.4:
     dev: false
     resolution:
-      integrity: sha512-JG4Zy8CyF1KuDnNqVlh7Qt+IgDYdZeVyXBtQJ/6lHw2iTJcIGeNAt/28+p76MV+yN2g9oQKRDysvv6E0NuueTg==
-  /@stytch/stytch-js/2.0.9-headless.beta.3:
-    dev: false
-    resolution:
-      integrity: sha512-URlrk2Ct1MbrqdvxaTqBluFhsa2ly+jQGigcohJBSawopwL8RcQRHHgAFr0aF4t+l8uj4qeYhfH3+aMCRzFJQQ==
-  /@stytch/stytch-react/3.0.8-headless.beta.1:
+      integrity: sha512-eZhNb93X2cajsWCeU99c/OZJzDkBBawP1J474F06nopBxSSLHHlb0b4N1Umugl6wINNmgdrpLcExAul0ahQZJw==
+  /@stytch/stytch-react/3.0.8-headless.beta.4:
     dependencies:
-      '@stytch/stytch-js': 2.0.9-headless.beta.3
+      '@stytch/stytch-js': 2.0.9-headless.beta.4
     dev: false
     peerDependencies:
       react: '>= 16.x.x'
     resolution:
-      integrity: sha512-hT3k4f1WPY5/TIzncu4h0XsI0M+NF1OJqmU2RabqA541hNpZcyKqI9NBmyKC3guguVkOZjqoc5L78ARh1qrvuA==
+      integrity: sha512-LpYS7j0fwZp8PJv/JFsvtXp2/5CieHqvBwLojSfvWbhl63qFFDBdX81UMKTfNaaUgNlwxu5UlEjKid1HdacJog==
   /@svgr/babel-plugin-add-jsx-attribute/4.2.0:
     dev: false
     engines:
@@ -12739,8 +12735,8 @@ registry: 'https://registry.npmjs.org/'
 shrinkwrapMinorVersion: 9
 shrinkwrapVersion: 3
 specifiers:
-  '@stytch/stytch-js': ^2.0.9-headless.beta.1
-  '@stytch/stytch-react': ^3.0.8-headless.beta.1
+  '@stytch/stytch-js': ^2.0.9-headless.beta.4
+  '@stytch/stytch-react': ^3.0.8-headless.beta.4
   concurrently: ^5.0.2
   cookie-parser: ^1.4.6
   express: ^4.17.1
