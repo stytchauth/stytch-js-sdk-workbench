@@ -8,19 +8,17 @@ import {
 import "./App.css";
 import line from "./line.svg";
 import Authenticate from "./Authenticate";
-import {
-  Home,
-  LinkOAuth,
-  WebAuthn,
-  SessionManagement,
-  OneTimePasscodes,
-} from "./Pages";
+import {Home} from "./pages/Home";
+import {OneTimePasscodes} from "./pages/OTP";
+import {LinkOAuth} from "./pages/OAuth";
+import {SessionManagement} from "./pages/SessionManagement";
+import {WebAuthn} from "./pages/Webauthn";
 import Workbench from "./Workbench";
 import Login from "./Login";
 
-import { RequireLogin, RequireLoggedOut } from "./Stytch";
+import {RequireLogin, RequireLoggedOut} from "./Stytch";
 
-const pageStyle = { backgroundImage: `url(${line})` };
+const pageStyle = {backgroundImage: `url(${line})`};
 
 function App() {
   const isInIframe = document.location.ancestorOrigins.length > 0;
@@ -38,12 +36,12 @@ function App() {
     <Router>
       <div className="page" style={pageStyle}>
         <Routes>
-          <Route path="/authenticate" element={<Authenticate />} />
+          <Route path="/authenticate" element={<Authenticate/>}/>
           <Route
             path="/login"
             element={
               <RequireLoggedOut>
-                <Login />
+                <Login/>
               </RequireLoggedOut>
             }
           />
@@ -51,7 +49,7 @@ function App() {
             path="/home"
             element={
               <RequireLogin>
-                <Home />
+                <Home/>
               </RequireLogin>
             }
           />
@@ -59,7 +57,7 @@ function App() {
             path="/oauth"
             element={
               <RequireLogin>
-                <LinkOAuth />
+                <LinkOAuth/>
               </RequireLogin>
             }
           />
@@ -67,7 +65,7 @@ function App() {
             path="/webauthn"
             element={
               <RequireLogin>
-                <WebAuthn />
+                <WebAuthn/>
               </RequireLogin>
             }
           />
@@ -75,7 +73,7 @@ function App() {
             path="/otps"
             element={
               <RequireLogin>
-                <OneTimePasscodes />
+                <OneTimePasscodes/>
               </RequireLogin>
             }
           />
@@ -83,12 +81,12 @@ function App() {
             path="/session"
             element={
               <RequireLogin>
-                <SessionManagement />
+                <SessionManagement/>
               </RequireLogin>
             }
           />
-          <Route path="/workbench" element={<Workbench />} />
-          <Route path="*" element={<Navigate to="/login" replace />} />
+          <Route path="/workbench" element={<Workbench/>}/>
+          <Route path="*" element={<Navigate to="/login" replace/>}/>
         </Routes>
       </div>
     </Router>

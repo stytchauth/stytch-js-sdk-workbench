@@ -29,6 +29,9 @@ const WorkBench = ({stytch, stytchUser}) => {
   const newEmailRef = useRef();
   const newPhoneRef = useRef();
 
+  const [wrCredCreateOpts, setCredCreateOpts] = useState(null);
+  const [wrCredRequestOpts, setCredRequestOpts] = useState(null);
+
   useEffect(() => {
     if (stytchUser) {
       if (stytchUser.emails.length) {
@@ -138,21 +141,21 @@ const WorkBench = ({stytch, stytchUser}) => {
     otpMethodIDRef.current.value = result.method_id;
   };
   const attachPhoneNumber = async (phone_number) => {
-        if (stytchUser && !stytchUser.phone_numbers.find(pn => pn.phone_number = phone_number)) {
+    if (stytchUser && !stytchUser.phone_numbers.find(pn => pn.phone_number = phone_number)) {
       if (window.confirm("That phone number is not attached to the logged-in user.\nAdd it?")) {
-    await dispatch(
-      stytch.user.update({
-        name: {},
-        phone_numbers: [{phone_number}],
-      })
-    );
-  } 
+        await dispatch(
+          stytch.user.update({
+            name: {},
+            phone_numbers: [{phone_number}],
+          })
+        );
+      }
     }
   }
   const otpSMSLoginOrCreate = async (e) => {
     e.preventDefault();
     const phoneNumber = otpPhoneRef.current.value;
-await attachPhoneNumber(phoneNumber);
+    await attachPhoneNumber(phoneNumber);
     const result = await dispatch(
       stytch.otps.sms.loginOrCreate(phoneNumber, {
         expiration_minutes: 10,
@@ -162,7 +165,7 @@ await attachPhoneNumber(phoneNumber);
   };
   const otpWhatsappLoginOrCreate = async () => {
     const phoneNumber = otpPhoneRef.current.value;
-await attachPhoneNumber(phoneNumber);
+    await attachPhoneNumber(phoneNumber);
     const result = await dispatch(
       stytch.otps.whatsapp.loginOrCreate(phoneNumber, {
         expiration_minutes: 10,
@@ -209,16 +212,35 @@ await attachPhoneNumber(phoneNumber);
     return dispatch(stytch.user.update(diff));
   };
 
-  const registerWebauthn = () => {
-    return dispatch(stytch.user.registerWebauthn());
-  };
-  const authenticateWebauthn = () => {
-    return dispatch(
-      stytch.webauthn.authenticate({
+  const webauthnRegisterStart = async () => {
+    const {public_key_credential_creation_options} = await dispatch(stytch.webauthn.registerStart());
+    setCredRequestOpts(public_key_credential_creation_options);
+  }
+  const webauthnRegister = async (e) => {
+    if (!wrCredCreateOpts) {
+      return dispatch(Promise.reject(new Error('No creation options loaded. Call registerStart first.')))
+    }
+    await dispatch(
+      stytch.webauthn.register(wrCredCreateOpts)
+    )
+    setCredCreateOpts(null);
+  }
+
+  const webauthnAuthenticateStart = async () => {
+    const {public_key_credential_request_options} = await dispatch(stytch.webauthn.authenticateStart());
+    setCredRequestOpts(public_key_credential_request_options);
+  }
+  const webauthnAuthenticate = async () => {
+    if (!wrCredRequestOpts) {
+      return dispatch(Promise.reject(new Error('No creation options loaded. Call registerStart first.')))
+    }
+    await dispatch(
+      stytch.webauthn.authenticate(wrCredRequestOpts, {
         session_duration_minutes: 60,
       })
-    );
-  };
+    )
+    setCredRequestOpts(null);
+  }
 
   const getUrlForProvider = (provider) => () =>
     dispatchLink(
@@ -361,16 +383,40 @@ await attachPhoneNumber(phoneNumber);
             </button>
           </form>
           <h3>WebAuthn</h3>
+          <div>
+            <label htmlFor="register_start_data">Register Data Loaded:</label>
+            <input
+              type="checkbox"
+              disabled
+              checked={Boolean(wrCredCreateOpts)}
+            />
+          </div>
           <Button
-            name="stytch.user.registerWebauthn()"
-            onClick={registerWebauthn}
+            name="stytch.webauthn.registerStart()"
+            onClick={webauthnRegisterStart}
+          />
+          <br/>
+          <Button
+            name="stytch.webauthn.register()"
+            onClick={webauthnRegister}
+          />
+          <div>
+            <label htmlFor="register_start_data">Authenticate Data Loaded:</label>
+            <input
+              type="checkbox"
+              disabled
+              checked={Boolean(wrCredRequestOpts)}
+            />
+          </div>
+          <Button
+            name="stytch.webauthn.authenticateStart()"
+            onClick={webauthnAuthenticateStart}
           />
           <br/>
           <Button
             name="stytch.webauthn.authenticate()"
-            onClick={authenticateWebauthn}
+            onClick={webauthnAuthenticate}
           />
-          <br/>
           <h3>OAuth</h3>
           <Button
             name="stytch.oauth.google.getUrl()"
