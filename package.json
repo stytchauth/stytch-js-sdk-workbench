@@ -4,7 +4,7 @@
   "private": true,
   "dependencies": {
     "@stytch/stytch-js": "^2.0.9-headless.beta.4",
-    "@stytch/stytch-react": "^3.0.8-headless.beta.3",
+    "@stytch/stytch-react": "^3.0.8-headless.beta.4",
     "concurrently": "^5.0.2",
     "cookie-parser": "^1.4.6",
     "express": "^4.17.1",
