@@ -17,7 +17,7 @@
   },
   "scripts": {
     "start": "npm run development",
-    "development": "NODE_ENV=development concurrently --kill-others \"npm run client\" \"npm run server\"",
+    "development": "NODE_ENV=development npx concurrently --kill-others \"npm run client\" \"npm run server\"",
     "production": "npm run build && NODE_ENV=production npm run server",
     "server": "node server/server.js",
     "client": "react-scripts start",
