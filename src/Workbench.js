@@ -213,7 +213,7 @@ const WorkBench = ({stytch, stytchUser}) => {
 
   const webauthnRegisterStart = async () => {
     const {public_key_credential_creation_options} = await dispatch(stytch.webauthn.registerStart());
-    setCredRequestOpts(public_key_credential_creation_options);
+    setCredCreateOpts(public_key_credential_creation_options);
   }
   const webauthnRegister = async (e) => {
     if (!wrCredCreateOpts) {
@@ -396,6 +396,7 @@ const WorkBench = ({stytch, stytchUser}) => {
           />
           <br/>
           <Button
+            disabled={!wrCredRequestOpts}
             name="stytch.webauthn.register()"
             onClick={webauthnRegister}
           />
@@ -413,6 +414,7 @@ const WorkBench = ({stytch, stytchUser}) => {
           />
           <br/>
           <Button
+            disabled={!wrCredRequestOpts}
             name="stytch.webauthn.authenticate()"
             onClick={webauthnAuthenticate}
           />
