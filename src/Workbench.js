@@ -145,7 +145,6 @@ const WorkBench = ({stytch, stytchUser}) => {
       if (window.confirm("That phone number is not attached to the logged-in user.\nAdd it?")) {
         await dispatch(
           stytch.user.update({
-            name: {},
             phone_numbers: [{phone_number}],
           })
         );

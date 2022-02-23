@@ -89,7 +89,6 @@ export const OneTimePasscodes = () => {
     try {
       setError(null);
       await stytch.user.update({
-        name: {},
         phone_numbers: [{phone_number}],
       });
     } catch (e) {
