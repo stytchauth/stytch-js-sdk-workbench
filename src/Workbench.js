@@ -87,7 +87,7 @@ const WorkBench = ({stytch, stytchUser}) => {
         setIsError(true);
         setIsLoading(false);
         setResult(err);
-        throw err;
+        // throw err;
       });
   };
 
