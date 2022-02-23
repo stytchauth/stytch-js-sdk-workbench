@@ -396,7 +396,6 @@ const WorkBench = ({stytch, stytchUser}) => {
           />
           <br/>
           <Button
-            disabled={!wrCredRequestOpts}
             name="stytch.webauthn.register()"
             onClick={webauthnRegister}
           />
@@ -414,7 +413,6 @@ const WorkBench = ({stytch, stytchUser}) => {
           />
           <br/>
           <Button
-            disabled={!wrCredRequestOpts}
             name="stytch.webauthn.authenticate()"
             onClick={webauthnAuthenticate}
           />
