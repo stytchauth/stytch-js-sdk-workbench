@@ -20,9 +20,12 @@ import {RequireLogin, RequireLoggedOut} from "./Stytch";
 
 const pageStyle = {backgroundImage: `url(${line})`};
 
+const isinFrame = () => {
+  return self !== top;
+}
+
 function App() {
-  const isInIframe = document.location.ancestorOrigins.length > 0;
-  if (isInIframe) {
+  if (isinFrame()) {
     return (
       <div className="page" style={pageStyle}>
         <div className="column">
