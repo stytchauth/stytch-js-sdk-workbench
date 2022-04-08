@@ -458,7 +458,7 @@ const WorkBench = ({stytch, stytchUser}) => {
             onClick={webauthnAuthenticate}
           />
           <br />
-          <h3>WebAuthn</h3>
+          <h3>Crypto Wallets</h3>
           <div>
             <label>Crypto Wallet Address Shared:</label>
             <input
