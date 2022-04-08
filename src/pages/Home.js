@@ -25,6 +25,8 @@ export const Home = () => {
         <br />
         <Link to={"/webauthn"}>{"WebAuthn"}</Link>
         <br />
+        <Link to={"/crypto-wallets"}>{"Crypto Wallets"}</Link>
+        <br />
         <Link to={"/oauth"}>{"OAuth"}</Link>
         <br />
         <Link to={"/session"}>{"Session Management"}</Link>

@@ -17,11 +17,12 @@ import Workbench from "./Workbench";
 import Login from "./Login";
 
 import {RequireLogin, RequireLoggedOut} from "./Stytch";
+import {CryptoWallets} from "./pages/CryptoWallets";
 
 const pageStyle = {backgroundImage: `url(${line})`};
 
 const isinFrame = () => {
-  return self !== top;
+  return window.self !== window.top;
 }
 
 function App() {
@@ -69,6 +70,14 @@ function App() {
             element={
               <RequireLogin>
                 <WebAuthn/>
+              </RequireLogin>
+            }
+          />
+          <Route
+            path="/crypto-wallets"
+            element={
+              <RequireLogin>
+                <CryptoWallets/>
               </RequireLogin>
             }
           />

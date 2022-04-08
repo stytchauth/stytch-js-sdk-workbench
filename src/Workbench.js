@@ -32,6 +32,9 @@ const WorkBench = ({stytch, stytchUser}) => {
   const [wrCredCreateOpts, setCredCreateOpts] = useState(null);
   const [wrCredRequestOpts, setCredRequestOpts] = useState(null);
 
+  const [cryptoWalletChallenge, setCryptoWalletChallenge] = useState(null);
+  const [cryptoWalletAddress, setCryptoWalletAddress] = useState(null);
+
   useEffect(() => {
     if (stytchUser) {
       if (stytchUser.emails.length) {
@@ -241,6 +244,44 @@ const WorkBench = ({stytch, stytchUser}) => {
     setCredRequestOpts(null);
   }
 
+
+  const cryptoWalletsAuthenticateStart = async () => {
+    const [crypto_wallet_address] = await dispatch(
+      window.ethereum.request({
+        method: 'eth_requestAccounts'
+      })
+    );
+    setCryptoWalletAddress(crypto_wallet_address);
+
+    const {challenge} = await dispatch(
+      stytch.cryptoWallets.authenticateStart({
+        crypto_wallet_address,
+        crypto_wallet_type: 'ethereum'
+      })
+    );
+    setCryptoWalletChallenge(challenge);
+  }
+  const cryptoWalletsAuthenticate = async () => {
+    if (!cryptoWalletChallenge) {
+      return dispatch(Promise.reject(new Error('No challenge loaded. Call authenticateStart first.')))
+    }
+    const signature = await dispatch(
+      window.ethereum.request({
+        method: "personal_sign",
+        params: [cryptoWalletChallenge, cryptoWalletAddress]
+      })
+    );
+    await dispatch(
+      stytch.cryptoWallets.authenticate({
+        crypto_wallet_address: cryptoWalletAddress,
+        crypto_wallet_type: 'ethereum',
+        signature,
+        session_duration_minutes: 60
+      })
+    )
+    setCredRequestOpts(null);
+  }
+
   const getUrlForProvider = (provider) => () =>
     dispatchLink(
       stytch.oauth[provider].getUrl({
@@ -416,6 +457,34 @@ const WorkBench = ({stytch, stytchUser}) => {
             name="stytch.webauthn.authenticate()"
             onClick={webauthnAuthenticate}
           />
+          <br />
+          <h3>WebAuthn</h3>
+          <div>
+            <label>Crypto Wallet Address Shared:</label>
+            <input
+              type="checkbox"
+              disabled
+              checked={Boolean(cryptoWalletAddress)}
+            />
+          </div>
+          <div>
+            <label>Crypto Wallet Challenge Loaded:</label>
+            <input
+              type="checkbox"
+              disabled
+              checked={Boolean(cryptoWalletChallenge)}
+            />
+          </div>
+          <Button
+            name="stytch.cryptoWallets.authenticateStart()"
+            onClick={cryptoWalletsAuthenticateStart}
+          />
+          <br/>
+          <Button
+            name="stytch.cryptoWallets.authenticate()"
+            onClick={cryptoWalletsAuthenticate}
+          />
+          <br/>
           <h3>OAuth</h3>
           <Button
             name="stytch.oauth.google.getUrl()"
