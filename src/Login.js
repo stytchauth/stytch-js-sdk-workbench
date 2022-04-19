@@ -35,7 +35,6 @@ const Login = () => {
     <div className="container">
       <div className="column">
         <h1>Welcome!</h1>
-        Thank you for taking the time to participate in the beta program.
         This app will show you some of the features of the Stytch platform, and how they might be incorperated into a
         login flow.
         All of the source code for this app is available <a href={"https://glitch.com/edit/#!/stytch-sdk-beta"}>here</a>.
