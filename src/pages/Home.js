@@ -1,5 +1,5 @@
-import {useStytch, useStytchUser} from "@stytch/stytch-react";
-import {Link} from "react-router-dom";
+import { useStytch, useStytchUser } from "@stytch/stytch-react";
+import { Link } from "react-router-dom";
 import React from "react";
 
 export const Home = () => {
@@ -24,6 +24,8 @@ export const Home = () => {
         <Link to={"/otps"}>{"One Time Passcodes"}</Link>
         <br />
         <Link to={"/webauthn"}>{"WebAuthn"}</Link>
+        <br />
+        <Link to={"/totp"}>{"TOTPs"}</Link>
         <br />
         <Link to={"/crypto-wallets"}>{"Crypto Wallets"}</Link>
         <br />

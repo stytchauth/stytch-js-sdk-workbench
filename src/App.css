@@ -95,9 +95,9 @@ h3 {
   width: inherit;
 }
 
-@media (max-width : 1000px) {
+@media (max-width: 1000px) {
   .xl {
-    max-width: 100%
+    max-width: 100%;
   }
 }
 

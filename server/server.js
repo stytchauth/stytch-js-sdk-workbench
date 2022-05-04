@@ -2,6 +2,9 @@ const express = require("express");
 const path = require("path");
 const stytch = require("stytch");
 const cookieParser = require("cookie-parser");
+require("dotenv").config();
+
+console.log(process.env.STYTCH_PROJECT_ID);
 
 const stytchClient = new stytch.Client({
   project_id: process.env.STYTCH_PROJECT_ID,
@@ -23,15 +26,15 @@ function isMFA(session) {
   return hasEmailMagicLink && hasWebauthn;
 }
 
-function AuthenticationMiddleware({mfa_required}) {
+function AuthenticationMiddleware({ mfa_required }) {
   return function (req, res, next) {
     const session_token = req.cookies["stytch_session"];
     if (!session_token) {
       return next(new Error("No session"));
     }
     stytchClient.sessions
-      .authenticate({session_token})
-      .then(({session}) => {
+      .authenticate({ session_token })
+      .then(({ session }) => {
         req.session = session;
         if (!mfa_required) {
           return next();
@@ -39,7 +42,7 @@ function AuthenticationMiddleware({mfa_required}) {
         if (isMFA(session)) {
           return next();
         }
-        return res.status(401).send('NO MFA');
+        return res.status(401).send("NO MFA");
       })
       .catch((err) => {
         console.error("Could not authenticate session", err);
@@ -55,19 +58,19 @@ app.get("/api/public", (request, response) => {
 
 app.get(
   "/api/logged_in_route",
-  AuthenticationMiddleware({mfa_required: false}),
+  AuthenticationMiddleware({ mfa_required: false }),
   (request, response) => {
     console.log("❇️ Received GET request to /api/logged_in_route");
-    response.json({logged_in: true, session: request.session});
+    response.json({ logged_in: true, session: request.session });
   }
 );
 
 app.get(
   "/api/mfa_route",
-  AuthenticationMiddleware({mfa_required: true}),
+  AuthenticationMiddleware({ mfa_required: true }),
   (request, response) => {
     console.log("❇️ Received GET request to /api/mfa_route");
-    response.json({mfa: true});
+    response.json({ mfa: true });
   }
 );
 

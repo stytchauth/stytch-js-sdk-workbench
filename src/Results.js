@@ -1,26 +1,28 @@
-import React, {useMemo} from "react";
+import React, { useMemo } from "react";
 
-export const Results = ({content, isError, isLink}) => {
-  const contentHTML = useMemo(() => prettyPrint(content), [content])
+export const Results = ({ content, isError, isLink }) => {
+  const contentHTML = useMemo(() => prettyPrint(content), [content]);
   const props = {
-    className: "results"
-  }
+    className: "results",
+  };
   if (isError) {
-    props.className += " error"
-    props.children = [String(content)]
+    props.className += " error";
+    props.children = [String(content)];
     props.style = {
-      color: '#FD4E43'
-    }
+      color: "#FD4E43",
+    };
   } else if (isLink) {
     props.children = [
-      <a href={content} style={{color: 'white'}}>{content}</a>
-    ]
+      <a href={content} style={{ color: "white" }}>
+        {content}
+      </a>,
+    ];
   } else {
-    props.dangerouslySetInnerHTML = {'__html': contentHTML}
+    props.dangerouslySetInnerHTML = { __html: contentHTML };
   }
 
-  return (<pre{...props}/>)
-}
+  return <pre {...props} />;
+};
 
 /**
  * Pretty Print JSON Objects.

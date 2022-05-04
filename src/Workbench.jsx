@@ -1,15 +1,19 @@
-import {withStytch, withStytchSession, withStytchUser} from "@stytch/stytch-react";
-import React, {useState, useRef, useEffect} from "react";
-import {Link} from "react-router-dom";
-import {Results} from "./Results";
+import {
+  withStytch,
+  withStytchSession,
+  withStytchUser,
+} from "@stytch/stytch-react";
+import React, { useState, useRef, useEffect } from "react";
+import { Link } from "react-router-dom";
+import { Results } from "./Results";
 
-const Button = ({name, onClick, glowing}) => (
+const Button = ({ name, onClick, glowing }) => (
   <button className={glowing ? "glower" : ""} onClick={onClick}>
     <code>{name}</code>
   </button>
 );
 
-const WorkBench = ({stytch, stytchUser}) => {
+const WorkBench = ({ stytch, stytchUser }) => {
   const [result, setResult] = useState(
     "// Click some buttons and run some code!"
   );
@@ -134,7 +138,7 @@ const WorkBench = ({stytch, stytchUser}) => {
   };
 
   const otpEmailLoginOrCreate = async (e) => {
-    e.preventDefault()
+    e.preventDefault();
     const email = otpEmailRef.current.value;
     const result = await dispatch(
       stytch.otps.email.loginOrCreate(email, {
@@ -144,16 +148,23 @@ const WorkBench = ({stytch, stytchUser}) => {
     otpMethodIDRef.current.value = result.method_id;
   };
   const attachPhoneNumber = async (phone_number) => {
-    if (stytchUser && !stytchUser.phone_numbers.find(pn => pn.phone_number = phone_number)) {
-      if (window.confirm("That phone number is not attached to the logged-in user.\nAdd it?")) {
+    if (
+      stytchUser &&
+      !stytchUser.phone_numbers.find((pn) => (pn.phone_number = phone_number))
+    ) {
+      if (
+        window.confirm(
+          "That phone number is not attached to the logged-in user.\nAdd it?"
+        )
+      ) {
         await dispatch(
           stytch.user.update({
-            phone_numbers: [{phone_number}],
+            phone_numbers: [{ phone_number }],
           })
         );
       }
     }
-  }
+  };
   const otpSMSLoginOrCreate = async (e) => {
     e.preventDefault();
     const phoneNumber = otpPhoneRef.current.value;
@@ -203,84 +214,97 @@ const WorkBench = ({stytch, stytchUser}) => {
 
     const phone_number = newPhoneRef.current.value;
     if (phone_number) {
-      diff.phone_numbers = [{phone_number}];
+      diff.phone_numbers = [{ phone_number }];
     }
 
     const email = newEmailRef.current.value;
     if (email) {
-      diff.emails = [{email}];
+      diff.emails = [{ email }];
     }
 
     return dispatch(stytch.user.update(diff));
   };
 
   const webauthnRegisterStart = async () => {
-    const {public_key_credential_creation_options} = await dispatch(stytch.webauthn.registerStart());
+    const { public_key_credential_creation_options } = await dispatch(
+      stytch.webauthn.registerStart()
+    );
     setCredCreateOpts(public_key_credential_creation_options);
-  }
+  };
   const webauthnRegister = async (e) => {
     if (!wrCredCreateOpts) {
-      return dispatch(Promise.reject(new Error('No creation options loaded. Call registerStart first.')))
+      return dispatch(
+        Promise.reject(
+          new Error("No creation options loaded. Call registerStart first.")
+        )
+      );
     }
-    await dispatch(
-      stytch.webauthn.register(wrCredCreateOpts)
-    )
+    await dispatch(stytch.webauthn.register(wrCredCreateOpts));
     setCredCreateOpts(null);
-  }
+  };
 
   const webauthnAuthenticateStart = async () => {
-    const {public_key_credential_request_options} = await dispatch(stytch.webauthn.authenticateStart());
+    const { public_key_credential_request_options } = await dispatch(
+      stytch.webauthn.authenticateStart()
+    );
     setCredRequestOpts(public_key_credential_request_options);
-  }
+  };
   const webauthnAuthenticate = async () => {
     if (!wrCredRequestOpts) {
-      return dispatch(Promise.reject(new Error('No creation options loaded. Call registerStart first.')))
+      return dispatch(
+        Promise.reject(
+          new Error("No creation options loaded. Call registerStart first.")
+        )
+      );
     }
     await dispatch(
       stytch.webauthn.authenticate(wrCredRequestOpts, {
         session_duration_minutes: 60,
       })
-    )
+    );
     setCredRequestOpts(null);
-  }
-
+  };
 
   const cryptoWalletsAuthenticateStart = async () => {
     const [crypto_wallet_address] = await dispatch(
       window.ethereum.request({
-        method: 'eth_requestAccounts'
+        method: "eth_requestAccounts",
       })
     );
     setCryptoWalletAddress(crypto_wallet_address);
 
-    const {challenge} = await dispatch(
+    const { challenge } = await dispatch(
       stytch.cryptoWallets.authenticateStart({
         crypto_wallet_address,
-        crypto_wallet_type: 'ethereum'
+        crypto_wallet_type: "ethereum",
       })
     );
     setCryptoWalletChallenge(challenge);
-  }
+  };
   const cryptoWalletsAuthenticate = async () => {
     if (!cryptoWalletChallenge) {
-      return dispatch(Promise.reject(new Error('No challenge loaded. Call authenticateStart first.')))
+      return dispatch(
+        Promise.reject(
+          new Error("No challenge loaded. Call authenticateStart first.")
+        )
+      );
     }
     const signature = await dispatch(
       window.ethereum.request({
         method: "personal_sign",
-        params: [cryptoWalletChallenge, cryptoWalletAddress]
+        params: [cryptoWalletChallenge, cryptoWalletAddress],
       })
     );
     await dispatch(
       stytch.cryptoWallets.authenticate({
         crypto_wallet_address: cryptoWalletAddress,
-        crypto_wallet_type: 'ethereum',
+        crypto_wallet_type: "ethereum",
         signature,
-        session_duration_minutes: 60
+        session_duration_minutes: 60,
       })
-    )
+    );
     setCredRequestOpts(null);
-  }
+  };
 
   const getUrlForProvider = (provider) => () =>
     dispatchLink(
@@ -302,7 +326,7 @@ const WorkBench = ({stytch, stytchUser}) => {
     );
   };
 
-  const userFactorControls = [<br key="factor-brk"/>];
+  const userFactorControls = [<br key="factor-brk" />];
   if (stytchUser) {
     for (const emailFactor of stytchUser.emails) {
       const onClick = () => {
@@ -314,7 +338,7 @@ const WorkBench = ({stytch, stytchUser}) => {
           name={`Delete email: ${emailFactor.email}`}
           onClick={onClick}
         />,
-        <br key={`brk-${emailFactor.email_id}`}/>
+        <br key={`brk-${emailFactor.email_id}`} />
       );
     }
 
@@ -328,7 +352,7 @@ const WorkBench = ({stytch, stytchUser}) => {
           name={`Delete Webauthn: ${wr.webauthn_registration_id.slice(27, 35)}`}
           onClick={onClick}
         />,
-        <br key={`brk-${wr.webauthn_registration_id}`}/>
+        <br key={`brk-${wr.webauthn_registration_id}`} />
       );
     }
   }
@@ -339,63 +363,69 @@ const WorkBench = ({stytch, stytchUser}) => {
         <div className="column">
           <h1>SDK Workbench</h1>
           <h3>Session</h3>
-          <Button name="stytch.session.getSync()" onClick={sessionGetSync}/>
-          <br/>
+          <Button name="stytch.session.getSync()" onClick={sessionGetSync} />
+          <br />
           <Button
             name="stytch.session.authenticate()"
             onClick={sessionAuthenticate}
           />
-          <br/>
-          <Button name="stytch.session.revoke()" onClick={sessionRevoke}/>
-          <br/>
+          <br />
+          <Button name="stytch.session.revoke()" onClick={sessionRevoke} />
+          <br />
           <h3>User</h3>
-          <Button name="stytch.user.getSync()" onClick={userGetSync}/> <br/>
-          <Button name="stytch.user.get()" onClick={userGet}/> <br/>
+          <Button name="stytch.user.getSync()" onClick={userGetSync} /> <br />
+          <Button name="stytch.user.get()" onClick={userGet} /> <br />
           <h3>Magic Links</h3>
           <form onSubmit={magicLinksLoginOrCreate}>
             <div className="inputContainer">
               <label htmlFor="email">Email:</label>
-              <input type="text" id="email" name="email" ref={emlEmailRef} required/>
+              <input
+                type="text"
+                id="email"
+                name="email"
+                ref={emlEmailRef}
+                required
+              />
             </div>
             <Button
               name="stytch.magicLinks.email.loginOrCreate()"
               type="submit"
             />
-            <br/>
+            <br />
           </form>
           <Button
             name="stytch.magicLinks.authenticate()"
             onClick={magicLinksAuthenticate}
             glowing={hasEml}
           />
-          <br/>
+          <br />
           <h3>One Time Passcodes</h3>
           <form onSubmit={otpSMSLoginOrCreate}>
             <div className="inputContainer">
               <label htmlFor="phone">Phone:</label>
-              <input type="tel" id="phone" name="phone" pattern="\+?[1-9]\d{1,14}" ref={otpPhoneRef}/>
+              <input
+                type="tel"
+                id="phone"
+                name="phone"
+                pattern="\+?[1-9]\d{1,14}"
+                ref={otpPhoneRef}
+              />
             </div>
-            <Button
-              name="stytch.otps.sms.loginOrCreate()"
-              type="submit"
-            />
-            <br/>
+            <Button name="stytch.otps.sms.loginOrCreate()" type="submit" />
+            <br />
           </form>
           <Button
             name="stytch.otps.whatsapp.loginOrCreate()"
             onClick={otpWhatsappLoginOrCreate}
           />
-          <br/>
+          <br />
           <form onSubmit={otpEmailLoginOrCreate}>
             <div className="inputContainer">
               <label htmlFor="email">Email:</label>
-              <input type="email" id="email" name="email" ref={otpEmailRef}/>
+              <input type="email" id="email" name="email" ref={otpEmailRef} />
             </div>
-            <Button
-              name="stytch.otps.email.loginOrCreate()"
-              type="submit"
-            />
-            <br/>
+            <Button name="stytch.otps.email.loginOrCreate()" type="submit" />
+            <br />
           </form>
           <form onSubmit={otpAuthenticate}>
             <div className="inputContainer">
@@ -435,13 +465,15 @@ const WorkBench = ({stytch, stytchUser}) => {
             name="stytch.webauthn.registerStart()"
             onClick={webauthnRegisterStart}
           />
-          <br/>
+          <br />
           <Button
             name="stytch.webauthn.register()"
             onClick={webauthnRegister}
           />
           <div>
-            <label htmlFor="register_start_data">Authenticate Data Loaded:</label>
+            <label htmlFor="register_start_data">
+              Authenticate Data Loaded:
+            </label>
             <input
               type="checkbox"
               disabled
@@ -452,7 +484,7 @@ const WorkBench = ({stytch, stytchUser}) => {
             name="stytch.webauthn.authenticateStart()"
             onClick={webauthnAuthenticateStart}
           />
-          <br/>
+          <br />
           <Button
             name="stytch.webauthn.authenticate()"
             onClick={webauthnAuthenticate}
@@ -479,32 +511,32 @@ const WorkBench = ({stytch, stytchUser}) => {
             name="stytch.cryptoWallets.authenticateStart()"
             onClick={cryptoWalletsAuthenticateStart}
           />
-          <br/>
+          <br />
           <Button
             name="stytch.cryptoWallets.authenticate()"
             onClick={cryptoWalletsAuthenticate}
           />
-          <br/>
+          <br />
           <h3>OAuth</h3>
           <Button
             name="stytch.oauth.google.getUrl()"
             onClick={getUrlForProvider("google")}
           />
-          <br/>
+          <br />
           {/*<Button name="stytch.oauth.microsoft.getUrl()" onClick={getUrlForProvider('microsoft')}/><br/>*/}
           {/*<Button name="stytch.oauth.facebook.getUrl()" onClick={getUrlForProvider('facebook')}/><br/>*/}
           <Button
             name="stytch.oauth.github.getUrl()"
             onClick={getUrlForProvider("github")}
           />
-          <br/>
+          <br />
           {/*<Button name="stytch.oauth.apple.getUrl()" onClick={getUrlForProvider('apple')}/><br/>*/}
           <Button
             name="stytch.oauth.authenticate()"
             onClick={oauthAuthenticate}
             glowing={hasOauth}
           />
-          <br/>
+          <br />
           <h3>User Management</h3>
           <div className="inputContainer">
             <label htmlFor="first_name">First Name:</label>
@@ -551,8 +583,8 @@ const WorkBench = ({stytch, stytchUser}) => {
               ref={newPhoneRef}
             />
           </div>
-          <Button name="stytch.user.update()" onClick={userUpdate}/>
-          <br/>
+          <Button name="stytch.user.update()" onClick={userUpdate} />
+          <br />
           {userFactorControls.length > 1 ? (
             <strong>Attached Factors</strong>
           ) : null}

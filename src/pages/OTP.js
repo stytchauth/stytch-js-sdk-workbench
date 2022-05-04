@@ -1,6 +1,6 @@
-import {useStytch, useStytchUser} from "@stytch/stytch-react";
-import React, {useRef, useState} from "react";
-import {Link} from "react-router-dom";
+import { useStytch, useStytchUser } from "@stytch/stytch-react";
+import React, { useRef, useState } from "react";
+import { Link } from "react-router-dom";
 
 export const OneTimePasscodes = () => {
   const stytch = useStytch();
@@ -44,7 +44,7 @@ export const OneTimePasscodes = () => {
   const startOTPFlow = (
     <>
       Let's send a one-time passcode to{" "}
-      <strong>{phoneFactor && phoneFactor.phone_number}</strong>.<br/>
+      <strong>{phoneFactor && phoneFactor.phone_number}</strong>.<br />
       <button onClick={sendOneTimePasscode}>Send.</button>
     </>
   );
@@ -59,18 +59,18 @@ export const OneTimePasscodes = () => {
           name="code"
           placeholder="123456"
           ref={otpCodeRef}
-          style={{maxWidth: 200}}
+          style={{ maxWidth: 200 }}
         />
       </div>
       <button type="submit">Send</button>
-      <br/>
+      <br />
     </form>
   );
 
   const completeOTPFlow = (
     <>
       Authenticated!
-      <br/>
+      <br />
       <button onClick={() => setState("starting")}>Start over.</button>
     </>
   );
@@ -89,7 +89,7 @@ export const OneTimePasscodes = () => {
     try {
       setError(null);
       await stytch.user.update({
-        phone_numbers: [{phone_number}],
+        phone_numbers: [{ phone_number }],
       });
     } catch (e) {
       setError(e);
@@ -99,7 +99,7 @@ export const OneTimePasscodes = () => {
   const doesNotHaveLinkedPhoneNumberContent = (
     <>
       First, let's link a phone number to your account.
-      <br/>
+      <br />
       <form onSubmit={addOneTimePasscodeToUser}>
         <div className="inputContainer">
           <label htmlFor="phone">What is your phone number?</label>
@@ -109,11 +109,11 @@ export const OneTimePasscodes = () => {
             name="phone"
             placeholder="+1333333333"
             ref={otpPhoneRef}
-            style={{maxWidth: 200}}
+            style={{ maxWidth: 200 }}
           />
         </div>
         <button type="submit">Send</button>
-        <br/>
+        <br />
       </form>
     </>
   );
@@ -127,19 +127,19 @@ export const OneTimePasscodes = () => {
         it can also be layered on top of another login product, like Email magic
         links, to provide extra security as a multi-factor authentication (MFA)
         method.
-        <br/>
-        <br/>
+        <br />
+        <br />
         {phoneFactor
           ? hasPhoneNumberContent
           : doesNotHaveLinkedPhoneNumberContent}
         {error && (
           <>
-            <br/>
+            <br />
             <pre>{String(error)}</pre>
           </>
         )}
-        <br/>
-        <br/>
+        <br />
+        <br />
         <Link to={"/home"}>{"<-Back"}</Link>
       </div>
     </div>

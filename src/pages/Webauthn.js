@@ -1,18 +1,24 @@
-import {useStytch, useStytchUser} from "@stytch/stytch-react";
-import React, {useCallback, useEffect, useState} from "react";
-import {Link} from "react-router-dom";
+import { useStytch, useStytchUser } from "@stytch/stytch-react";
+import React, { useCallback, useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
-const RegisterWebauthn = ({setStatus, setError}) => {
+const RegisterWebauthn = ({ setStatus, setError }) => {
   const stytch = useStytch();
   const [credCreateOpts, setCredCreateOpts] = useState(null);
 
-  const preloadRegistrationData = useCallback(() =>
-    stytch.webauthn.registerStart()
-      .then(data => setCredCreateOpts(data.public_key_credential_creation_options))
-      .catch(e => setError(e)), [stytch, setError]);
+  const preloadRegistrationData = useCallback(
+    () =>
+      stytch.webauthn
+        .registerStart()
+        .then((data) =>
+          setCredCreateOpts(data.public_key_credential_creation_options)
+        )
+        .catch((e) => setError(e)),
+    [stytch, setError]
+  );
 
   useEffect(() => {
-    preloadRegistrationData()
+    preloadRegistrationData();
   }, [preloadRegistrationData]);
 
   const registerWebauthn = async () => {
@@ -21,31 +27,41 @@ const RegisterWebauthn = ({setStatus, setError}) => {
       await stytch.webauthn.register(credCreateOpts);
       setStatus("Registration successful!");
       setCredCreateOpts(null);
-      await preloadRegistrationData()
+      await preloadRegistrationData();
     } catch (e) {
       setError(e);
     }
   };
 
-  return (<>
-    There are two steps during a WebAuthn authentication flow, registration
-    and authentication. The first step handles registering a WebAuthn device
-    to a user.&nbsp;&nbsp;&nbsp;
-    <button disabled={!credCreateOpts} onClick={registerWebauthn}>Register.</button>
-  </>)
-}
+  return (
+    <>
+      There are two steps during a WebAuthn authentication flow, registration
+      and authentication. The first step handles registering a WebAuthn device
+      to a user.&nbsp;&nbsp;&nbsp;
+      <button disabled={!credCreateOpts} onClick={registerWebauthn}>
+        Register.
+      </button>
+    </>
+  );
+};
 
-const AuthenticateWebauthn = ({setStatus, setError}) => {
+const AuthenticateWebauthn = ({ setStatus, setError }) => {
   const stytch = useStytch();
   const [credRequestOpts, setCredRequestOpts] = useState(null);
 
-  const preloadAuthenticationData = useCallback(() =>
-    stytch.webauthn.authenticateStart()
-      .then(data => setCredRequestOpts(data.public_key_credential_request_options))
-      .catch(e => setError(e)), [stytch, setError]);
+  const preloadAuthenticationData = useCallback(
+    () =>
+      stytch.webauthn
+        .authenticateStart()
+        .then((data) =>
+          setCredRequestOpts(data.public_key_credential_request_options)
+        )
+        .catch((e) => setError(e)),
+    [stytch, setError]
+  );
 
   useEffect(() => {
-    preloadAuthenticationData()
+    preloadAuthenticationData();
   }, [preloadAuthenticationData]);
 
   const authenticateWebauthn = async () => {
@@ -67,10 +83,12 @@ const AuthenticateWebauthn = ({setStatus, setError}) => {
       After registration is complete, the WebAuthn device can be used to
       authenticate the active user, for MFA or Step-Up authentication.
       &nbsp;&nbsp;&nbsp;
-      <button disabled={!credRequestOpts} onClick={authenticateWebauthn}>Authenticate.</button>
+      <button disabled={!credRequestOpts} onClick={authenticateWebauthn}>
+        Authenticate.
+      </button>
     </>
-  )
-}
+  );
+};
 
 export const WebAuthn = () => {
   const user = useStytchUser();
@@ -86,18 +104,20 @@ export const WebAuthn = () => {
         authenticator types such as built-in device biometrics (e.g. facial
         recognition on mobile and fingerprint readers on desktop) or secure
         hardware keys (e.g. YubiKeys).
-        <br/><br/>
-        <RegisterWebauthn setStatus={setStatus} setError={setError}/>
-        <br/><br/>
-        {hasWebAuthnConfigured ?
-          <AuthenticateWebauthn setStatus={setStatus} setError={setError}/>
-          : null}
+        <br />
+        <br />
+        <RegisterWebauthn setStatus={setStatus} setError={setError} />
+        <br />
+        <br />
+        {hasWebAuthnConfigured ? (
+          <AuthenticateWebauthn setStatus={setStatus} setError={setError} />
+        ) : null}
         <br />
         {status}
         <br />
         {error && (
           <>
-            <br/>
+            <br />
             <pre>{String(error)}</pre>
           </>
         )}

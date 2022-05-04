@@ -1,7 +1,7 @@
-import {useStytchSession} from "@stytch/stytch-react";
-import React, {useEffect, useState} from "react";
-import {Link} from "react-router-dom";
-import {Results} from "../Results";
+import { useStytchSession } from "@stytch/stytch-react";
+import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import { Results } from "../Results";
 
 export const SessionManagement = () => {
   const session = useStytchSession();
@@ -20,8 +20,8 @@ export const SessionManagement = () => {
     fetch("/api/mfa_route", { credentials: "same-origin" }).then((res) => {
       res.status === 200
         ? setMFARouteStatus(
-          `Returned ${res.status} - you have multiple factors!`
-        )
+            `Returned ${res.status} - you have multiple factors!`
+          )
         : setMFARouteStatus(`Returned ${res.status} - Try adding WebAuthn!`);
     });
   }, []);

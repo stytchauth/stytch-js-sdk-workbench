@@ -1,5 +1,5 @@
-import {useStytch, useStytchUser} from "@stytch/stytch-react";
-import {Link} from "react-router-dom";
+import { useStytch, useStytchUser } from "@stytch/stytch-react";
+import { Link } from "react-router-dom";
 import React from "react";
 
 export const LinkOAuth = () => {

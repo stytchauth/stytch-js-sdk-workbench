@@ -8,22 +8,23 @@ import {
 import "./App.css";
 import line from "./line.svg";
 import Authenticate from "./Authenticate";
-import {Home} from "./pages/Home";
-import {OneTimePasscodes} from "./pages/OTP";
-import {LinkOAuth} from "./pages/OAuth";
-import {SessionManagement} from "./pages/SessionManagement";
-import {WebAuthn} from "./pages/Webauthn";
+import { Home } from "./pages/Home";
+import { OneTimePasscodes } from "./pages/OTP";
+import { LinkOAuth } from "./pages/OAuth";
+import { SessionManagement } from "./pages/SessionManagement";
+import { TOTP } from "./pages/TOTPs";
+import { WebAuthn } from "./pages/Webauthn";
 import Workbench from "./Workbench";
 import Login from "./Login";
 
-import {RequireLogin, RequireLoggedOut} from "./Stytch";
-import {CryptoWallets} from "./pages/CryptoWallets";
+import { RequireLogin, RequireLoggedOut } from "./Stytch";
+import { CryptoWallets } from "./pages/CryptoWallets";
 
-const pageStyle = {backgroundImage: `url(${line})`};
+const pageStyle = { backgroundImage: `url(${line})` };
 
 const isinFrame = () => {
   return window.self !== window.top;
-}
+};
 
 function App() {
   if (isinFrame()) {
@@ -40,12 +41,12 @@ function App() {
     <Router>
       <div className="page" style={pageStyle}>
         <Routes>
-          <Route path="/authenticate" element={<Authenticate/>}/>
+          <Route path="/authenticate" element={<Authenticate />} />
           <Route
             path="/login"
             element={
               <RequireLoggedOut>
-                <Login/>
+                <Login />
               </RequireLoggedOut>
             }
           />
@@ -53,7 +54,7 @@ function App() {
             path="/home"
             element={
               <RequireLogin>
-                <Home/>
+                <Home />
               </RequireLogin>
             }
           />
@@ -61,7 +62,7 @@ function App() {
             path="/oauth"
             element={
               <RequireLogin>
-                <LinkOAuth/>
+                <LinkOAuth />
               </RequireLogin>
             }
           />
@@ -69,7 +70,15 @@ function App() {
             path="/webauthn"
             element={
               <RequireLogin>
-                <WebAuthn/>
+                <WebAuthn />
+              </RequireLogin>
+            }
+          />
+          <Route
+            path="/totp"
+            element={
+              <RequireLogin>
+                <TOTP />
               </RequireLogin>
             }
           />
@@ -77,7 +86,7 @@ function App() {
             path="/crypto-wallets"
             element={
               <RequireLogin>
-                <CryptoWallets/>
+                <CryptoWallets />
               </RequireLogin>
             }
           />
@@ -85,7 +94,7 @@ function App() {
             path="/otps"
             element={
               <RequireLogin>
-                <OneTimePasscodes/>
+                <OneTimePasscodes />
               </RequireLogin>
             }
           />
@@ -93,12 +102,12 @@ function App() {
             path="/session"
             element={
               <RequireLogin>
-                <SessionManagement/>
+                <SessionManagement />
               </RequireLogin>
             }
           />
-          <Route path="/workbench" element={<Workbench/>}/>
-          <Route path="*" element={<Navigate to="/login" replace/>}/>
+          <Route path="/workbench" element={<Workbench />} />
+          <Route path="*" element={<Navigate to="/login" replace />} />
         </Routes>
       </div>
     </Router>
