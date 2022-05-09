@@ -8,16 +8,14 @@ export const SessionManagement = () => {
 
   const [loggedInRouteStatus, setLoggedInRouteStatus] = useState("...");
   useEffect(() => {
-    fetch("/api/logged_in_route", { credentials: "same-origin" }).then(
-      (res) => {
-        setLoggedInRouteStatus(`Returned ${res.status} - you are logged in!`);
-      }
-    );
+    fetch("/api/logged-in", { credentials: "same-origin" }).then((res) => {
+      setLoggedInRouteStatus(`Returned ${res.status} - you are logged in!`);
+    });
   }, []);
 
   const [mfaRouteStatus, setMFARouteStatus] = useState("...");
   useEffect(() => {
-    fetch("/api/mfa_route", { credentials: "same-origin" }).then((res) => {
+    fetch("/api/mfa", { credentials: "same-origin" }).then((res) => {
       res.status === 200
         ? setMFARouteStatus(
             `Returned ${res.status} - you have multiple factors!`
