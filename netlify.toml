@@ -4,3 +4,11 @@
     from = "/api/*"
     to = "/.netlify/functions/:splat"
     status = 200
+[[redirects]]
+  from = "/login"
+  to = "/index.html"
+  status = 200
+[[redirects]]
+  from = "/authenticate"
+  to = "/index.html"
+  status = 200
