@@ -36,7 +36,7 @@ const Login = () => {
         This app will show you some of the features of the Stytch platform, and
         how they might be incorperated into a login flow. All of the source code
         for this app is available{" "}
-        <a href={"https://glitch.com/edit/#!/stytch-sdk-beta"}>here</a>.
+        <a href="https://github.com/stytchauth/stytch-netlify-demo">here</a>.
         <br />
         Let's start by logging in.
         <br />
