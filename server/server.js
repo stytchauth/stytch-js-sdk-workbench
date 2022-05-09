@@ -1,10 +1,8 @@
 const express = require("express");
 const path = require("path");
-const stytch = require("stytch");
 const cookieParser = require("cookie-parser");
+const stytch = require("stytch");
 require("dotenv").config();
-
-console.log(process.env.STYTCH_PROJECT_ID);
 
 const stytchClient = new stytch.Client({
   project_id: process.env.STYTCH_PROJECT_ID,
@@ -12,10 +10,7 @@ const stytchClient = new stytch.Client({
   env: stytch.envs.test,
 });
 
-const app = express();
-app.use(cookieParser());
-
-function isMFA(session) {
+const isMFA = (session) => {
   const hasEmailMagicLink = session.authentication_factors.some(
     (factor) => factor.type === "magic_link"
   );
@@ -23,10 +18,14 @@ function isMFA(session) {
     (factor) => factor.type === "webauthn"
   );
 
-  return hasEmailMagicLink && hasWebauthn;
-}
+  const hasTotp = session.authentication_factors.some(
+    (factor) => factor.type === "totp"
+  );
 
-function AuthenticationMiddleware({ mfa_required }) {
+  return hasEmailMagicLink && (hasWebauthn || hasTotp);
+};
+
+export const AuthenticationMiddleware = ({ mfa_required }) => {
   return function (req, res, next) {
     const session_token = req.cookies["stytch_session"];
     if (!session_token) {
@@ -49,12 +48,10 @@ function AuthenticationMiddleware({ mfa_required }) {
         return next(new Error("No session"));
       });
   };
-}
+};
 
-app.get("/api/public", (request, response) => {
-  console.log("❇️ Received GET request to /api/public");
-  response.send("OK!");
-});
+const app = express();
+app.use(cookieParser());
 
 app.get(
   "/api/logged_in_route",

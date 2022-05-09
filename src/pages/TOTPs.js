@@ -1,5 +1,5 @@
 import { useStytch, useStytchUser } from "@stytch/stytch-react";
-import React, { useCallback, useEffect, useState, useRef } from "react";
+import React, { useState, useRef } from "react";
 import { Link } from "react-router-dom";
 
 const CreateAndAuthenticateTotp = ({ status, setStatus, setError }) => {
