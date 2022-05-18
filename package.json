@@ -18,10 +18,7 @@
     "stytch": "^3.10.1"
   },
   "scripts": {
-    "start": "npm run development",
-    "development": "NODE_ENV=development npx concurrently --kill-others \"npm run client\" \"npm run server\"",
-    "production": "npm run build && NODE_ENV=production npm run server",
-    "server": "node server/server.js",
+    "start": "npx netlify dev",
     "client": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
