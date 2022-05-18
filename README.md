@@ -33,6 +33,6 @@ npm run start
 TODO
 
 
-### Support
+### Questions?
 
 Feel free to reach out any time at support@stytch.com
