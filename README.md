@@ -1,4 +1,4 @@
-# SDK Demo App
+# SDK demo app
 
 This is React app showing how the
 [Stytch Javascript SDK](https://stytch.com/docs/sdks/javascript-sdk)
@@ -31,3 +31,8 @@ npm run start
 ### Deploying on Netlify
 
 TODO
+
+
+### Support
+
+Feel free to reach out any time at support@stytch.com
