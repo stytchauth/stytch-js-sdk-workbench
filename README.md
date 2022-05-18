@@ -1,4 +1,4 @@
-# SDK Demo App
+# SDK demo app
 
 This is a full-stack app in React and Express showing how the
 [Stytch Javascript SDK](https://stytch.com/docs/sdks/javascript-sdk)
@@ -32,4 +32,4 @@ REACT_APP_STYTCH_PUBLIC_TOKEN=... \
 
 ### Questions?
 
-Feel free to reach out any time! <-- Steven - where should they reach out to? --->
+Feel free to reach out any time at support@stytch.com
