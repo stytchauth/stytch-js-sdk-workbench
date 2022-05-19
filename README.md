@@ -1,15 +1,16 @@
 # SDK demo app
 
-This is a full-stack app in React and Express showing how the
+This is React app showing how the
 [Stytch Javascript SDK](https://stytch.com/docs/sdks/javascript-sdk)
-can be used to power authentication for your next project.
+can be used to power authentication for your next project along with
+Netlify's [functions](https://www.netlify.com/products/functions/)
 
 ## Running your own
 
 1. Create an account at [Stytch](https://stytch.com).
 2. You'll need to set three environment variables. All can be found in the
    [Stytch Dashboard](https://stytch.com/dashboard/api-keys).
-   If you're using Glitch, add them to your `.env` file template.
+   Add them to your `.env` file.
    - `REACT_APP_STYTCH_PUBLIC_TOKEN`
    - `STYTCH_PROJECT_ID`
    - `STYTCH_PROJECT_SECRET`
@@ -24,11 +25,13 @@ can be used to power authentication for your next project.
 
 ```bash
 npm i
-REACT_APP_STYTCH_PUBLIC_TOKEN=... \
-  STYTCH_PROJECT_ID=... \
-  STYTCH_PROJECT_SECRET=... \
-  npm start
+npm run start
 ```
+
+### Deploying on Netlify
+
+TODO
+
 
 ### Questions?
 
