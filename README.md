@@ -5,6 +5,9 @@ This is React app showing how the
 can be used to power authentication for your next project along with
 Netlify's [functions](https://www.netlify.com/products/functions/)
 
+<img width="1728" alt="workbench" src="https://user-images.githubusercontent.com/104386276/169409251-f70b468f-21c9-494e-a723-5055621f1d21.png">
+
+
 ## Running your own
 
 1. Create an account at [Stytch](https://stytch.com).
