@@ -1,11 +1,9 @@
 # Stytch Javascript SDK workbench
-
+![sdk](https://user-images.githubusercontent.com/100632220/169575067-d9410b44-f10a-4ef3-af42-311817f4e595.png)
 This is React app showing how the
 [Stytch Javascript SDK](https://stytch.com/docs/sdks/javascript-sdk)
 can be used to power authentication for your next project along with
 Netlify's [functions](https://www.netlify.com/products/functions/)
-
-<img width="1728" alt="workbench" src="https://user-images.githubusercontent.com/104386276/169409251-f70b468f-21c9-494e-a723-5055621f1d21.png">
 
 
 ## Running your own
