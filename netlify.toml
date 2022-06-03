@@ -12,3 +12,8 @@
   from = "/authenticate"
   to = "/index.html"
   status = 200
+
+[template.environment]
+  REACT_APP_STYTCH_PUBLIC_TOKEN = "STYTCH_PUBLIC_TOKEN"
+  STYTCH_PROJECT_ID = "STYTCH_PROJECT_ID"
+  STYTCH_PROJECT_SECRET = "STYTCH_SECRET"
