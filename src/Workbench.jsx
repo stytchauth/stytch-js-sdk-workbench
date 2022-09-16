@@ -33,6 +33,10 @@ const WorkBench = ({ stytch, stytchUser }) => {
   const newEmailRef = useRef();
   const newPhoneRef = useRef();
 
+  const passwordEmailRef = useRef();
+  const passwordRef = useRef();
+  const newPasswordRef = useRef();
+
   const [wrCredCreateOpts, setCredCreateOpts] = useState(null);
   const [wrCredRequestOpts, setCredRequestOpts] = useState(null);
 
@@ -326,6 +330,84 @@ const WorkBench = ({ stytch, stytchUser }) => {
     );
   };
 
+  const passwordsCreate = (e) => {
+    e.preventDefault();
+    const email = passwordEmailRef.current.value;
+    const password = passwordRef.current.value;
+
+    return dispatch(stytch.passwords.create({ email, password, session_duration_minutes: 60 }));
+  };
+
+  const passwordsAuthenticate = (e) => {
+    e.preventDefault();
+    const email = passwordEmailRef.current.value;
+    const password = passwordRef.current.value;
+
+    return dispatch(stytch.passwords.authenticate({ email, password, session_duration_minutes: 60 }));
+  };
+
+  const passwordsResetByEmailStart = (e) => {
+    e.preventDefault();
+    const email = passwordEmailRef.current.value;
+
+    return dispatch(
+      stytch.passwords.resetByEmailStart({
+        email,
+        login_redirect_url: getCallbackURL('eml'),
+        reset_password_redirect_url: getCallbackURL('reset'),
+        reset_password_expiration_minutes: 60,
+      }),
+    );
+  };
+
+  const passwordsResetByEmail = (e) => {
+    e.preventDefault();
+    const token = chompToken();
+    const password = passwordRef.current.value;
+
+    return dispatch(
+      stytch.passwords.resetByEmail({
+        token,
+        password,
+        session_duration_minutes: 60,
+      }),
+    );
+  };
+
+  const passwordsResetBySession = (e) => {
+    e.preventDefault();
+    const password = passwordRef.current.value;
+
+    return dispatch(
+      stytch.passwords.resetBySession({
+        password,
+      }),
+    );
+  };
+
+  const passwordsStrengthCheck = (e) => {
+    e.preventDefault();
+    const email = passwordEmailRef.current.value;
+    const password = passwordRef.current.value;
+
+    return dispatch(stytch.passwords.strengthCheck({ email, password }));
+  };
+
+  const passwordsResetByExistingPassword = (e) => {
+    e.preventDefault();
+    const email = passwordEmailRef.current.value;
+    const existing_password = passwordRef.current.value;
+    const new_password = newPasswordRef.current.value;
+
+    return dispatch(
+      stytch.passwords.resetByExistingPassword({
+        email,
+        existing_password,
+        new_password,
+      }),
+    );
+  };
+
   const userFactorControls = [<br key="factor-brk" />];
   if (stytchUser) {
     for (const emailFactor of stytchUser.emails) {
@@ -537,6 +619,37 @@ const WorkBench = ({ stytch, stytchUser }) => {
             glowing={hasOauth}
           />
           <br />
+          <h3>Passwords</h3>
+          <form onSubmit={passwordsCreate}>
+            <div className="inputContainer">
+              <label htmlFor="pw-email">Email:</label>
+              <input type="text" id="email" name="email" ref={passwordEmailRef} required />
+            </div>
+            <div className="inputContainer">
+              <label htmlFor="password">Password:</label>
+              <input type="text" id="email" name="email" ref={passwordRef} required />
+            </div>
+            <Button name="stytch.passwords.create()" type="submit" />
+            <br />
+          </form>
+          <Button name="stytch.passwords.authenticate()" onClick={passwordsAuthenticate} />
+          <br />
+          <Button name="stytch.passwords.resetByEmailStart()" onClick={passwordsResetByEmailStart} />
+          <br />
+          <Button name="stytch.passwords.resetByEmail()" onClick={passwordsResetByEmail} />
+          <br />
+          <Button name="stytch.passwords.resetBySession()" onClick={passwordsResetBySession} />
+          <br />
+          <Button name="stytch.passwords.strengthCheck()" onClick={passwordsStrengthCheck} />
+          <br />
+          <form onSubmit={passwordsResetByExistingPassword}>
+            <div className="inputContainer">
+              <label htmlFor="new_password">New Password:</label>
+              <input type="text" id="new_password" name="new_password" ref={newPasswordRef} required />
+            </div>
+            <Button name="stytch.passwords.resetByExistingPassword()" type="submit" />
+            <br />
+          </form>
           <h3>User Management</h3>
           <div className="inputContainer">
             <label htmlFor="first_name">First Name:</label>
