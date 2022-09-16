@@ -1,4 +1,4 @@
-import { useStytch, useStytchUser } from "@stytch/stytch-react";
+import { useStytch, useStytchUser } from "@stytch/react";
 import React, { useCallback, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
@@ -91,7 +91,7 @@ const AuthenticateWebauthn = ({ setStatus, setError }) => {
 };
 
 export const WebAuthn = () => {
-  const user = useStytchUser();
+  const { user } = useStytchUser();
   const hasWebAuthnConfigured = user.webauthn_registrations.length > 0;
   const [error, setError] = useState(null);
   const [status, setStatus] = useState("");

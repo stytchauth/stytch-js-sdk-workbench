@@ -1,10 +1,10 @@
-import { useStytch, useStytchUser } from "@stytch/stytch-react";
+import { useStytch, useStytchUser } from "@stytch/react";
 import { Link } from "react-router-dom";
 import React from "react";
 
 export const Home = () => {
   const stytch = useStytch();
-  const user = useStytchUser();
+  const { user } = useStytchUser();
   const header = user.emails.length ? (
     <h1>Welcome, {user.emails[0].email}</h1>
   ) : (

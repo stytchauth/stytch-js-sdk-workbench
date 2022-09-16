@@ -2,7 +2,7 @@ import {
   withStytch,
   withStytchSession,
   withStytchUser,
-} from "@stytch/stytch-react";
+} from "@stytch/react";
 import React, { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Results } from "./Results";

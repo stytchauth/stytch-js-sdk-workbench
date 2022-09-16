@@ -1,10 +1,10 @@
-import { useStytch, useStytchUser } from "@stytch/stytch-react";
+import { useStytch, useStytchUser } from "@stytch/react";
 import { Link } from "react-router-dom";
 import React from "react";
 
 export const LinkOAuth = () => {
   const stytch = useStytch();
-  const user = useStytchUser();
+  const { user } = useStytchUser();
 
   const oauthOpts = {
     login_redirect_url: `${window.location.origin}/authenticate?type=oauth`,

@@ -1,10 +1,10 @@
-import { useStytch, useStytchUser } from "@stytch/stytch-react";
+import { useStytch, useStytchUser } from "@stytch/react";
 import React, { useRef, useState } from "react";
 import { Link } from "react-router-dom";
 
 export const OneTimePasscodes = () => {
   const stytch = useStytch();
-  const user = useStytchUser();
+  const { user } = useStytchUser();
   const otpPhoneRef = useRef();
   const otpCodeRef = useRef();
   const [error, setError] = useState(null);
