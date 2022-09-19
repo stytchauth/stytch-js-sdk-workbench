@@ -426,7 +426,7 @@ const WorkBench = ({ stytch, stytchUser }) => {
 
     for (const wr of stytchUser.webauthn_registrations) {
       const onClick = () => {
-        dispatch(stytch.user.deleteWebauthn(wr.webauthn_registration_id));
+        dispatch(stytch.user.deleteWebauthnRegistration(wr.webauthn_registration_id));
       };
       userFactorControls.push(
         <Button
@@ -435,6 +435,16 @@ const WorkBench = ({ stytch, stytchUser }) => {
           onClick={onClick}
         />,
         <br key={`brk-${wr.webauthn_registration_id}`} />
+      );
+    }
+
+    for (const totp of stytchUser.totps) {
+      const onClick = () => {
+        dispatch(stytch.user.deleteTOTP(totp.totp_id));
+      };
+      userFactorControls.push(
+        <Button key={`btn-${totp.totp_id}`} name={`Delete TOTP: ${totp.totp_id}`} onClick={onClick} />,
+        <br key={`brk-${totp.totp_id}`} />,
       );
     }
   }
