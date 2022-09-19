@@ -1,33 +1,15 @@
 import { useStytch, useStytchUser } from "@stytch/react";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
 const RegisterWebauthn = ({ setStatus, setError }) => {
   const stytch = useStytch();
-  const [credCreateOpts, setCredCreateOpts] = useState(null);
-
-  const preloadRegistrationData = useCallback(
-    () =>
-      stytch.webauthn
-        .registerStart()
-        .then((data) =>
-          setCredCreateOpts(data.public_key_credential_creation_options)
-        )
-        .catch((e) => setError(e)),
-    [stytch, setError]
-  );
-
-  useEffect(() => {
-    preloadRegistrationData();
-  }, [preloadRegistrationData]);
 
   const registerWebauthn = async () => {
     try {
       setStatus("Registering...");
-      await stytch.webauthn.register(credCreateOpts);
+      await stytch.webauthn.register();
       setStatus("Registration successful!");
-      setCredCreateOpts(null);
-      await preloadRegistrationData();
     } catch (e) {
       setError(e);
     }
@@ -38,7 +20,7 @@ const RegisterWebauthn = ({ setStatus, setError }) => {
       There are two steps during a WebAuthn authentication flow, registration
       and authentication. The first step handles registering a WebAuthn device
       to a user.&nbsp;&nbsp;&nbsp;
-      <button disabled={!credCreateOpts} onClick={registerWebauthn}>
+      <button onClick={registerWebauthn}>
         Register.
       </button>
     </>
@@ -47,32 +29,14 @@ const RegisterWebauthn = ({ setStatus, setError }) => {
 
 const AuthenticateWebauthn = ({ setStatus, setError }) => {
   const stytch = useStytch();
-  const [credRequestOpts, setCredRequestOpts] = useState(null);
-
-  const preloadAuthenticationData = useCallback(
-    () =>
-      stytch.webauthn
-        .authenticateStart()
-        .then((data) =>
-          setCredRequestOpts(data.public_key_credential_request_options)
-        )
-        .catch((e) => setError(e)),
-    [stytch, setError]
-  );
-
-  useEffect(() => {
-    preloadAuthenticationData();
-  }, [preloadAuthenticationData]);
 
   const authenticateWebauthn = async () => {
     try {
       setStatus("Authenticating...");
-      await stytch.webauthn.authenticate(credRequestOpts, {
+      await stytch.webauthn.authenticate({
         session_duration_minutes: 60,
       });
-      setCredRequestOpts(null);
       setStatus("Authentication successful!");
-      await preloadAuthenticationData();
     } catch (e) {
       setError(e);
     }
@@ -83,7 +47,7 @@ const AuthenticateWebauthn = ({ setStatus, setError }) => {
       After registration is complete, the WebAuthn device can be used to
       authenticate the active user, for MFA or Step-Up authentication.
       &nbsp;&nbsp;&nbsp;
-      <button disabled={!credRequestOpts} onClick={authenticateWebauthn}>
+      <button onClick={authenticateWebauthn}>
         Authenticate.
       </button>
     </>
