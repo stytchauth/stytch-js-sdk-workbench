@@ -11,9 +11,9 @@ export const LinkOAuth = () => {
     signup_redirect_url: `${window.location.origin}/authenticate?type=oauth`,
   };
 
-  const googleUrl = stytch.oauth.google.getUrl(oauthOpts);
-  const facebookUrl = stytch.oauth.facebook.getUrl(oauthOpts);
-  const githubUrl = stytch.oauth.github.getUrl(oauthOpts);
+  const startGoogleOAuth = () => stytch.oauth.google.start(oauthOpts);
+  const startFacebookOAuth = () => stytch.oauth.facebook.start(oauthOpts);
+  const startGithubOAuth = () => stytch.oauth.github.start(oauthOpts);
 
   const googleProvider = user.providers.find(
     (provider) => provider.provider_type === "Google"
@@ -25,20 +25,18 @@ export const LinkOAuth = () => {
     (provider) => provider.provider_type === "Github"
   );
 
-  const renderProvider = (title, provider, url) => {
+  const renderProvider = (title, provider, startOAuth) => {
     if (provider) {
       return (
         <>
           You've previously linked {title}. Your {title} ID is{" "}
           <code>{provider.provider_subject}</code>.{" "}
-          <a href={url}>Log in again?</a>
+          <button onClick={startOAuth}>Log in again?</button>
         </>
       );
     }
     return (
-      <a href={url}>
-        <button>Link your {title} account.</button>
-      </a>
+      <button onClick={startOAuth}>Link your {title} account.</button>
     );
   };
 
@@ -58,11 +56,11 @@ export const LinkOAuth = () => {
         <a href={"https://stytch.com/docs/api/oauth-overview"}>docs.</a>
         <br />
         <br />
-        {renderProvider("Google", googleProvider, googleUrl)}
+        {renderProvider("Google", googleProvider, startGoogleOAuth)}
         <br />
-        {renderProvider("Facebook", fbProvider, facebookUrl)}
+        {renderProvider("Facebook", fbProvider, startFacebookOAuth)}
         <br />
-        {renderProvider("Github", githubProvider, githubUrl)}
+        {renderProvider("Github", githubProvider, startGithubOAuth)}
         <br />
         <br />
         <Link to={"/home"}>{"<-Back"}</Link>

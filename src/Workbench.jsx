@@ -37,9 +37,6 @@ const WorkBench = ({ stytch, stytchUser }) => {
   const passwordRef = useRef();
   const newPasswordRef = useRef();
 
-  const [wrCredCreateOpts, setCredCreateOpts] = useState(null);
-  const [wrCredRequestOpts, setCredRequestOpts] = useState(null);
-
   const [cryptoWalletChallenge, setCryptoWalletChallenge] = useState(null);
   const [cryptoWalletAddress, setCryptoWalletAddress] = useState(null);
 
@@ -101,14 +98,7 @@ const WorkBench = ({ stytch, stytchUser }) => {
         throw err;
       });
   };
-
-  const dispatchLink = (link) => {
-    setIsLink(true);
-    setIsError(false);
-    setIsLoading(false);
-    setResult(link);
-  };
-
+  
   const sessionGetSync = () => {
     dispatch(stytch.session.getSync());
   };
@@ -229,44 +219,16 @@ const WorkBench = ({ stytch, stytchUser }) => {
     return dispatch(stytch.user.update(diff));
   };
 
-  const webauthnRegisterStart = async () => {
-    const { public_key_credential_creation_options } = await dispatch(
-      stytch.webauthn.registerStart()
-    );
-    setCredCreateOpts(public_key_credential_creation_options);
-  };
-  const webauthnRegister = async (e) => {
-    if (!wrCredCreateOpts) {
-      return dispatch(
-        Promise.reject(
-          new Error("No creation options loaded. Call registerStart first.")
-        )
-      );
-    }
-    await dispatch(stytch.webauthn.register(wrCredCreateOpts));
-    setCredCreateOpts(null);
+  const webauthnRegister = async () => {
+    await dispatch(stytch.webauthn.register());
   };
 
-  const webauthnAuthenticateStart = async () => {
-    const { public_key_credential_request_options } = await dispatch(
-      stytch.webauthn.authenticateStart()
-    );
-    setCredRequestOpts(public_key_credential_request_options);
-  };
   const webauthnAuthenticate = async () => {
-    if (!wrCredRequestOpts) {
-      return dispatch(
-        Promise.reject(
-          new Error("No creation options loaded. Call registerStart first.")
-        )
-      );
-    }
     await dispatch(
-      stytch.webauthn.authenticate(wrCredRequestOpts, {
+      stytch.webauthn.authenticate({
         session_duration_minutes: 60,
       })
     );
-    setCredRequestOpts(null);
   };
 
   const cryptoWalletsAuthenticateStart = async () => {
@@ -307,12 +269,11 @@ const WorkBench = ({ stytch, stytchUser }) => {
         session_duration_minutes: 60,
       })
     );
-    setCredRequestOpts(null);
   };
 
-  const getUrlForProvider = (provider) => () =>
-    dispatchLink(
-      stytch.oauth[provider].getUrl({
+  const startOAuth = (provider) => () =>
+    dispatch(
+      stytch.oauth[provider].start({
         signup_redirect_url: getCallbackURL("oauth"),
         login_redirect_url: getCallbackURL("oauth"),
       })
@@ -426,7 +387,7 @@ const WorkBench = ({ stytch, stytchUser }) => {
 
     for (const wr of stytchUser.webauthn_registrations) {
       const onClick = () => {
-        dispatch(stytch.user.deleteWebauthn(wr.webauthn_registration_id));
+        dispatch(stytch.user.deleteWebauthnRegistration(wr.webauthn_registration_id));
       };
       userFactorControls.push(
         <Button
@@ -435,6 +396,16 @@ const WorkBench = ({ stytch, stytchUser }) => {
           onClick={onClick}
         />,
         <br key={`brk-${wr.webauthn_registration_id}`} />
+      );
+    }
+
+    for (const totp of stytchUser.totps) {
+      const onClick = () => {
+        dispatch(stytch.user.deleteTOTP(totp.totp_id));
+      };
+      userFactorControls.push(
+        <Button key={`btn-${totp.totp_id}`} name={`Delete TOTP: ${totp.totp_id}`} onClick={onClick} />,
+        <br key={`brk-${totp.totp_id}`} />,
       );
     }
   }
@@ -535,42 +506,9 @@ const WorkBench = ({ stytch, stytchUser }) => {
             </button>
           </form>
           <h3>WebAuthn</h3>
-          <div>
-            <label htmlFor="register_start_data">Register Data Loaded:</label>
-            <input
-              type="checkbox"
-              disabled
-              checked={Boolean(wrCredCreateOpts)}
-            />
-          </div>
-          <Button
-            name="stytch.webauthn.registerStart()"
-            onClick={webauthnRegisterStart}
-          />
+          <Button name="stytch.webauthn.register()" onClick={webauthnRegister} />
           <br />
-          <Button
-            name="stytch.webauthn.register()"
-            onClick={webauthnRegister}
-          />
-          <div>
-            <label htmlFor="register_start_data">
-              Authenticate Data Loaded:
-            </label>
-            <input
-              type="checkbox"
-              disabled
-              checked={Boolean(wrCredRequestOpts)}
-            />
-          </div>
-          <Button
-            name="stytch.webauthn.authenticateStart()"
-            onClick={webauthnAuthenticateStart}
-          />
-          <br />
-          <Button
-            name="stytch.webauthn.authenticate()"
-            onClick={webauthnAuthenticate}
-          />
+          <Button name="stytch.webauthn.authenticate()" onClick={webauthnAuthenticate} />
           <br />
           <h3>Crypto Wallets</h3>
           <div>
@@ -601,18 +539,15 @@ const WorkBench = ({ stytch, stytchUser }) => {
           <br />
           <h3>OAuth</h3>
           <Button
-            name="stytch.oauth.google.getUrl()"
-            onClick={getUrlForProvider("google")}
+            name="stytch.oauth.google.start()"
+            onClick={startOAuth("google")}
           />
           <br />
-          {/*<Button name="stytch.oauth.microsoft.getUrl()" onClick={getUrlForProvider('microsoft')}/><br/>*/}
-          {/*<Button name="stytch.oauth.facebook.getUrl()" onClick={getUrlForProvider('facebook')}/><br/>*/}
           <Button
-            name="stytch.oauth.github.getUrl()"
-            onClick={getUrlForProvider("github")}
+            name="stytch.oauth.github.start()"
+            onClick={startOAuth('github')}
           />
           <br />
-          {/*<Button name="stytch.oauth.apple.getUrl()" onClick={getUrlForProvider('apple')}/><br/>*/}
           <Button
             name="stytch.oauth.authenticate()"
             onClick={oauthAuthenticate}
