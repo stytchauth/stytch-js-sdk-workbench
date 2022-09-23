@@ -1,10 +1,10 @@
 import React from "react";
-import { useStytchUser, useStytchSession } from "@stytch/stytch-react";
+import { useStytchUser, useStytchSession } from "@stytch/react";
 import { Navigate } from "react-router-dom";
 
 function RequireLogin({ children }) {
-  const user = useStytchUser();
-  const session = useStytchSession();
+  const { user } = useStytchUser();
+  const { session } = useStytchSession();
   if (!session || !user) {
     return <Navigate to="/login" />;
   }
@@ -13,8 +13,8 @@ function RequireLogin({ children }) {
 }
 
 function RequireLoggedOut({ children }) {
-  const user = useStytchUser();
-  const session = useStytchSession();
+  const { user } = useStytchUser();
+  const { session } = useStytchSession();
   if (session || user) {
     return <Navigate to="/home" />;
   }

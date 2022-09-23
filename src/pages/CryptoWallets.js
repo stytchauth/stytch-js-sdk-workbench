@@ -1,4 +1,4 @@
-import { useStytch } from "@stytch/stytch-react";
+import { useStytch } from "@stytch/react";
 import React, { useCallback, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 

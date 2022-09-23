@@ -1,10 +1,10 @@
-import { useStytchSession } from "@stytch/stytch-react";
+import { useStytchSession } from "@stytch/react";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Results } from "../Results";
 
 export const SessionManagement = () => {
-  const session = useStytchSession();
+  const { session } = useStytchSession();
 
   const [loggedInRouteStatus, setLoggedInRouteStatus] = useState("...");
   useEffect(() => {

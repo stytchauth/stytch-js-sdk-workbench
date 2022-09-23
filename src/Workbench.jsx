@@ -2,7 +2,7 @@ import {
   withStytch,
   withStytchSession,
   withStytchUser,
-} from "@stytch/stytch-react";
+} from "@stytch/react";
 import React, { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Results } from "./Results";
@@ -33,8 +33,9 @@ const WorkBench = ({ stytch, stytchUser }) => {
   const newEmailRef = useRef();
   const newPhoneRef = useRef();
 
-  const [wrCredCreateOpts, setCredCreateOpts] = useState(null);
-  const [wrCredRequestOpts, setCredRequestOpts] = useState(null);
+  const passwordEmailRef = useRef();
+  const passwordRef = useRef();
+  const newPasswordRef = useRef();
 
   const [cryptoWalletChallenge, setCryptoWalletChallenge] = useState(null);
   const [cryptoWalletAddress, setCryptoWalletAddress] = useState(null);
@@ -97,14 +98,7 @@ const WorkBench = ({ stytch, stytchUser }) => {
         throw err;
       });
   };
-
-  const dispatchLink = (link) => {
-    setIsLink(true);
-    setIsError(false);
-    setIsLoading(false);
-    setResult(link);
-  };
-
+  
   const sessionGetSync = () => {
     dispatch(stytch.session.getSync());
   };
@@ -225,44 +219,16 @@ const WorkBench = ({ stytch, stytchUser }) => {
     return dispatch(stytch.user.update(diff));
   };
 
-  const webauthnRegisterStart = async () => {
-    const { public_key_credential_creation_options } = await dispatch(
-      stytch.webauthn.registerStart()
-    );
-    setCredCreateOpts(public_key_credential_creation_options);
-  };
-  const webauthnRegister = async (e) => {
-    if (!wrCredCreateOpts) {
-      return dispatch(
-        Promise.reject(
-          new Error("No creation options loaded. Call registerStart first.")
-        )
-      );
-    }
-    await dispatch(stytch.webauthn.register(wrCredCreateOpts));
-    setCredCreateOpts(null);
+  const webauthnRegister = async () => {
+    await dispatch(stytch.webauthn.register());
   };
 
-  const webauthnAuthenticateStart = async () => {
-    const { public_key_credential_request_options } = await dispatch(
-      stytch.webauthn.authenticateStart()
-    );
-    setCredRequestOpts(public_key_credential_request_options);
-  };
   const webauthnAuthenticate = async () => {
-    if (!wrCredRequestOpts) {
-      return dispatch(
-        Promise.reject(
-          new Error("No creation options loaded. Call registerStart first.")
-        )
-      );
-    }
     await dispatch(
-      stytch.webauthn.authenticate(wrCredRequestOpts, {
+      stytch.webauthn.authenticate({
         session_duration_minutes: 60,
       })
     );
-    setCredRequestOpts(null);
   };
 
   const cryptoWalletsAuthenticateStart = async () => {
@@ -303,12 +269,11 @@ const WorkBench = ({ stytch, stytchUser }) => {
         session_duration_minutes: 60,
       })
     );
-    setCredRequestOpts(null);
   };
 
-  const getUrlForProvider = (provider) => () =>
-    dispatchLink(
-      stytch.oauth[provider].getUrl({
+  const startOAuth = (provider) => () =>
+    dispatch(
+      stytch.oauth[provider].start({
         signup_redirect_url: getCallbackURL("oauth"),
         login_redirect_url: getCallbackURL("oauth"),
       })
@@ -323,6 +288,84 @@ const WorkBench = ({ stytch, stytchUser }) => {
       stytch.oauth.authenticate(token, {
         session_duration_minutes: 60,
       })
+    );
+  };
+
+  const passwordsCreate = (e) => {
+    e.preventDefault();
+    const email = passwordEmailRef.current.value;
+    const password = passwordRef.current.value;
+
+    return dispatch(stytch.passwords.create({ email, password, session_duration_minutes: 60 }));
+  };
+
+  const passwordsAuthenticate = (e) => {
+    e.preventDefault();
+    const email = passwordEmailRef.current.value;
+    const password = passwordRef.current.value;
+
+    return dispatch(stytch.passwords.authenticate({ email, password, session_duration_minutes: 60 }));
+  };
+
+  const passwordsResetByEmailStart = (e) => {
+    e.preventDefault();
+    const email = passwordEmailRef.current.value;
+
+    return dispatch(
+      stytch.passwords.resetByEmailStart({
+        email,
+        login_redirect_url: getCallbackURL('eml'),
+        reset_password_redirect_url: getCallbackURL('reset'),
+        reset_password_expiration_minutes: 60,
+      }),
+    );
+  };
+
+  const passwordsResetByEmail = (e) => {
+    e.preventDefault();
+    const token = chompToken();
+    const password = passwordRef.current.value;
+
+    return dispatch(
+      stytch.passwords.resetByEmail({
+        token,
+        password,
+        session_duration_minutes: 60,
+      }),
+    );
+  };
+
+  const passwordsResetBySession = (e) => {
+    e.preventDefault();
+    const password = passwordRef.current.value;
+
+    return dispatch(
+      stytch.passwords.resetBySession({
+        password,
+      }),
+    );
+  };
+
+  const passwordsStrengthCheck = (e) => {
+    e.preventDefault();
+    const email = passwordEmailRef.current.value;
+    const password = passwordRef.current.value;
+
+    return dispatch(stytch.passwords.strengthCheck({ email, password }));
+  };
+
+  const passwordsResetByExistingPassword = (e) => {
+    e.preventDefault();
+    const email = passwordEmailRef.current.value;
+    const existing_password = passwordRef.current.value;
+    const new_password = newPasswordRef.current.value;
+
+    return dispatch(
+      stytch.passwords.resetByExistingPassword({
+        email,
+        existing_password,
+        new_password,
+      }),
     );
   };
 
@@ -344,7 +387,7 @@ const WorkBench = ({ stytch, stytchUser }) => {
 
     for (const wr of stytchUser.webauthn_registrations) {
       const onClick = () => {
-        dispatch(stytch.user.deleteWebauthn(wr.webauthn_registration_id));
+        dispatch(stytch.user.deleteWebauthnRegistration(wr.webauthn_registration_id));
       };
       userFactorControls.push(
         <Button
@@ -353,6 +396,16 @@ const WorkBench = ({ stytch, stytchUser }) => {
           onClick={onClick}
         />,
         <br key={`brk-${wr.webauthn_registration_id}`} />
+      );
+    }
+
+    for (const totp of stytchUser.totps) {
+      const onClick = () => {
+        dispatch(stytch.user.deleteTOTP(totp.totp_id));
+      };
+      userFactorControls.push(
+        <Button key={`btn-${totp.totp_id}`} name={`Delete TOTP: ${totp.totp_id}`} onClick={onClick} />,
+        <br key={`brk-${totp.totp_id}`} />,
       );
     }
   }
@@ -453,42 +506,9 @@ const WorkBench = ({ stytch, stytchUser }) => {
             </button>
           </form>
           <h3>WebAuthn</h3>
-          <div>
-            <label htmlFor="register_start_data">Register Data Loaded:</label>
-            <input
-              type="checkbox"
-              disabled
-              checked={Boolean(wrCredCreateOpts)}
-            />
-          </div>
-          <Button
-            name="stytch.webauthn.registerStart()"
-            onClick={webauthnRegisterStart}
-          />
+          <Button name="stytch.webauthn.register()" onClick={webauthnRegister} />
           <br />
-          <Button
-            name="stytch.webauthn.register()"
-            onClick={webauthnRegister}
-          />
-          <div>
-            <label htmlFor="register_start_data">
-              Authenticate Data Loaded:
-            </label>
-            <input
-              type="checkbox"
-              disabled
-              checked={Boolean(wrCredRequestOpts)}
-            />
-          </div>
-          <Button
-            name="stytch.webauthn.authenticateStart()"
-            onClick={webauthnAuthenticateStart}
-          />
-          <br />
-          <Button
-            name="stytch.webauthn.authenticate()"
-            onClick={webauthnAuthenticate}
-          />
+          <Button name="stytch.webauthn.authenticate()" onClick={webauthnAuthenticate} />
           <br />
           <h3>Crypto Wallets</h3>
           <div>
@@ -519,24 +539,52 @@ const WorkBench = ({ stytch, stytchUser }) => {
           <br />
           <h3>OAuth</h3>
           <Button
-            name="stytch.oauth.google.getUrl()"
-            onClick={getUrlForProvider("google")}
+            name="stytch.oauth.google.start()"
+            onClick={startOAuth("google")}
           />
           <br />
-          {/*<Button name="stytch.oauth.microsoft.getUrl()" onClick={getUrlForProvider('microsoft')}/><br/>*/}
-          {/*<Button name="stytch.oauth.facebook.getUrl()" onClick={getUrlForProvider('facebook')}/><br/>*/}
           <Button
-            name="stytch.oauth.github.getUrl()"
-            onClick={getUrlForProvider("github")}
+            name="stytch.oauth.github.start()"
+            onClick={startOAuth('github')}
           />
           <br />
-          {/*<Button name="stytch.oauth.apple.getUrl()" onClick={getUrlForProvider('apple')}/><br/>*/}
           <Button
             name="stytch.oauth.authenticate()"
             onClick={oauthAuthenticate}
             glowing={hasOauth}
           />
           <br />
+          <h3>Passwords</h3>
+          <form onSubmit={passwordsCreate}>
+            <div className="inputContainer">
+              <label htmlFor="pw-email">Email:</label>
+              <input type="text" id="email" name="email" ref={passwordEmailRef} required />
+            </div>
+            <div className="inputContainer">
+              <label htmlFor="password">Password:</label>
+              <input type="text" id="email" name="email" ref={passwordRef} required />
+            </div>
+            <Button name="stytch.passwords.create()" type="submit" />
+            <br />
+          </form>
+          <Button name="stytch.passwords.authenticate()" onClick={passwordsAuthenticate} />
+          <br />
+          <Button name="stytch.passwords.resetByEmailStart()" onClick={passwordsResetByEmailStart} />
+          <br />
+          <Button name="stytch.passwords.resetByEmail()" onClick={passwordsResetByEmail} />
+          <br />
+          <Button name="stytch.passwords.resetBySession()" onClick={passwordsResetBySession} />
+          <br />
+          <Button name="stytch.passwords.strengthCheck()" onClick={passwordsStrengthCheck} />
+          <br />
+          <form onSubmit={passwordsResetByExistingPassword}>
+            <div className="inputContainer">
+              <label htmlFor="new_password">New Password:</label>
+              <input type="text" id="new_password" name="new_password" ref={newPasswordRef} required />
+            </div>
+            <Button name="stytch.passwords.resetByExistingPassword()" type="submit" />
+            <br />
+          </form>
           <h3>User Management</h3>
           <div className="inputContainer">
             <label htmlFor="first_name">First Name:</label>

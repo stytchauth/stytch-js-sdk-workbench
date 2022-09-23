@@ -1,4 +1,4 @@
-import { useStytch, useStytchUser } from "@stytch/stytch-react";
+import { useStytch, useStytchUser } from "@stytch/react";
 import React, { useState, useRef } from "react";
 import { Link } from "react-router-dom";
 
@@ -133,7 +133,7 @@ const Authenticated = () => {
 };
 
 export const TOTP = () => {
-  const user = useStytchUser();
+  const { user } = useStytchUser();
   const [error, setError] = useState(null);
   const [status, setStatus] = useState("");
 
