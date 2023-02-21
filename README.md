@@ -26,7 +26,8 @@ Netlify's [functions](https://www.netlify.com/products/functions/)
 
 ```bash
 npm i
-npm run start
+npm run build
+npm run client
 ```
 
 ### Questions?
