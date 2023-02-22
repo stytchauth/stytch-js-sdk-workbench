@@ -16,7 +16,7 @@
     "react-router-dom": "^6.2.1",
     "react-scripts": "^5.0.0",
     "serverless-http": "^3.0.1",
-    "stytch": "^3.10.1"
+    "stytch": "^5.12.1"
   },
   "scripts": {
     "start": "npx netlify dev",
