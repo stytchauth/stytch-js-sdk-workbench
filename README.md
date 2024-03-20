@@ -30,4 +30,4 @@ npm run client
 
 ### Questions?
 
-Feel free to reach out any time at support@stytch.com or in our [Slack](https://join.slack.com/t/stytch/shared_invite/zt-nil4wo92-jApJ9Cl32cJbEd9esKkvyg)
+Feel free to reach out any time at support@stytch.com or in our [Slack](https://stytch.slack.com/join/shared_invite/zt-2f0fi1ruu-ub~HGouWRmPARM1MTwPESA).
