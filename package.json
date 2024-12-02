@@ -44,6 +44,6 @@
   },
   "license": "MIT",
   "devDependencies": {
-    "nan": "^2.15.0"
+    "nan": "^2.16.0"
   }
 }
